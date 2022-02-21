@@ -12,8 +12,36 @@ Evolution Strategies (ES) ...
 \subsection{Covariance Matrix Adaptation Evolution Strategy}
 Covariance Matrix Adaptation Evolution Strategy (CMA-ES) ...
 
-\section{Alternative Function Approximators}
+\section{Function Approximators}
+We can represent many problems in machine learning as a function mapping an input space into an output space. This underlying function is the output of the learning process of an algorithm and is often called the \textit{target function}. Optimally, we would derive the formula of the function explicitly. However, even though we suspect that such a function exists, we usually do not have enough information to derive a formula. Thus, we aim to approximate the target function with function approximators by using the available data. In general, we can apply any function approximator. However, each function approximator has its advantages and limitations. For example, some may be prone to local optimum. Depending on the task, this could prevent us from finding a good approximation.
+
+\subsection{Neural Networks}
+Neural networks are machine learning algorithms inspired by the functionalities of the brain. They consist of connected neurons or nodes that imitate the biological neurons of the brain sending signals to each other. In a neural network, the neurons are arranged in connected layers. A network has at least an input and an output layer. We can further expand it with one or more hidden layers. Depending on the model, the connectivity between the layers differs. Figure~\ref{fig:neural_network_sketch} shows a sketch of a network with three hidden layers that are fully connected.
+\begin{figure}[ht]
+\centering
+\includegraphics[width=.7\textwidth]{neural_network_sketch}
+\caption[Sketch of a Neural Network]{
+  \textbf{Sketch of a neural network.}
+  The image shows a sketch of a neural network with three fully connected hidden layers.
+}
+\label{fig:neural_network_sketch}
+\end{figure}
+Each neuron holds an associated weight and threshold. It receives an input and outputs the sum of weighted inputs. If this sum is greater than the associated threshold, the neuron gets activated.
+
+A neural network with one or more hidden layers defines a non-linear function. It is theoretically able to represent any function. Thus, it is a \textit{generic function approximator}. Neural networks are highly expressive and flexible. They are applied successfully in many areas. However, they also come with a few limitations or disadvantages. Firstly, there is a lack of understanding. The output of a neural network is often incomprehensible because of its complex structure.
+
+\todo[inline]{Explain more? E.g. bias, generic function approximator, backpropagation \\ explain more disadvatages/advantages}
+
+
+
 \subsection{Polynomial}
+- How are they used as function aproximators? \\
+
+
+- advantages and disadvatages? \\
+
+
+- Taylor application \\
 
 \subsection{Fourier}
 
@@ -87,7 +115,7 @@ Interestingly, the usage of the bias had a relatively large impact on the perfor
 \includegraphics[width=0.329\textwidth]{with_bias_nn/histogram_two_HL}
 \includegraphics[width=0.329\textwidth]{with_bias_nn/scatter_score_two_HL}
 \includegraphics[width=0.329\textwidth]{with_bias_nn/scatter_variance_two_HL}
-\caption[Impact of bias]{
+\caption[Impact of Bias]{
   \textbf{Impact of bias.}
   The figures show the performance of a network with two hidden layers with the same settings as before but here we include bias.
 }
