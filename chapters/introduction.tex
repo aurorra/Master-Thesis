@@ -28,20 +28,21 @@ Neural networks are machine learning algorithms inspired by the functionalities 
 \end{figure}
 Each neuron holds an associated weight and threshold. It receives an input and outputs the sum of weighted inputs. If this sum is greater than the associated threshold, the neuron gets activated.
 
-A neural network with one or more hidden layers defines a non-linear function. It is theoretically able to represent any function. Thus, it is a \textit{generic function approximator}. Neural networks are highly expressive and flexible. They are applied successfully in many areas. However, they also come with a few limitations or disadvantages. Firstly, there is a lack of understanding. The output of a neural network is often incomprehensible because of its complex structure.
+A neural network with one or more hidden layers defines a non-linear function. It is theoretically able to represent any function. Thus, it is a \textit{generic function approximator}.
+Neural networks are highly expressive and flexible. They are applied successfully in many areas. A large part of the success of neural networks can be traced to the use of \textit{backpropagation}. Backpropagation uses information from the previous epoch (i.e. iteration) to adjust the weights of the network using the error gradient. However, neural networks also come with a few limitations or disadvantages. The backpropagation algorithm requires the calculation of an accurate gradient. Depending on the problem, this can be a challenging task. Furthermore, there is a lack of understanding. The output of a neural network is often incomprehensible because of its complex structure.
 
-\todo[inline]{Explain more? E.g. bias, generic function approximator, backpropagation \\ explain more disadvatages/advantages}
+\todo[inline]{Explain more? E.g. bias, generic function approximator}
 
 
 
 \subsection{Polynomial}
-- How are they used as function aproximators? \\
+In mathematics, a polynomial is the sum of powers in one or more variables multiplied by coefficients. A polynomial $p(x)$ in one variable $x$ with degree $n$ is represented by
+\[
+	p(x) = a_n x^n + a_{n-1} x^{n-1} + ... + a_1 x + a_0 = \Sigma^n_{i=0} a_i x^i,
+\]
+where $a_n, a_{n-1}, ..., a_0$ are constant coefficients. Polynomials are relatively simple mathematical expressions and offer some significant advantages: their derivative and indefinite integral are easy to determine and are also polynomial. Due to their simple structure, polynomials can be valuable to analyze more complex functions using polynomial approximations. \textit{Taylor's theorem} tells us that we can locally approximate any $k$-times differentiable function by a polynomial of degree $k$. We call this approximation \textit{Taylor polynomial}. Furthermore, the \textit{Weierstrass approximation theorem} says that we can uniformly approximate every continuous function defined on a closed interval by a polynomial. Other applications of polynomials are \textit{polynomial interpolation} and \textit{polynomial splines}. Polynomial interpolation describes the problem of constructing a polynomial that passes through all given data points. Polynomial splines are piecewise polynomial functions.
 
-
-- advantages and disadvatages? \\
-
-
-- Taylor application \\
+\todo[inline]{Include theorems? \\ Spline interpolation = polynomial interpolation?}
 
 \subsection{Fourier}
 
