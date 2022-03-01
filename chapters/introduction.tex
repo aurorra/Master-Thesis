@@ -52,6 +52,7 @@ where $a_n, a_{n-1}, ..., a_0$ are constant coefficients. Polynomials are relati
 \section{Previous Work}
 
 \subsection{Benchmarks in Reinforcement Learning}
+\label{ssec:benchmarks}
 When developing a novel algorithm, it is important to compare our results with existing models. For this evaluation, we need standard benchmark problems. These are a set of standard optimization problems. OpenAI Gym \footnote{\url{gym.openai.com}} is a toolkit created for exactly this scenario. It contains a collection of benchmark problems with various levels of difficulty. However, not all benchmark problems are meaningful for the evaluation of an algorithm. If a problem is too trivial to solve, the results do not reflect the quality of the model adequately. We do not need to put a large amount of effort into the creation of a complex model for an easy-to-solve task.
 
 In the paper \emph{Analyzing Reinforcement Learning Benchmarks with Random Weight Guessing} (\citet{oller_analyzing_2020}), the authors analyze and visualize the complexity of standard RL benchmarks based on score distribution. They tested their approach on the five Classic Control benchmark problems from the OpenAI Gym interface: \verb|CartPole|, \verb|Acrobot|, \verb|Pendulum|, \verb|MountainCar|, and \verb|MountainCarCon-| \verb|tinuous|. Given an RL environment, the authors conducted a fixed series of experiments. For these experiments, they used three neural network architectures ($N_{architectures}=3$): a network without any hidden layers (0 HL), a network with a single hidden layer of 4 units (1 HL, 4 HU), and a network with two hidden layers of 4 units each (2 HL, 4 HU). With these, they cover a variety of network models that are suited to solve the given tasks. The evaluation should be as objective as possible and should not include bias in the data. To achieve this, the authors did not include any learning opportunities for the network models. Instead, they chose the network weights i.i.d. from the standard normal distribution $\mathcal{N}(0,1)$ with Random Weight Guessing (RWG). This approach assures randomness and no directed learning. The goal of the paper was not to further analyze the network models but to investigate the benchmark problems themselves. With this in mind, they initialized $10^4$ samples ($N_{samples}=10^4$) with different random weights. The number of samples would be too large for a reasonable learning strategy. However, the large number of samples serves a different purpose than optimizing the results. Instead, the aim is to draw statistical conclusions. Each of these samples of a neural network represents a controller that maps observations to actions in the environment. Later in this thesis, I will explore function approximators other than neural networks representing the controller. In the paper, the authors tested the controllers for each environment during 20 independent episodes ($N_{episodes}=20$). For each episode, they saved the score in the score tensor $S$. Algorithm~\ref{alg:environment-evaluation} illustrates the procedure with pseudocode.
@@ -80,25 +81,25 @@ I reproduced the results of the authors following the mentioned methodology. My 
 \centering
 \begin{subfigure}{\textwidth}
   \centering
-  \includegraphics[width=0.329\textwidth]{histogram_zero_HL}
-  \includegraphics[width=0.329\textwidth]{scatter_score_zero_HL}
-  \includegraphics[width=0.329\textwidth]{scatter_variance_zero_HL}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/histogram_zero_HL}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/scatter_score_zero_HL}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/scatter_variance_zero_HL}
     \caption{Results of network architecture without hidden layers}
     \label{fig:plots_reproduced_first}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
   \centering
-  \includegraphics[width=0.329\textwidth]{histogram_one_HL}
-  \includegraphics[width=0.329\textwidth]{scatter_score_one_HL}
-  \includegraphics[width=0.329\textwidth]{scatter_variance_one_HL}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/histogram_one_HL}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/scatter_score_one_HL}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/scatter_variance_one_HL}
     \caption{Results of network architecture with one hidden layer}
     \label{fig:plots_reproduced_second}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
   \centering
-  \includegraphics[width=0.329\textwidth]{histogram_two_HL}
-  \includegraphics[width=0.329\textwidth]{scatter_score_two_HL}
-  \includegraphics[width=0.329\textwidth]{scatter_variance_two_HL}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/histogram_two_HL}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/scatter_score_two_HL}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/scatter_variance_two_HL}
     \caption{Results of network architecture with two hidden layers}
     \label{fig:plots_reproduced_third}
 \end{subfigure}
@@ -124,4 +125,4 @@ Interestingly, the usage of the bias had a relatively large impact on the perfor
 \end{figure}
 
 
-\todo[inline]{Add plots from other environments? \\ Adjust axis name in bias images}
+\todo[inline]{Add plots from Acrobot \\ Adjust axis name in bias images}

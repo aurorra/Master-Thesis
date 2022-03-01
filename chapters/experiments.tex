@@ -10,13 +10,13 @@
 \end{enumerate}
 
 \section{Experiments}
-To analyze and compare the performance of the different models, I conducted the following experiments:
+To analyze and compare the different models, I conducted the following experiments:
 \begin{enumerate}
-  \item Similar to \citet{oller_analyzing_2020}, I used RWG to draw the weights of the model and tested it on a Classic Control environment from OpenAI Gym.
+  \item Similar to \citet{oller_analyzing_2020}, I used RWG to draw the weights of the models and tested the performance on a Classic Control environment from OpenAI Gym.
+  \item Second experiment
 \end{enumerate}
 
-In the first experiment, analogous to \citet{oller_analyzing_2020}, there is no learning involved. However, this time we are interested in the nature of the model instead of the environment. The models I used for this purpose are described in Section~\ref{ssec:models}.
-Algorithm~\ref{alg:model-evaluation} describes the procedure of the experiment. I used $10'000$ samples ($N_{samples}$) and $20$ episodes ($N_{episodes}$).
+In the first experiment, analogous to \citet{oller_analyzing_2020}, there is no learning involved. For their paper, they were interested in the complexity of the environment, whereas I aim to find out more about the nature of the models. I selected a few candidates for the models, which are described in Section~\ref{ssec:models} and used them for a series of experiments. First, I initialized the environment. I used the \verb|CartPole| and \verb|Acrobot| environment for these experiments. These environments are fairly easy to solve, as explained in Section~\ref{ssec:benchmarks}. Therefore, we expect some controllers to solve the task even without any training. Second, I initialized the respective model. Then, I drew the model weights from the standard normal distribution $\mathcal{N}(0,1)$. Each of these instances of the model represents a sample. In total, I used $10'000$ samples ($N_{samples}$). Finally, I ran 20 episodes ($N_{episodes}$) with each sample for an environment and stored the respective score as an entry of the score tensor $S$. Algorithm~\ref{alg:model-evaluation} shows an overview of the described procedure.
 \begin{algorithm}
 \caption{First experiment with RWG}
 \begin{algorithmic}[1]
@@ -35,12 +35,17 @@ Algorithm~\ref{alg:model-evaluation} describes the procedure of the experiment. 
 \label{alg:model-evaluation}
 \end{algorithm}
 
+\subsection{OpenAI Gym Environments}
+\begin{itemize}
+  \item CartPole
+  \item Acrobot
+\end{itemize}
+
 \subsection{Models}
 \label{ssec:models}
-To conduct the experiments, the following models were used: Neural Network models, Polynomial models.
+To conduct the experiments, I used the following models: Neural Network models, Polynomial models.
 
-\subsubsection{Polynomial}
-For the polynomial model, I used two architectures. The first model $P_1$ consists of one polynomial for each possible action. The dimension of the weight vectors is according to the dimension of the input vector (observation). For the environment \verb|CartPole| with the discrete action space $\{0, 1\}$ and observation $x = [x_1, x_2, x_3, x_4]^T$, this means that $P_1$ consists of two polynomial:
+For the polynomial model, I used two architectures. The first model $P_1$ consists of one polynomial for each possible action in the action space. The dimension of the weight vectors is according to the dimension of the input vector (observation). For the environment \verb|CartPole| with the discrete action space $\{0, 1\}$ and observation $x = [x_1, x_2, x_3, x_4]^T$, this means that $P_1$ consists of two polynomials:
 \[
   p_0 = w_0^T x^3 + w_1^T x^2 + w_2^T x + w_3^T \mathbb{1} \in \mathbb{R}, \ \ \ \ \ x, w_i, \mathbb{1} \in \mathbb{R}^4
 \]
@@ -58,7 +63,16 @@ The second model $P_2$ consists only of one polynomial. The output of the model 
   P_2(x) =
   \begin{cases}1~&{\text{ if }}~p_0<0.5~,\\0~&{\text{ if }}~p_0>0.5~.\end{cases}
 \]
-To scale the output, I used the logistic sigmoid function:
+The output of the model has no reasonable upper and lower limit, as illustrated in Figure~\ref{fig:bounds}. To scale the output between 0 and 1, I used the logistic sigmoid function:
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\textwidth]{PolynomialNN_degree_3_bounds}
+\caption[Upper and lower bound]{
+  \textbf{Upper and lower bound.}
+  x
+}
+\label{fig:bounds}
+\end{figure}
 \[
   sig(x) = \frac{1}{1 + exp(-x)}
 \]
@@ -96,6 +110,17 @@ The function $sig(x)$ has the typical S shape of a sigmoid function. A plot of t
 
 \section{Results}
 \subsection{Experiment 1}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.329\textwidth]{experiment_1/PolynomialNN_degree_1_scatter_score}
+\includegraphics[width=0.329\textwidth]{experiment_1/PolynomialNN_degree_2_scatter_score}
+\includegraphics[width=0.329\textwidth]{experiment_1/PolynomialNN_degree_3_scatter_score}
+\caption[Experiment 1: Polynomial]{
+  \textbf{Polynomial.}
+  x
+}
+\label{fig:polynomialNN_results}
+\end{figure}
 
 
 \subsubsection{Neural Network}
