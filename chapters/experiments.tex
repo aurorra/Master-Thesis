@@ -116,26 +116,49 @@ Analogous to $P_1$, I tested the polynomial $p(x)$ with degree 1, 2, and 3. So, 
   \begin{cases}1~&{\text{ if }}~sig(p(x))>0.5~,\\0~&~\text{otherwise}~.\end{cases}
 \]
 
+\todo[inline]{Explain used environments \\ Explain neural networks architecture}
+
 
 \section{Results}
 \subsection{Experiment 1}
 
-
 \begin{figure}[!ht]
-\centering
-\includegraphics[width=0.329\textwidth]{experiment_1/PolynomialNN_degree_1_scatter_score}
-\includegraphics[width=0.329\textwidth]{experiment_1/PolynomialNN_degree_2_scatter_score}
-\includegraphics[width=0.329\textwidth]{experiment_1/PolynomialNN_degree_3_scatter_score}
-\caption[Experiment 1: Polynomial]{
-  \textbf{Polynomial.}
-  x
+\begin{subfigure}{\textwidth}
+\begin{figrow}
+\item \label{row:P1_with_bias} \raisebox{-0.5\height}{
+\includegraphics[width=.3\linewidth]{experiment_1/with_bias/PolynomialNN_degree_1_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_1/with_bias/PolynomialNN_degree_2_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_1/with_bias/PolynomialNN_degree_3_scatter_score.png}}
+\item \label{row:P1_without_bias}  \raisebox{-0.5\height}{
+\includegraphics[width=.3\linewidth]{experiment_1/without_bias/PolynomialNN_degree_1_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_1/without_bias/PolynomialNN_degree_2_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_1/without_bias/PolynomialNN_degree_3_scatter_score.png}}
+\end{figrow}
+\caption{Results of $P_1$}
+\label{fig:results_p1}
+\end{subfigure}
+
+\begin{subfigure}{\textwidth}
+\begin{figrow}
+\item \label{row:P2_with_bias} \raisebox{-0.5\height}{
+\includegraphics[width=.3\linewidth]{experiment_1/with_bias/Polynomial_degree_1_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_1/with_bias/Polynomial_degree_2_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_1/with_bias/Polynomial_degree_3_scatter_score.png}}
+\item \label{row:P2_without_bias}  \raisebox{-0.5\height}{
+\includegraphics[width=.3\linewidth]{experiment_1/without_bias/Polynomial_degree_1_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_1/without_bias/Polynomial_degree_2_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_1/without_bias/Polynomial_degree_3_scatter_score.png}}
+\end{figrow}
+\caption{Results of $P_2$}
+\label{fig:results_p2}
+\end{subfigure}
+\caption[Results of experiment 1]{
+  \textbf{Results of experiment 1.}
+   d
 }
-\label{fig:polynomialNN_results}
+\label{fig:plots_reproduced}
 \end{figure}
 
 
-\subsubsection{Neural Network}
 
-\subsubsection{Polynomial}
-
-\section{Results}
+\todo[inline]{Change title of plots: , instead of with, $P_1 / P_2$ instead of Polynomial}

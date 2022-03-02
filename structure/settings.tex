@@ -30,3 +30,14 @@
 % plots
 \usepackage{pgfplots}
 \pgfplotsset{compat = newest}
+% visualization in mutliple rows
+\usepackage{enumitem}
+\newenvironment{figrow}%
+{%
+\centering\addtocounter{figure}{1}% if caption at bottom
+\begin{enumerate}[%
+itemsep=2pt,parsep=0em,
+label={(\alph*)},
+ref={\thefigure.(\alph*)}
+]}%
+{\end{enumerate}\addtocounter{figure}{-1}}
