@@ -41,10 +41,10 @@ In the first experiment, analogous to \citet{oller_analyzing_2020}, there is no 
   \item Acrobot
 \end{itemize}
 
+\todo[inline]{Explain used environments}
+
 \subsection{Models}
 \label{ssec:models}
-To conduct the experiments, I used the following models: Neural Network models, Polynomial models.
-
 For the polynomial model, I used two architectures $P_1$ and $P_2$. The first model $P_1$ consists of one polynomial for each possible action in a discrete action space. The input of the model is the observation from the environment. The dimension of the weight vectors is according to the dimension of the input vector. For the environment \verb|CartPole| with the discrete action space $\{0, 1\}$ and observation $x = [x_0, x_1, x_2, x_3]^T$, this means that $P_1$ consists of two polynomials:
 \[
   p_0(x) = \Sigma_{i=0}^{n} w_i^T (x_k^i)_{k \in I} \in \mathbb{R}, \ \ \ \ \ \ \ \ \ \ w_i \in \mathbb{R}^4, \ \ I = \{0, 1, 2, 3\}
@@ -58,7 +58,7 @@ In the formulas, $n$ denotes the degree of the polynomial. In the experiments, I
 \includegraphics[width=0.6\textwidth]{PolynomialNN_degree_3_bounds}
 \caption[Upper and lower bound]{
   \textbf{Upper and lower bound.}
-  The figure shows each output of the polynomial functions described above. As we can see, the functions are not well bound, and there are quite a few outliers.
+  The figure shows each output of the polynomial functions described above. As we can see, the functions are not well bound, and there are quite a few outliers. That makes it hard to interpret the output sensibly.
 }
 \label{fig:bounds}
 \end{figure}
@@ -100,7 +100,7 @@ For the sigmoid function, I used the logistic sigmoid function. The formula and 
 \end{tikzpicture}
 \caption[Sigmoid function]{
   \textbf{Sigmoid function.}
-  The figure shows a plot of the logistic sigmoid function. The function maps an arbitrary input space into the range between 0 and 1. The output of the function can be interpreted as a probability.
+  The figure shows a plot of the logistic sigmoid function. The function maps an arbitrary input space into the range between 0 and 1. The output of the function can be interpreted as a probability. It is useful to scale data into a meaningful value.
 }
 \label{fig:sigmoid}
 \end{figure}
@@ -116,12 +116,11 @@ Analogous to $P_1$, I tested the polynomial $p(x)$ with degree 1, 2, and 3. So, 
   \begin{cases}1~&{\text{ if }}~sig(p(x))>0.5~,\\0~&~\text{otherwise}~.\end{cases}
 \]
 
-\todo[inline]{Explain used environments \\ Explain neural networks architecture}
-
 
 \section{Results}
 \subsection{Experiment 1}
-
+Figure~\ref{fig:experiment_1_polynomial} shows the results of the first experiment for the two architectures of the polynomial model $P_1$ and $P_2$. I visualized the results of each model working with a bias in row (a) and without bias in row (b). The structure of the plots is identical for better comparison. The samples are ranked according to their mean score and aligned on the $x-$axis according to their rank. The scatter plots show all scores of the samples, whereas the lineplot illustrates the mean of each sample over all episodes.
+Subfigure~\ref{fig:results_p1} shows the results of the polynomial model $P_1$ and Subfigure~\ref{fig:results_p2} shows the results of the polynomial model $P_2$.
 \begin{figure}[!ht]
 \begin{subfigure}{\textwidth}
 \begin{figrow}
@@ -134,10 +133,10 @@ Analogous to $P_1$, I tested the polynomial $p(x)$ with degree 1, 2, and 3. So, 
 \includegraphics[width=.3\linewidth]{experiment_1/without_bias/PolynomialNN_degree_2_scatter_score.png}
 \includegraphics[width=.3\linewidth]{experiment_1/without_bias/PolynomialNN_degree_3_scatter_score.png}}
 \end{figrow}
-\caption{Results of $P_1$}
+\vspace*{-5mm}
+\caption{Results of $P_1$ with bias (a) and without bias (b)}
 \label{fig:results_p1}
 \end{subfigure}
-
 \begin{subfigure}{\textwidth}
 \begin{figrow}
 \item \label{row:P2_with_bias} \raisebox{-0.5\height}{
@@ -149,16 +148,22 @@ Analogous to $P_1$, I tested the polynomial $p(x)$ with degree 1, 2, and 3. So, 
 \includegraphics[width=.3\linewidth]{experiment_1/without_bias/Polynomial_degree_2_scatter_score.png}
 \includegraphics[width=.3\linewidth]{experiment_1/without_bias/Polynomial_degree_3_scatter_score.png}}
 \end{figrow}
-\caption{Results of $P_2$}
+\vspace*{-5mm}
+\caption{Results of $P_2$ with bias (a) and without bias (b)}
 \label{fig:results_p2}
 \end{subfigure}
 \caption[Results of experiment 1]{
   \textbf{Results of experiment 1.}
-   d
+   The figures show the results of the first experiment with the two polynomial models. On the $x-$axis, we have the rank of each sample. On the $y-$axis, we have the scores of all samples and the mean as a lineplot. Each subplot shows the performance of the model with bias in row (a) and without bias in row (b). As we can see, both models perform equally good or bad. However, there is a huge difference in performance whether we are working with or without bias. In addition, we can see a difference in the slope of the mean values between polynomials with degree 1 and one with a higher degree.
 }
-\label{fig:plots_reproduced}
+\label{fig:experiment_1_polynomial}
 \end{figure}
+As we can see in the images, the plots of the two models almost look identical. Both models performed equally good or bad despite their different architecture and the different number of weights. Because of this similarity, I will not go into each model independently but instead discuss further results for both of them.
 
+Looking at the linear model without bias, we can see a striking resemblance to the performance of the neural network previously shown in Section~\ref{ssec:benchmarks}. Looking further at the linear model, we can see that the curve of the mean score stays low until around $5'000$ but then goes up relatively steeply. That means that the linear model fails around 50\% miserably. However, after that, we have a high probability to achieve a good score or even solve the task entirely during multiple episodes. There are also quite a few samples that could solve the task each time, indicated by the short straight black line at the top of the plot. Looking at the polynomials with degree 2, we can see that the scores increase already at around $2'000$, but the slope is less steep than for the linear model. In addition, there are fewer samples that could solve the task for each episode than there are for the linear model. If we look at the results of the polynomials with degree three, we can see that there is only a small boost compared to the polynomials of degree 2. The scores are overall slightly higher, but the slope is very similar to before. There is only a little difference between the two models even though the weights are doubled for $P_1$ and a half more for $P_2$. The large difference lies between the polynomials with degree 1 and polynomials with degree 2, respectively, degree 3. It seems that the complexity of the model depends more on the architecture of the model than on the number of weights.
 
+In conclusion, with the linear model, we have a $50 \%$ chance of failing but the probability of actually solving the task for all episodes is higher than for the polynomials with a higher degree. That means that with the linear model, we have a larger fraction of samples that can solve the environment independent of the initialization conditions. At first glance, we could assume that this is an important aspect for such a model and choose the polynomial with degree 1 over one with a higher degree. However, we should remind ourselves that these experiments are rather unusual for an application since there is no learning involved and the number of samples is huge. In a common application, we would use some kind of training and want the model to sequentially improve its performance. Considering this aspect, when using a learning algorithm, we would not prefer the polynomials with degree 1 as we might get stuck in a fitness plateau when the algorithm has no method of dealing with this behavior.
+
+Another observation we can make from Figure~\ref{fig:experiment_1_polynomial} is that the bias influences the performance of the model significantly. We already saw this behavior with the neural network in Section~\ref{ssec:benchmarks}. Thus, the influence of the bias is not specific to neural networks but seems to be more of a general factor.
 
 \todo[inline]{Change title of plots: , instead of with, $P_1 / P_2$ instead of Polynomial}

@@ -3,8 +3,6 @@
 \chapter{Introduction}
 \label{ch:introduction}
 
-Your introduction chapter here.
-
 \section{Black-Box Optimization}
 \subsection{Evolution Strategies}
 Evolution Strategies (ES) ...
@@ -31,18 +29,18 @@ Each neuron holds an associated weight and threshold. It receives an input and o
 A neural network with one or more hidden layers defines a non-linear function. It is theoretically able to represent any function. Thus, it is a \textit{generic function approximator}.
 Neural networks are highly expressive and flexible. They are applied successfully in many areas. A large part of the success of neural networks can be traced to the use of \textit{backpropagation}. Backpropagation uses information from the previous epoch (i.e. iteration) to adjust the weights of the network using the error gradient. However, neural networks also come with a few limitations or disadvantages. The backpropagation algorithm requires the calculation of an accurate gradient. Depending on the problem, this can be a challenging task. Furthermore, there is a lack of understanding. The output of a neural network is often incomprehensible because of its complex structure.
 
-\todo[inline]{Explain more? E.g. bias, generic function approximator}
+\todo[inline]{Explain more, e.g. bias, generic function approximator \\ Improve NN Figure}
 
 
 
 \subsection{Polynomial}
-In mathematics, a polynomial is the sum of powers in one or more variables multiplied by coefficients. A polynomial $p(x)$ in one variable $x$ with degree $n$ is represented by
+In mathematics, a polynomial is the sum of powers in one or more variables multiplied by coefficients. It can be used to express linear combinations. In the following, we will mainly work with polynomials consisting of vectors instead of scalars. Thus, a polynomial $p(x)$ with $x$ being a vector of degree $n$ can be represented by
 \[
-	p(x) = a_n x^n + a_{n-1} x^{n-1} + ... + a_1 x + a_0 = \Sigma^n_{i=0} a_i x^i,
+  p(x) = \Sigma_{i=0}^{n} w_i^T (x_k^i)_{k \in I} \in \mathbb{R}, \ \ \ \ \ \ \ \ \ \ w_i, x \in \mathbb{R}^n, \ \ I = \{0, ..., n\},
 \]
-where $a_n, a_{n-1}, ..., a_0$ are constant coefficients. Polynomials are relatively simple mathematical expressions and offer some significant advantages: their derivative and indefinite integral are easy to determine and are also polynomial. Due to their simple structure, polynomials can be valuable to analyze more complex functions using polynomial approximations. \textit{Taylor's theorem} tells us that we can locally approximate any $k$-times differentiable function by a polynomial of degree $k$. We call this approximation \textit{Taylor polynomial}. Furthermore, the \textit{Weierstrass approximation theorem} says that we can uniformly approximate every continuous function defined on a closed interval by a polynomial. Other applications of polynomials are \textit{polynomial interpolation} and \textit{polynomial splines}. Polynomial interpolation describes the problem of constructing a polynomial that passes through all given data points. Polynomial splines are piecewise polynomial functions.
+where $w_i$ are constant coefficients. Polynomials are relatively simple mathematical expressions and offer some significant advantages: their derivative and indefinite integral are easy to determine and are also polynomial. Due to their simple structure, polynomials can be valuable to analyze more complex functions using polynomial approximations. \textit{Taylor's theorem} tells us that we can locally approximate any $k$-times differentiable function by a polynomial of degree $k$. We call this approximation \textit{Taylor polynomial}. Furthermore, the \textit{Weierstrass approximation theorem} says that we can uniformly approximate every continuous function defined on a closed interval by a polynomial. Other applications of polynomials are \textit{polynomial interpolation} and \textit{polynomial splines}. Polynomial interpolation describes the problem of constructing a polynomial that passes through all given data points. Polynomial splines are piecewise polynomial functions that can also be used for spline interpolation.
 
-\todo[inline]{Include theorems? \\ Spline interpolation = polynomial interpolation?}
+\todo[inline]{Include theorems}
 
 \subsection{Fourier}
 
@@ -125,4 +123,4 @@ Interestingly, the usage of the bias had a relatively large impact on the perfor
 \end{figure}
 
 
-\todo[inline]{Add plots from Acrobot \\ Adjust axis name in bias images}
+\todo[inline]{Add plots from Acrobot \\ Adjust axis name in bias images, Change title of plots: , instead of with \\ Make text easier to read with padding \\ Make captions of figures more meaningful (why is this added? why shown like this?), refer to subplots}
