@@ -4,18 +4,25 @@
 \label{ch:experiments}
 
 \section{Research Questions}
-To analyze and compare the different models, I formulated the following research questions:
+To analyze and compare the different models and their architectures, I formulated the following research questions:
 \begin{enumerate}
   \item How do function approximators other than neural networks compare with the latter?
-  \item Bias
+  \item Why did the models without bias generally perform better than the ones with bias?
+  \begin{enumerate}
+    \item Does increasing the number of weights worsen the performance of the model?
+    \item Does a model with more than two hidden layers yield worse scores?
+    \item Does the model's performance suffer from an increase in the number of neurons?
+  \end{enumerate}
 \end{enumerate}
 
 \section{Experiments}
 To investigate and answer the formulated research questions, I conducted the following experiments:
 \begin{enumerate}
   \item Similar to \citet{oller_analyzing_2020}, I used RWG to draw the weights of the models and tested the performance on a Classic Control environment from OpenAI Gym.
-  \item Second experiment
+  \item With the same settings for the experiments as in Section~\ref{ssec:benchmarks}, I varied the number of (a) weights, (b) hidden layers, and (c) neurons for a neural network and compared the results.
 \end{enumerate}
+
+\subsection{Experiment 1}
 In the first experiment, analogous to \citet{oller_analyzing_2020}, there is no learning involved. For their paper, they were interested in the complexity of the environment, whereas I aim to find out more about the nature of the models. I selected a few candidates for the models, which are described in Section~\ref{ssec:models} and used them for a series of experiments. I used the same procedure for all models, which allows me to compare them with one another. For the experiments, first, I initialized the environment. I used the \verb|CartPole| and \verb|Acrobot| environment for these experiments. These environments are fairly easy to solve, as explained in Section~\ref{ssec:benchmarks}. Therefore, we expect some controllers to solve the task even without any training. Second, I initialized the respective model. Then, I drew the model weights from the standard normal distribution $\mathcal{N}(0,1)$. Each of these instances of the model represents a sample. In total, I used $10'000$ samples ($N_{samples}$). Finally, I ran 20 episodes ($N_{episodes}$) with each sample for an environment and stored the respective score as an entry of the score tensor $S$. Algorithm~\ref{alg:model-evaluation} shows an overview of the described procedure.
 \begin{algorithm}
 \caption{First experiment with RWG}
@@ -34,6 +41,18 @@ In the first experiment, analogous to \citet{oller_analyzing_2020}, there is no 
 \end{algorithmic}
 \label{alg:model-evaluation}
 \end{algorithm}
+
+\subsection{Experiment 2}
+For the second experiment, I used the same procedure as in Section~\ref{ssec:benchmarks}. I simply varied the network characteristics as described in the following:
+\begin{enumerate}
+  \item I used the same number of hidden layers and neurons for the neural networks as before: a network without hidden layers, a network with one hidden layer with four hidden units, and a network with two hidden layers and four hidden units for each layer. I only changed the number of weights for each network. First, I doubled the number of weights for all networks. Then, I tripled the number of weights for all networks. To achieve this, I constructed one weight $w_i$ out of two, respectively, three weights by addition. Therefore, I used the following formulas:
+  \begin{align*}
+    &\text{Double number of weights: } &w_i &= w_{i1} + w_{i2} \\
+    &\text{Triple number of weights: } &w_i &= w_{i1} + w_{i2} + w_{i3}
+  \end{align*}
+  \item In this experiment, I tested the models with different numbers of hidden layers. Each layer still has the same number of hidden neurons as before, which is four. I used a network with four hidden layers, one with six, and one with eight.
+  \item For this experiment, I varied the number of hidden neurons for a network. I used a network with one hidden layer and a network with two hidden layers. For the number of hidden neurons I chose 5, 8, and 10.
+\end{enumerate}
 
 \subsection{OpenAI Gym Environments}
 \begin{itemize}
@@ -160,10 +179,51 @@ Subfigure~\ref{fig:results_p1} shows the results of the polynomial model $P_1$ a
 \end{figure}
 As we can see in the images, the plots of the two models almost look identical. Both models performed equally good or bad despite their different architecture and the different number of weights. Because of this similarity, I will not go into each model independently but instead discuss further results for both of them.
 
-Looking at the linear model without bias, we can see a striking resemblance to the performance of the neural network previously shown in Section~\ref{ssec:benchmarks}. Looking further at the linear model, we can see that the curve of the mean score stays low until around $5'000$ but then goes up relatively steeply. That means that the linear model fails around 50\% miserably. However, after that, we have a high probability to achieve a good score or even solve the task entirely during multiple episodes. There are also quite a few samples that could solve the task each time, indicated by the short straight black line at the top of the plot. Looking at the polynomials with degree 2, we can see that the scores increase already at around $2'000$, but the slope is less steep than for the linear model. In addition, there are fewer samples that could solve the task for each episode than there are for the linear model. If we look at the results of the polynomials with degree three, we can see that there is only a small boost compared to the polynomials of degree 2. The scores are overall slightly higher, but the slope is very similar to before. There is only a little difference between the two models even though the weights are doubled for $P_1$ and a half more for $P_2$. The large difference lies between the polynomials with degree 1 and polynomials with degree 2, respectively, degree 3. It seems that the complexity of the model depends more on the architecture of the model than on the number of weights.
+Looking at the linear model without bias, we can see a striking resemblance to the performance of the neural network previously shown in Section~\ref{ssec:benchmarks}. Looking further at the linear model, we can see that the curve of the mean score stays low until around $5'000$ but then goes up relatively steeply. That means that the linear model fails around 50\% miserably. However, after that, we have a high probability to achieve a good score or even solve the task entirely during multiple episodes. There are also quite a few samples that could solve the task each time, indicated by the short straight black line at the top of the plot. Looking at the polynomials with degree 2, we can see that the scores increase already at around $2'000$, but the slope is less steep than for the linear model. In addition, there are fewer samples that could solve the task for each episode than there are for the linear model. Furthermore, the variance is higher for the polynomials with a higher degree compared to the linear model. If we look at the results of the polynomials with degree three, we can see that there is only a small boost compared to the polynomials of degree 2. The scores are overall slightly higher, but the slope is very similar to before. There is only a little difference between the two models even though the weights are doubled for $P_1$ and a half more for $P_2$. The large difference lies between the polynomials with degree 1 and polynomials with degree 2, respectively, degree 3. It seems that the complexity of the model depends more on the architecture of the model than on the number of weights.
 
 In conclusion, with the linear model, we have a $50 \%$ chance of failing but the probability of actually solving the task for all episodes is higher than for the polynomials with a higher degree. That means that with the linear model, we have a larger fraction of samples that can solve the environment independent of the initialization conditions. At first glance, we could assume that this is an important aspect for such a model and choose the polynomial with degree 1 over one with a higher degree. However, we should remind ourselves that these experiments are rather unusual for an application since there is no learning involved and the number of samples is huge. In a common application, we would use some kind of training and want the model to sequentially improve its performance. Considering this aspect, when using a learning algorithm, we would not prefer the polynomials with degree 1 as we might get stuck in a fitness plateau when the algorithm has no method of dealing with this behavior.
 
 Another observation we can make from Figure~\ref{fig:experiment_1_polynomial} is that the bias influences the performance of the model significantly. We already saw this behavior with the neural network in Section~\ref{ssec:benchmarks}. Thus, the influence of the bias is not specific to neural networks but seems to be more of a general factor.
 
 \todo[inline]{Change title of plots: , instead of with, $P_1 / P_2$ instead of Polynomial}
+
+\subsection{Experiment 2}
+weights / layers / neurons \\ \\
+Figure~\ref{fig:experiment_2_weights} shows the results of doubling the number of weights in Subfigure~\ref{fig:NN_wfactor_2} and the results of tripling the number of weights in Subfigure~\ref{fig:NN_wfactor_3}. Row (a) shows the results with using bias, row (b) shows the results without using bias. We can barely see any difference between Subfigure~\ref{fig:NN_wfactor_2} and Subfigure~\ref{fig:NN_wfactor_3} despite the different number of weights used. Thus, we can conclude that increasing the number of weights does not impact the achieved scored of the model significantly. In addition, conducting the same experiment with the polynomial models comes to the same conclusion.
+\begin{figure}[!ht]
+\begin{subfigure}{\textwidth}
+\begin{figrow}
+\item \label{row:NN_with_bias_wfactor_2} \raisebox{-0.5\height}{
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/with_bias/HL_zero_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/with_bias/HL_one_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/with_bias/HL_two_scatter_score.png}}
+\item \label{row:NN_without_bias_wfactor_2}  \raisebox{-0.5\height}{
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/without_bias/HL_zero_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/without_bias/HL_one_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/without_bias/HL_two_scatter_score.png}}
+\end{figrow}
+\vspace*{-5mm}
+\caption{Results of doubling weights for three neural network architectures with bias (a) and without bias (b)}
+\label{fig:NN_wfactor_2}
+\end{subfigure}
+\begin{subfigure}{\textwidth}
+\begin{figrow}
+\item \label{row:NN_with_bias_wfactor_3} \raisebox{-0.5\height}{
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/with_bias/HL_zero_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/with_bias/HL_one_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/with_bias/HL_two_scatter_score.png}}
+\item \label{row:NN_without_bias_wfactor_3}  \raisebox{-0.5\height}{
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/HL_zero_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/HL_one_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/HL_two_scatter_score.png}}
+\end{figrow}
+\vspace*{-5mm}
+\caption{Results of tripling weights for three neural network architectures with bias (a) and without bias (b)}
+\label{fig:NN_wfactor_3}
+\end{subfigure}
+\caption[Results of experiment 2: weights]{
+  \textbf{Results of experiment 2: weights.}
+   The figure shows the results of doubling the number of weights in Subfigure~\ref{fig:NN_wfactor_2} and the results of tripling the number of weights in Subfigure~\ref{fig:NN_wfactor_3}. Row (a) shows the results with using bias, row (b) shows the results without using bias. We can barely see any difference between Subfigure~\ref{fig:NN_wfactor_2} and Subfigure~\ref{fig:NN_wfactor_3} despite the largely different number of weights used.
+}
+\label{fig:experiment_2_weights}
+\end{figure}

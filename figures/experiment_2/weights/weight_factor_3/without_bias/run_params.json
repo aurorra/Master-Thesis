@@ -1,0 +1,15 @@
+{
+    "Model": [
+        "NN 0HL, 1HL-4HU, 2HL-4HU"
+    ],
+    "Bias": false,
+    "Training": "RWG",
+    "Number of weights": [
+        30,
+        90,
+        150
+    ],
+    "Number of samples": 10000,
+    "Number of episodes": 20,
+    "Environment": "CartPole-v0"
+}
