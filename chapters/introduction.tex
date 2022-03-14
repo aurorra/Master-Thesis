@@ -43,11 +43,11 @@ Each neuron holds an associated weight and threshold. It receives an input and o
 \subsection{Polynomial}
 In mathematics, a polynomial is the sum of powers in one or more variables multiplied by constant coefficients. Given a field $F$, a polynomial in variable $x$ with coefficients in $F$ is a formal expression denoted by
 \begin{align*}
-  &f(x) = \Sigma_{i=0}^{n} a_i x^i \in F[x], &a_i \in F, \ \ i \in \mathbb{N},
+  &f(x) = \Sigma_{i=0}^{n} a_i x^i \in F[x], &a_0, ..., a_n \in F, \ \ i \in \mathbb{N},
 \end{align*}
-where $F[x]$ represents the set of all such polynomials (\citet{fischer2014}, p. 61). The above formula shows the one dimensional case. For the multi-dimensional case, $x$ and the coefficients are vectors instead of scalars. Thus, a polynomial $p(\mathbf{x})$ with $\mathbf{x}$ being a vector of degree $n$ can be represented by
+where $F[x]$ represents the set of all such polynomials (\citet{fischer2014}, p. 61). The above formula shows the one dimensional case. For the multi-dimensional case, $x$ and the coefficients are vectors instead of scalars. Thus, a polynomial $p(\mathbf{x})$ with $\mathbf{x} = [x_0, ..., x_m]^T$ being a vector and of degree $n$ can be represented by
 \begin{align*}
-  &p(\mathbf{x}) = \Sigma_{i=0}^{n} \mathbf{w_i}^T (x_k^i)_{k \in I} \in F^n[\mathbf{x}], &\mathbf{w_0}, ... \mathbf{w_n}, \mathbf{x} \in F^n, \ \ I = \{0, ..., n\}.
+  &p(\mathbf{x}) = \Sigma_{i=0}^{n} \mathbf{w_i}^T (x_k^i)_{k \in I} \in F^n[\mathbf{x}], &\mathbf{w_0}, ... \mathbf{w_n} \in F^n, \ \ I = \{0, ..., m\}.
 \end{align*}
 Polynomials are relatively simple mathematical expressions and offer some significant advantages: their derivative and indefinite integral are easy to determine and are also polynomial. Due to their simple structure, polynomials can be valuable to analyze more complex functions using polynomial approximations. \textit{Taylor's theorem} tells us that we can locally approximate any $k$-times differentiable function by a polynomial of degree $k$. We call this approximation \textit{Taylor polynomial}. Furthermore, the \textit{Weierstrass approximation theorem} says that we can uniformly approximate every continuous function defined on a closed interval by a polynomial. Other applications of polynomials are \textit{polynomial interpolation} and \textit{polynomial splines}. Polynomial interpolation describes the problem of constructing a polynomial that passes through all given data points. Polynomial splines are piecewise polynomial functions that can be used for spline interpolation.
 

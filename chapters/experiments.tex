@@ -43,16 +43,19 @@ In the first experiment, analogous to \citet{oller_analyzing_2020}, there is no 
 \end{algorithm}
 
 \subsection{Experiment 2}
-For the second experiment, I used the same procedure as in Section~\ref{ssec:benchmarks}. I simply varied the network characteristics as described in the following:
+For the second experiment, I used the same procedure as described in Section~\ref{ssec:benchmarks}. I used neural networks for all experiments. Additionally, I used the polynomial model for the experiment concerning the weights of the model.
 \begin{enumerate}
-  \item I used the same number of hidden layers and neurons for the neural networks as before: a network without hidden layers, a network with one hidden layer with four hidden units, and a network with two hidden layers and four hidden units for each layer. I only changed the number of weights for each network. First, I doubled the number of weights for all networks. Then, I tripled the number of weights for all networks. To achieve this, I constructed one weight $w_i$ out of two, respectively, three weights by addition. Therefore, I used the following formulas:
+  \item I used the same number of hidden layers and neurons for the neural networks as before: a network without hidden layers, a network with one hidden layer with four hidden units, and a network with two hidden layers and four hidden units for each layer. I only changed the number of weights for each network. In addition, I used the model $P_1$ described in Section~\ref{ssec:models}.
+
+  First, I doubled the number of weights for all models. Then, I tripled the number of weights for all models. To achieve this, I constructed one weight $\mathbf{w_i}$ out of two, respectively, three weights by addition:
   \begin{align*}
-    &\text{Double number of weights: } &w_i &= w_{i1} + w_{i2} \\
-    &\text{Triple number of weights: } &w_i &= w_{i1} + w_{i2} + w_{i3}
+    &\text{Double number of weights: } &\mathbf{w_i} &= \mathbf{w_{i1}} + \mathbf{w_{i2}} \\
+    &\text{Triple number of weights: } &\mathbf{w_{i}} &= \mathbf{w_{i1}} + \mathbf{w_{i2}} + \mathbf{w_{i3}}
   \end{align*}
-  \item In this experiment, I tested the models with different numbers of hidden layers. Each layer still has the same number of hidden neurons as before, which is four. I used a network with four hidden layers, one with six, and one with eight.
-  \item For this experiment, I varied the number of hidden neurons for a network. I used a network with two hidden layers. For the number of hidden neurons I chose 5, 8, and 10.
+  \item In this experiment, I tested the models with different numbers of hidden layers. Each layer still has the same number of hidden neurons as before. Thus, the networks have four hidden units for each layer. I used a network with four hidden layers, one with six, and one with eight.
+  \item For this experiment, I varied the number of hidden neurons for a network. I used a network with two hidden layers. For the number of hidden neurons, I chose 5, 8, and 10.
 \end{enumerate}
+\todo[inline]{Maybe add table with used architecture to make it more comprehensible}
 
 \subsection{OpenAI Gym Environments}
 \begin{itemize}
@@ -64,14 +67,12 @@ For the second experiment, I used the same procedure as in Section~\ref{ssec:ben
 
 \subsection{Models}
 \label{ssec:models}
-For the polynomial model, I used two architectures $P_1$ and $P_2$. The first model $P_1$ consists of one polynomial for each possible action in a discrete action space. The input of the model is the observation from the environment. The dimension of the weight vectors is according to the dimension of the input vector. For the environment \verb|CartPole| with the discrete action space $\{0, 1\}$ and observation $x = [x_0, x_1, x_2, x_3]^T$, this means that $P_1$ consists of two polynomials:
-\[
-  p_0(x) = \Sigma_{i=0}^{n} w_i^T (x_k^i)_{k \in I} \in \mathbb{R}, \ \ \ \ \ \ \ \ \ \ w_i \in \mathbb{R}^4, \ \ I = \{0, 1, 2, 3\}
-\]
-\[
-  p_1(x) = \Sigma_{j=0}^{n} w_j^T (x_k^j)_{k \in I} \in \mathbb{R}, \ \ \ \ \ \ \ \ \ \ w_j \in \mathbb{R}^4, \ \ I = \{0, 1, 2, 3\}
-\]
-In the formulas, $n$ denotes the degree of the polynomial. In the experiments, I tested polynomials with degrees 1, 2, and 3. The output of the polynomials has no reasonable upper and lower limit, as illustrated in Figure~\ref{fig:bounds}. That makes it harder to interpret the results reasonably.
+For the polynomial model, I used two architectures $P_1$ and $P_2$. The first model $P_1$ consists of one polynomial for each possible action in a discrete action space. The input of the model is the observation from the environment. The dimension of the weight vectors is according to the dimension of the input vector. For the environment \verb|CartPole| with the discrete action space $\{0, 1\}$ and observation $\mathbf{x} = [x_0, x_1, x_2, x_3]^T$, this means that $P_1$ consists of two polynomials:
+\begin{align*}
+  &p_0(\mathbf{x}) = \Sigma_{i=0}^{n} \mathbf{w_i}^T (x_k^i)_{k \in I} \in \mathbb{R}, &\mathbf{w_0}, ..., \mathbf{w_3}, \mathbf{x} \in \mathbb{R}^4, \ \ I = \{0, 1, 2, 3\} \\
+  &p_1(\mathbf{x}) = \Sigma_{i=0}^{n} \mathbf{\hat{w}_i}^T (x_k^i)_{k \in I} \in \mathbb{R}, &\mathbf{\hat{w}_0}, ..., \mathbf{\hat{w}_3}, \mathbf{x} \in \mathbb{R}^4, \ \ I = \{0, 1, 2, 3\}
+\end{align*}
+In the formulas, $n$ denotes the degree of the polynomial. In my experiments, I tested polynomials of degrees 1, 2, and 3. The output of the polynomials has no reasonable upper and lower limit, as illustrated in Figure~\ref{fig:bounds}. That makes it harder to interpret the results reasonably.
 \begin{figure}[ht]
 \centering
 \includegraphics[width=0.6\textwidth]{PolynomialNN_degree_3_bounds}
@@ -81,13 +82,12 @@ In the formulas, $n$ denotes the degree of the polynomial. In the experiments, I
 }
 \label{fig:bounds}
 \end{figure}
-So, I scaled the outputs with a sigmoid function. A sigmoid function is a mathematical function that maps an arbitrary input space into an output space with a small range, for example, 0 and 1. The function has a characteristic S-shaped curve. We can interpret the output space of the sigmoid function as a probability. In this case, we search for the probability that a specific action is the reasonable one given an observation $x$. Thus, for our example with the \verb|CartPole| environment, we can interpret $sig(p_0)$ as the probability that action 0 is the correct one and $sig(p_1)$ as the probability that action 1 is the correct one. Putting this thought into a formula for $P_1$ and the \verb|CartPole| environment, we get:
+So, I scaled the outputs with a sigmoid function. A sigmoid function is a mathematical function that maps an arbitrary input space into an output space with a small range, for example, 0 and 1. The function has a characteristic S-shaped curve. We can interpret the output space of the sigmoid function as a probability. In this case, we search for the probability that a specific action is the reasonable one given an observation $\mathbf{x}$. Thus, for our example with the \verb|CartPole| environment, we can interpret $sig(p_0)$ as the probability that action 0 is the correct one and $sig(p_1)$ as the probability that action 1 is the correct one. Putting this thought into a formula for $P_1$ and the \verb|CartPole| environment, we get:
 \[
-  P_1(x) =
-  \begin{cases}1~&{\text{ if }}~sig(p_1(x)) > sig(p_0(x))~,\\0~&~\text{otherwise}~.\end{cases}
+  P_1(\mathbf{x}) =
+  \begin{cases}1~&{\text{ if }}~sig(p_1(\mathbf{x})) > sig(p_0(\mathbf{x}))~,\\0~&~\text{otherwise}~.\end{cases}
 \]
-For the sigmoid function, I used the logistic sigmoid function. The formula and a plot of the function are shown in Figure~\ref{fig:sigmoid}.
-
+For the sigmoid function, I used the logistic sigmoid function. The formula and a plot of the function in 2D are shown in Figure~\ref{fig:sigmoid}.
 \begin{figure}[ht]
 \centering
 \begin{tikzpicture}
@@ -124,15 +124,14 @@ For the sigmoid function, I used the logistic sigmoid function. The formula and 
 \label{fig:sigmoid}
 \end{figure}
 
-
 The second model $P_2$ is constructed similarly to $P_1$, but it only consists of one polynomial instead of one for each possible action. For the \verb|CartPole| environment, this means $P_2$ consists of:
 \[
-  p(x) = \Sigma_{i=0}^{n} w_i^T (x_k^i)_{k \in I} \in \mathbb{R}, \ \ \ \ \ \ \ \ \ \ w_i \in \mathbb{R}^4, \ \ I = \{0, 1, 2, 3\}
+  p(\mathbf{x}) = \Sigma_{i=0}^{n} \mathbf{w_i}^T (x_k^i)_{k \in I} \in \mathbb{R}, \ \ \ \ \ \ \ \ \ \ \mathbf{w_i} \in \mathbb{R}^4, \ \ I = \{0, 1, 2, 3\}
 \]
-Analogous to $P_1$, I tested the polynomial $p(x)$ with degree 1, 2, and 3. So, $n \in \{1, 2, 3\}$. In addition, I again used the logistic sigmoid function to scale the output of the polynomial. However, the output of the $P_2$ is determined by a fixed threshold instead of comparing multiple polynomials. Putting this into a formula for the \verb|CartPole| environment, we get:
+Analogous to $P_1$, I tested the polynomial $p(\mathbf{x})$ with degrees 1, 2, and 3. So, $n \in \{1, 2, 3\}$. In addition, I again used the logistic sigmoid function to scale the output of the polynomial. However, the output of $P_2$ is determined by a fixed threshold instead of comparing multiple polynomials. Putting this into a formula for the \verb|CartPole| environment, we get:
 \[
-  P_2(x) =
-  \begin{cases}1~&{\text{ if }}~sig(p(x))>0.5~,\\0~&~\text{otherwise}~.\end{cases}
+  P_2(\mathbf{x}) =
+  \begin{cases}1~&{\text{ if }}~sig(p(\mathbf{x}))>0.5~,\\0~&~\text{otherwise}~.\end{cases}
 \]
 
 
