@@ -10,15 +10,15 @@ To analyze and compare the different models and their architectures, I formulate
   \item Why did the models without bias generally perform better than the ones with bias?
   \begin{enumerate}
     \item Does increasing the number of weights worsen the performance of the model?
-    \item Does a model with more than two hidden layers yield worse scores?
-    \item Does the model's performance suffer from an increase in the number of neurons?
+    \item Does a neural network with more than two hidden layers yield worse scores?
+    \item Does the neural network's performance suffer from an increase in the number of neurons?
   \end{enumerate}
 \end{enumerate}
 
 \section{Experiments}
 To investigate and answer the formulated research questions, I conducted the following experiments:
 \begin{enumerate}
-  \item Similar to \citet{oller_analyzing_2020}, I used RWG to draw the weights of the models and tested the performance on a Classic Control environment from OpenAI Gym.
+  \item I selected a few promising models to analyze. They are described in Section~\ref{ssec:models}. Similar to \citet{oller_analyzing_2020}, I used RWG to draw the weights of the models and tested the performance on a Classic Control environment from OpenAI Gym.
   \item With the same settings for the experiments as in Section~\ref{ssec:benchmarks}, I varied the number of (a) weights, (b) hidden layers, and (c) neurons for a neural network and compared the results.
 \end{enumerate}
 
@@ -51,7 +51,7 @@ For the second experiment, I used the same procedure as in Section~\ref{ssec:ben
     &\text{Triple number of weights: } &w_i &= w_{i1} + w_{i2} + w_{i3}
   \end{align*}
   \item In this experiment, I tested the models with different numbers of hidden layers. Each layer still has the same number of hidden neurons as before, which is four. I used a network with four hidden layers, one with six, and one with eight.
-  \item For this experiment, I varied the number of hidden neurons for a network. I used a network with one hidden layer and a network with two hidden layers. For the number of hidden neurons I chose 5, 8, and 10.
+  \item For this experiment, I varied the number of hidden neurons for a network. I used a network with two hidden layers. For the number of hidden neurons I chose 5, 8, and 10.
 \end{enumerate}
 
 \subsection{OpenAI Gym Environments}
@@ -189,18 +189,18 @@ Another observation we can make from Figure~\ref{fig:experiment_1_polynomial} is
 
 \subsection{Experiment 2}
 weights / layers / neurons \\ \\
-Figure~\ref{fig:experiment_2_weights} shows the results of doubling the number of weights in Subfigure~\ref{fig:NN_wfactor_2} and the results of tripling the number of weights in Subfigure~\ref{fig:NN_wfactor_3}. Row (a) shows the results with using bias, row (b) shows the results without using bias. We can barely see any difference between Subfigure~\ref{fig:NN_wfactor_2} and Subfigure~\ref{fig:NN_wfactor_3} despite the different number of weights used. Thus, we can conclude that increasing the number of weights does not impact the achieved scored of the model significantly. In addition, conducting the same experiment with the polynomial models comes to the same conclusion.
+Figure~\ref{fig:experiment_2_weights} shows the results of doubling the number of weights in Subfigure~\ref{fig:NN_wfactor_2} and the results of tripling the number of weights in Subfigure~\ref{fig:NN_wfactor_3} for each network architecture. Row (a) shows the results using bias, row (b) shows the results without bias. We can barely see any difference between Subfigure~\ref{fig:NN_wfactor_2} and Subfigure~\ref{fig:NN_wfactor_3} despite the large difference in the number of weights used. Thus, we can conclude that increasing the number of weights does not impact the achieved score of the model significantly. Additionally, I conducted the same experiment with the polynomial models $P_1$ and $P_2$. The same observation can be made with these models. Therefore, changing the number of weights changes very little in the result.
 \begin{figure}[!ht]
 \begin{subfigure}{\textwidth}
 \begin{figrow}
 \item \label{row:NN_with_bias_wfactor_2} \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/with_bias/HL_zero_scatter_score.png}
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/with_bias/HL_one_scatter_score.png}
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/with_bias/HL_two_scatter_score.png}}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/with_bias/HL_0_HU_0_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/with_bias/HL_1_HU_4_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/with_bias/HL_2_HU_4_scatter_score.png}}
 \item \label{row:NN_without_bias_wfactor_2}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/without_bias/HL_zero_scatter_score.png}
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/without_bias/HL_one_scatter_score.png}
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/without_bias/HL_two_scatter_score.png}}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/without_bias/HL_0_HU_0_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/without_bias/HL_1_HU_4_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/without_bias/HL_2_HU_4_scatter_score.png}}
 \end{figrow}
 \vspace*{-5mm}
 \caption{Results of doubling weights for three neural network architectures with bias (a) and without bias (b)}
@@ -209,13 +209,13 @@ Figure~\ref{fig:experiment_2_weights} shows the results of doubling the number o
 \begin{subfigure}{\textwidth}
 \begin{figrow}
 \item \label{row:NN_with_bias_wfactor_3} \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/with_bias/HL_zero_scatter_score.png}
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/with_bias/HL_one_scatter_score.png}
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/with_bias/HL_two_scatter_score.png}}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/with_bias/HL_0_HU_0_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/with_bias/HL_1_HU_4_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/with_bias/HL_2_HU_4_scatter_score.png}}
 \item \label{row:NN_without_bias_wfactor_3}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/HL_zero_scatter_score.png}
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/HL_one_scatter_score.png}
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/HL_two_scatter_score.png}}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/HL_0_HU_0_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/HL_1_HU_4_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/HL_2_HU_4_scatter_score.png}}
 \end{figrow}
 \vspace*{-5mm}
 \caption{Results of tripling weights for three neural network architectures with bias (a) and without bias (b)}
@@ -226,4 +226,23 @@ Figure~\ref{fig:experiment_2_weights} shows the results of doubling the number o
    The figure shows the results of doubling the number of weights in Subfigure~\ref{fig:NN_wfactor_2} and the results of tripling the number of weights in Subfigure~\ref{fig:NN_wfactor_3}. Row (a) shows the results with using bias, row (b) shows the results without using bias. We can barely see any difference between Subfigure~\ref{fig:NN_wfactor_2} and Subfigure~\ref{fig:NN_wfactor_3} despite the largely different number of weights used.
 }
 \label{fig:experiment_2_weights}
+\end{figure}
+
+Figure~\ref{fig:experiment_2_layers} shows the results of altering the number of layers in a network.
+\begin{figure}[!ht]
+\begin{figrow}
+\item \label{row:NN_with_bias_layers} \raisebox{-0.5\height}{
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/with_bias/HL_0_HU_0_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/with_bias/HL_1_HU_4_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/with_bias/HL_2_HU_4_scatter_score.png}}
+\item \label{row:NN_without_layers}  \raisebox{-0.5\height}{
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/HL_0_HU_0_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/HL_1_HU_4_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/HL_2_HU_4_scatter_score.png}}
+\end{figrow}
+\caption[Results of experiment 2: layers]{
+  \textbf{Results of experiment 2: layers.}
+   .
+}
+\label{fig:experiment_2_layers}
 \end{figure}

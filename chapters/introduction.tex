@@ -3,6 +3,16 @@
 \chapter{Introduction}
 \label{ch:introduction}
 
+\section{General Notation}
+First, I am defining the notation I used throughout this thesis. For the scalars, I used regular, normal-weight variables such as $x$. Vectors are represented by bold lower-case variables like $\mathbf{x}$. Tensors and matrices are denoted by bold upper-case characters, such as $\mathbf{X}$. In summary:
+\begin{align*}
+x&: \text{Scalar} \\
+\mathbf{x}&: \text{Vector} \\
+\mathbf{X}&: \text{Matrix or tensor}
+\end{align*}
+\todo[inline]{Useful? Everything covered?}
+
+
 \section{Black-Box Optimization}
 \subsection{Evolution Strategies}
 Evolution Strategies (ES) ...
@@ -11,36 +21,37 @@ Evolution Strategies (ES) ...
 Covariance Matrix Adaptation Evolution Strategy (CMA-ES) ...
 
 \section{Function Approximators}
-We can represent many problems in machine learning as a function mapping an input space into an output space. This underlying function is the output of the learning process of an algorithm and is often called the \textit{target function}. Optimally, we would derive the formula of the function explicitly. However, even though we suspect that such a function exists, we usually do not have enough information to derive a formula. Thus, we aim to approximate the target function with function approximators by using the available data. In general, we can apply any function approximator. However, each function approximator has its advantages and limitations. For example, some may be prone to local optimum. Depending on the task, this could prevent us from finding a good approximation.
+We can represent many problems in machine learning as a function mapping an input space into an output space. The output space or \textit{search space} denotes the space of all feasible solutions. The underlying function is the output of the learning process of an algorithm and is often called the \textit{target function}. Optimally, we would derive the formula of the function explicitly. However, even though we suspect that such a function exists, we usually do not have enough information to derive a formula directly. Thus, we aim to approximate the target function with \textit{function approximators} by using the available data. In general, we can apply any function approximator. However, each function approximator has its advantages and limitations. For example, some may be prone to local optimum. Depending on the task, this could prevent us from finding a good solution.
 
 \subsection{Neural Networks}
-Neural networks are machine learning algorithms inspired by the functionalities of the brain. They consist of connected neurons or nodes that imitate the biological neurons of the brain sending signals to each other. In a neural network, the neurons are arranged in connected layers. A network has at least an input and an output layer. We can further expand it with one or more hidden layers. Depending on the model, the connectivity between the layers differs. Figure~\ref{fig:neural_network_sketch} shows a sketch of a network with three hidden layers that are fully connected.
+Neural networks are machine learning algorithms inspired by the functionalities of the human brain. They consist of connected neurons or nodes that imitate the biological neurons of the brain sending signals to each other. In a neural network, the neurons are arranged in connected layers. A network has at least an input and an output layer. We can further expand it with one or more hidden layers. Depending on the model, the connectivity between the layers differs. Figure~\ref{fig:neural_network_sketch} shows a sketch of a network with three hidden layers that are fully connected.
 \begin{figure}[ht]
 \centering
 \includegraphics[width=.7\textwidth]{neural_network_sketch}
 \caption[Sketch of a Neural Network]{
   \textbf{Sketch of a neural network.}
-  The image shows a sketch of a neural network with three fully connected hidden layers.
+  The image shows a sketch of a neural network with three fully connected hidden layers. The network expects $n$ inputs and has $m$ possible outputs.
 }
 \label{fig:neural_network_sketch}
 \end{figure}
-Each neuron holds an associated weight and threshold. It receives an input and outputs the sum of weighted inputs. If this sum is greater than the associated threshold, the neuron gets activated.
+Each neuron holds an associated weight and threshold. It receives an input and outputs the sum of weighted inputs. If this sum is greater than the associated threshold, the neuron gets activated. A neural network with one or more hidden layers defines a non-linear function. It is theoretically able to represent any function. Thus, neural networks are \textit{generic function approximators}. In addition, neural networks are highly expressive and flexible. They are applied successfully in many areas. A large part of the success of neural networks can be traced to the use of \textit{backpropagation}. Backpropagation uses information from the previous epoch (i.e. iteration) to adjust the weights of the network using the error gradient. However, neural networks also come with a few limitations or disadvantages. The backpropagation algorithm requires the calculation of an accurate gradient. Depending on the problem, this can be a challenging task. For example, calculating an accurate gradient in RL problems is usually non-trivial. Furthermore, there is a lack of understanding. The output of a neural network is often incomprehensible because of its complex structure.
 
-A neural network with one or more hidden layers defines a non-linear function. It is theoretically able to represent any function. Thus, it is a \textit{generic function approximator}.
-Neural networks are highly expressive and flexible. They are applied successfully in many areas. A large part of the success of neural networks can be traced to the use of \textit{backpropagation}. Backpropagation uses information from the previous epoch (i.e. iteration) to adjust the weights of the network using the error gradient. However, neural networks also come with a few limitations or disadvantages. The backpropagation algorithm requires the calculation of an accurate gradient. Depending on the problem, this can be a challenging task. Furthermore, there is a lack of understanding. The output of a neural network is often incomprehensible because of its complex structure.
-
-\todo[inline]{Explain more, e.g. bias, generic function approximator \\ Improve NN Figure}
+\todo[inline]{Explain more, e.g. bias}
 
 
 
 \subsection{Polynomial}
-In mathematics, a polynomial is the sum of powers in one or more variables multiplied by coefficients. It can be used to express linear combinations. In the following, we will mainly work with polynomials consisting of vectors instead of scalars. Thus, a polynomial $p(x)$ with $x$ being a vector of degree $n$ can be represented by
-\[
-  p(x) = \Sigma_{i=0}^{n} w_i^T (x_k^i)_{k \in I} \in \mathbb{R}, \ \ \ \ \ \ \ \ \ \ w_i, x \in \mathbb{R}^n, \ \ I = \{0, ..., n\},
-\]
-where $w_i$ are constant coefficients. Polynomials are relatively simple mathematical expressions and offer some significant advantages: their derivative and indefinite integral are easy to determine and are also polynomial. Due to their simple structure, polynomials can be valuable to analyze more complex functions using polynomial approximations. \textit{Taylor's theorem} tells us that we can locally approximate any $k$-times differentiable function by a polynomial of degree $k$. We call this approximation \textit{Taylor polynomial}. Furthermore, the \textit{Weierstrass approximation theorem} says that we can uniformly approximate every continuous function defined on a closed interval by a polynomial. Other applications of polynomials are \textit{polynomial interpolation} and \textit{polynomial splines}. Polynomial interpolation describes the problem of constructing a polynomial that passes through all given data points. Polynomial splines are piecewise polynomial functions that can also be used for spline interpolation.
+In mathematics, a polynomial is the sum of powers in one or more variables multiplied by constant coefficients. Given a field $F$, a polynomial in variable $x$ with coefficients in $F$ is a formal expression denoted by
+\begin{align*}
+  &f(x) = \Sigma_{i=0}^{n} a_i x^i \in F[x], &a_i \in F, \ \ i \in \mathbb{N},
+\end{align*}
+where $F[x]$ represents the set of all such polynomials (\citet{fischer2014}, p. 61). The above formula shows the one dimensional case. For the multi-dimensional case, $x$ and the coefficients are vectors instead of scalars. Thus, a polynomial $p(\mathbf{x})$ with $\mathbf{x}$ being a vector of degree $n$ can be represented by
+\begin{align*}
+  &p(\mathbf{x}) = \Sigma_{i=0}^{n} \mathbf{w_i}^T (x_k^i)_{k \in I} \in F^n[\mathbf{x}], &\mathbf{w_0}, ... \mathbf{w_n}, \mathbf{x} \in F^n, \ \ I = \{0, ..., n\}.
+\end{align*}
+Polynomials are relatively simple mathematical expressions and offer some significant advantages: their derivative and indefinite integral are easy to determine and are also polynomial. Due to their simple structure, polynomials can be valuable to analyze more complex functions using polynomial approximations. \textit{Taylor's theorem} tells us that we can locally approximate any $k$-times differentiable function by a polynomial of degree $k$. We call this approximation \textit{Taylor polynomial}. Furthermore, the \textit{Weierstrass approximation theorem} says that we can uniformly approximate every continuous function defined on a closed interval by a polynomial. Other applications of polynomials are \textit{polynomial interpolation} and \textit{polynomial splines}. Polynomial interpolation describes the problem of constructing a polynomial that passes through all given data points. Polynomial splines are piecewise polynomial functions that can be used for spline interpolation.
 
-\todo[inline]{Include theorems}
+\todo[inline]{Include theorems (Taylor, Weierstass) \\ Explain difference between approximation and interpolation \\ Does $F^n$ make sense?}
 
 \subsection{Fourier}
 
@@ -53,7 +64,7 @@ where $w_i$ are constant coefficients. Polynomials are relatively simple mathema
 \label{ssec:benchmarks}
 When developing a novel algorithm, it is important to compare our results with existing models. For this evaluation, we need standard benchmark problems. These are a set of standard optimization problems. OpenAI Gym \footnote{\url{gym.openai.com}} is a toolkit created for exactly this scenario. It contains a collection of benchmark problems with various levels of difficulty. However, not all benchmark problems are meaningful for the evaluation of an algorithm. If a problem is too trivial to solve, the results do not reflect the quality of the model adequately. We do not need to put a large amount of effort into the creation of a complex model for an easy-to-solve task.
 
-In the paper \emph{Analyzing Reinforcement Learning Benchmarks with Random Weight Guessing} (\citet{oller_analyzing_2020}), the authors analyze and visualize the complexity of standard RL benchmarks based on score distribution. They tested their approach on the five Classic Control benchmark problems from the OpenAI Gym interface: \verb|CartPole|, \verb|Acrobot|, \verb|Pendulum|, \verb|MountainCar|, and \verb|MountainCarCon-| \verb|tinuous|. Given an RL environment, the authors conducted a fixed series of experiments. For these experiments, they used three neural network architectures ($N_{architectures}=3$): a network without any hidden layers (0 HL), a network with a single hidden layer of 4 units (1 HL, 4 HU), and a network with two hidden layers of 4 units each (2 HL, 4 HU). With these, they cover a variety of network models that are suited to solve the given tasks. The evaluation should be as objective as possible and should not include bias in the data. To achieve this, the authors did not include any learning opportunities for the network models. Instead, they chose the network weights i.i.d. from the standard normal distribution $\mathcal{N}(0,1)$ with Random Weight Guessing (RWG). This approach assures randomness and no directed learning. The goal of the paper was not to further analyze the network models but to investigate the benchmark problems themselves. With this in mind, they initialized $10^4$ samples ($N_{samples}=10^4$) with different random weights. The number of samples would be too large for a reasonable learning strategy. However, the large number of samples serves a different purpose than optimizing the results. Instead, the aim is to draw statistical conclusions. Each of these samples of a neural network represents a controller that maps observations to actions in the environment. Later in this thesis, I will explore function approximators other than neural networks representing the controller. In the paper, the authors tested the controllers for each environment during 20 independent episodes ($N_{episodes}=20$). For each episode, they saved the score in the score tensor $S$. Algorithm~\ref{alg:environment-evaluation} illustrates the procedure with pseudocode.
+In the paper \emph{Analyzing Reinforcement Learning Benchmarks with Random Weight Guessing} (\citet{oller_analyzing_2020}), the authors analyze and visualize the complexity of standard RL benchmarks based on score distribution. They tested their approach on the five Classic Control benchmark problems from the OpenAI Gym interface: \verb|CartPole|, \verb|Acrobot|, \verb|Pendulum|, \verb|MountainCar|, and \verb|MountainCarCon-| \verb|tinuous|. Given an RL environment, the authors conducted a fixed series of experiments. For these experiments, they used three neural network architectures ($N_{architectures}=3$): a network without any hidden layers (0 HL, 0 HU), a network with a single hidden layer of 4 units (1 HL, 4 HU), and a network with two hidden layers of 4 units each (2 HL, 4 HU). With these, they cover a variety of network models that are suited to solve the given tasks. The evaluation of the benchmark problems should be as objective as possible and should not include bias in the data. To achieve this, the authors did not include any learning opportunities for the network models. Instead, they chose the network weights i.i.d. from the standard normal distribution $\mathcal{N}(0,1)$ with Random Weight Guessing (RWG). This approach assures randomness and no directed learning. The goal of the paper was not to further analyze the network models but to investigate the benchmark problems themselves. With this in mind, they initialized $10^4$ samples ($N_{samples}=10^4$) with different random weights. The number of samples would be too large for a reasonable learning strategy. However, the large number of samples serves a different purpose than optimizing the results. Instead, the aim is to draw statistical conclusions. Each of these samples of a neural network represents a controller that maps observations to actions in the environment. Later in this thesis, I will explore function approximators other than neural networks representing the controller. In the paper, the authors tested the controllers for each environment during 20 independent episodes ($N_{episodes}=20$). For each episode, they saved the score in the score tensor $S$. Algorithm~\ref{alg:environment-evaluation} illustrates the procedure with pseudocode.
 
 \begin{algorithm}
 \caption{Evaluation process taken from \citet{oller_analyzing_2020}}
@@ -79,55 +90,49 @@ I reproduced the results of the authors following the mentioned methodology. My 
 \centering
 \begin{subfigure}{\textwidth}
   \centering
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/histogram_zero_HL}
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/scatter_score_zero_HL}
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/scatter_variance_zero_HL}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_0_HU_0_histogram}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_0_HU_0_scatter_score}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_0_HU_0_scatter_variance}
     \caption{Results of network architecture without hidden layers}
     \label{fig:plots_reproduced_first}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
   \centering
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/histogram_one_HL}
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/scatter_score_one_HL}
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/scatter_variance_one_HL}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_1_HU_4_histogram}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_1_HU_4_scatter_score}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_1_HU_4_scatter_variance}
     \caption{Results of network architecture with one hidden layer}
     \label{fig:plots_reproduced_second}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
   \centering
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/histogram_two_HL}
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/scatter_score_two_HL}
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/scatter_variance_two_HL}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_2_HU_4_histogram}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_2_HU_4_scatter_score}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_2_HU_4_scatter_variance}
     \caption{Results of network architecture with two hidden layers}
     \label{fig:plots_reproduced_third}
 \end{subfigure}
 \caption[Reproduced Plots]{
   \textbf{Results of the benchmark evaluation.}
-   Results of the three network architectures illustrated as: (left images) a log-scale histogram of the mean scores, (middle images) a scatter plot of the sample scores over their rank, (right image) a scatter plot of score variance over the mean score
+   The plots show a log-scale histogram of the mean scores (left images), a scatter plot of the sample scores over their rank (middle images), a scatter plot of score variance over the mean score (right image). As expected with RWG, most networks were not able to solve the given task. However, there is still a significant amount of samples achieving a mean score of 200. That suggests that the environment is trivial to solve.
 }
 \label{fig:plots_reproduced}
 \end{figure}
-The figures illustrate the results for each of the three network architectures. Each row shows the histogram of the mean score values in the left image, the scatter plot of all scores over their rank in the image in the middle, and the scatter plot of the score variance over the mean score in the right image for a specific network architecture. There are few differences, but overall all network architectures deliver similar insights. The histogram plots show that the majority of networks receive a low score. Since the weights of the networks were chosen with RWG, this is rather unsurprising. But there is still a significant amount of networks that were able to achieve a high mean value or even the maximum value of 200. With a score of 200, the network was able to solve the task each episode. Therefore, the network could reliably solve the task without any learning technique involved. This should not be the case for a complex task. Furthermore, in the scatter plot in the middle, we can see that the line plot of the mean scores is a continuous increasing line without any jumps. Thus, a suited RL algorithm should generally be able to learn the task incrementally without converging into a local optimum. At the top of the scatter plot, we can see quite a few data points with a score of 200 that have a relatively low mean score. This indicates that a network that generally performs poorly can still solve the task with the right initialization conditions. Lastly, in the scatter plot on the right, we can see the distribution of the variance according to the mean value. On the left side, we have low scores of variance corresponding with a low mean value. These networks were consistently unable to achieve a high score. Without any training involved, we can expect most networks to be in this area. However, in the middle of the plot, the data points are spread out. For a high variance, the scores of a network differ highly from the mean value. Thus, we might get lucky and receive a high score depending on initialization conditions, but we might as well get a low score. These networks are inconsistent and unstable. On the right side of the scatter plot, we can see that the data points with a high mean value are mostly of low variance. Thus, to achieve a high mean value, the network needs consistency.
+The plots illustrate the results for each of the three network architectures. Each row shows the histogram of the mean score values in the left image, the scatter plot of all scores over their rank in the image in the middle, and the scatter plot of the score variance over the mean score in the right image for a specific network architecture. There are few differences, but overall all network architectures deliver similar insights. The histogram plots show that the majority of networks receive a low score. Since the weights of the networks were chosen with RWG, this is rather unsurprising. But there is still a significant amount of networks that were able to achieve a high mean value or even the maximum value of 200. With a score of 200, the network was able to solve the task each episode. Therefore, the network could reliably solve the task without any learning technique involved. This should not be the case for a complex task. Furthermore, in the scatter plot in the middle, we can see that the line plot of the mean scores is a continuous increasing line without any jumps. Thus, a suited RL algorithm should generally be able to learn the task incrementally without converging into a local optimum. At the top of the scatter plot, we can see quite a few data points with a score of 200 that have a relatively low mean score. This indicates that a network that generally performs poorly can still solve the task with the right initialization conditions. Lastly, in the scatter plot on the right, we can see the distribution of the variance according to the mean value. On the left side, we have low scores of variance corresponding with a low mean value. These networks were consistently unable to achieve a high score. Without any training involved, we can expect most networks to be in this area. However, in the middle of the plot, the data points are spread out. For a high variance, the scores of a network differ highly from the mean value. Thus, we might get lucky and receive a high score depending on initialization conditions, but we might as well get a low score. These networks are inconsistent and unstable. On the right side of the scatter plot, we can see that the data points with a high mean value are mostly of low variance. Thus, to achieve a high mean value, the network needs consistency.
 
-Interestingly, the usage of the bias had a relatively large impact on the performance of the network for the environment \verb|CartPole|. Without bias, the networks seem to achieve overall better scores. All plots in Figure~\ref{fig:plots_reproduced} illustrate the results without bias. For comparison, Figure~\ref{fig:comparison_bias} shows the results of a network with two hidden layers with the same configurations as before but this time including bias. In the paper, the authors noted that the probability mass of top-performers generally increases when dropping the bias for all tested environments. Thus, this is not an isolated observation. However, they did not investigate this behavior further as it was not the focus of their paper.
+Interestingly, the usage of the bias had a relatively large impact on the performance of the network in my experiments. Without bias, the networks seem to achieve overall better scores. All plots in Figure~\ref{fig:plots_reproduced} illustrate the results without bias. For comparison, Figure~\ref{fig:comparison_bias} shows the results of a network with two hidden layers with the same configurations as before but this time including bias. As we can see, the networks without bias connection had a much lower score in general. The number of networks that were able to consistently solve the task also decreased significantly. In the paper, the authors noted that the probability mass of top-performers generally increases when dropping the bias for all tested environments. Thus, this is not an isolated observation. However, they did not investigate this behavior further as it was not the focus of their paper.
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.329\textwidth]{with_bias_nn/histogram_two_HL}
-\includegraphics[width=0.329\textwidth]{with_bias_nn/scatter_score_two_HL}
-\includegraphics[width=0.329\textwidth]{with_bias_nn/scatter_variance_two_HL}
+\includegraphics[width=0.329\textwidth]{with_bias_nn/HL_2_HU_4_histogram}
+\includegraphics[width=0.329\textwidth]{with_bias_nn/HL_2_HU_4_scatter_score}
+\includegraphics[width=0.329\textwidth]{with_bias_nn/HL_2_HU_4_scatter_variance}
 \caption[Impact of Bias]{
   \textbf{Impact of bias.}
-  The figures show the performance of a network with two hidden layers with the same settings as before but here we include bias. We can clearly see that the network with bias connection perform much worse than the ones without bias.
+  The figures show the performance of a network with two hidden layers with the same settings as before but here we include bias. We can clearly see that the network with bias connection performs much worse than the one without.
 }
 \label{fig:comparison_bias}
 \end{figure}
-One possible explanation for this behavior could be that guessing the characteristics of a simple model has a higher chance to result in a good (simple) model than guessing the parameters of a more complex model. The complexity of the network architecture gives an upper bound for the function that can be approximated. A network with high complexity maps into a larger space with more complex functions. Since the size of the search space increases, there are also more possible samples that fail to solve the task. As the paper showed, a simple model is sufficient to solve these environments. A complex model is oversized for our purpose here. Thus, randomly guessing a simple model can yield a model with good performance with enough attempts. However, it is unlikely to randomly guess a complex model that performs well without any training involved. We can alter the complexity of a network by varying the number of hidden layers, the number of neurons in a layer, or the number of trainable parameters. To test this hypothesis, I formulated the following questions:
-\begin{enumerate}
-  \item Does increasing the number of weights worsen the performance of the model?
-  \item Does a model with more than two hidden layers yield worse scores?
-  \item Does the model's performance suffer from an increase in the number of neurons?
-\end{enumerate}
-The experiments and its results are described in Section~\ref{ch:experiments}.
+One possible explanation could be that guessing additional weights might be fatal for achieving a good score. Or in other words: the more possibilities we have to falsely guess a weight, the higher the probability to fail. However, it could also be that the number of weights is not as impactful as the complexity of the model in general. Guessing the characteristics of a simple model has a higher chance to result in a good (simple) model than guessing the parameters of a more complex model. The complexity of the network architecture gives an upper bound for the function that can be approximated. A network with high complexity maps into a larger space with more complex functions. Since the size of the search space increases, there are also more possible samples that fail to solve the task. As the paper showed, a simple model is sufficient to solve these environments. A complex model is oversized for our purpose here. Thus, randomly guessing a simple model can yield a model with good performance with enough attempts. However, it is unlikely to randomly guess a complex model that performs well without any training involved. To test this hypothesis, we can alter the number of weights and compare the results. In addition, we can also increase the complexity of a network by varying the number of hidden layers or the number of neurons in a layer. The experiments following this thought process are described in Chapter~\ref{ch:experiments}.
 
 
-\todo[inline]{Add plots from Acrobot \\ Adjust axis name in bias images, Change title of plots: , instead of with \\ Make text easier to read with padding \\ Make captions of figures more meaningful (why is this added? why shown like this?), refer to subplots}
+\todo[inline]{Add plots from Acrobot \\ Make text easier to read with padding and more structure \\ Make captions of figures more meaningful (why is this added? why shown like this?), refer to subplots}
