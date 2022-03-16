@@ -207,7 +207,7 @@ Figure~\ref{fig:experiment_2_default} shows the results of the three neural netw
 \label{fig:experiment_2_default}
 \end{figure}
 
-Figure~\ref{fig:experiment_2_weights} shows the results of tripling the number of weights for each network architecture. Row (a) shows the results using bias, row (b) shows the results without bias. I did not include the results where I tripled the weights since there was very little difference visible in the plots.
+Figure~\ref{fig:experiment_2_weights} shows the results of tripling the number of weights for each network architecture. Row (a) shows the results using bias, row (b) shows the results without bias. I did not include the results where I doubled the weights since there was very little difference visible in the plots. Comparing the plots from Figure~\ref{fig:experiment_2_weights} with the ones from Figure~\ref{fig:experiment_2_default}, we can barely see any difference. The slope of the mean values looks the same. The data points do not show different behavior. That applies to both rows (a) and rows (b). Thus, we can conclude that increasing the number of weights does not impact the achieved score of the model significantly. In addition, I conducted the same experiment with the polynomial models $P_1$ and $P_2$. We can make the same observation with these models.
 \begin{figure}[!ht]
 \begin{figrow}
 \item \label{row:NN_with_bias_wfactor_3} \raisebox{-0.5\height}{
@@ -222,14 +222,13 @@ Figure~\ref{fig:experiment_2_weights} shows the results of tripling the number o
 \vspace*{-5mm}
 \caption[Results of experiment 2: weights]{
   \textbf{Results of experiment 2: weights.}
-   The figure shows the results of tripling the number of weights for the three neural network architectures. Row (a) shows the results with bias connections, row (b) shows the results without bias connections.
+   The figure shows the results of tripling the number of weights for the three neural network architectures. Row (a) shows the results with bias connections, row (b) shows the results without bias connections. Despite the increased number of weights, there is no visible difference in the plots compared to the ones shown in Figure~\ref{fig:experiment_2_default}.
 }
 \label{fig:experiment_2_weights}
 \end{figure}
-Thus, we can conclude that increasing the number of weights does not impact the achieved score of the model significantly. Additionally, I conducted the same experiment with the polynomial models $P_1$ and $P_2$. We can make the same observation with these models. Therefore, changing the number of weights changes very little in the result.
 
 
-Figure~\ref{fig:experiment_2_layers} shows the results of altering the number of layers in a network.
+Figure~\ref{fig:experiment_2_layers} shows the results of altering the number of layers in a network. For the networks with bias connections, the performance gets significantly worse with an increased number of layers. The networks without bias connections seem to be more robust. Still, the steepness of the slope of the line plots decreases with an increased number of layers.
 \begin{figure}[!ht]
 \begin{figrow}
 \item \label{row:NN_with_bias_layers} \raisebox{-0.5\height}{
@@ -243,7 +242,7 @@ Figure~\ref{fig:experiment_2_layers} shows the results of altering the number of
 \end{figrow}
 \caption[Results of experiment 2: layers]{
   \textbf{Results of experiment 2: layers.}
-   .
+   The plots show the result of increasing the number of hidden layers gradually. Again, row (a) represents the networks with bias connections, row (b) the ones without bias connections. As we can see, the results in row (a) get worse with an increase in the number of layers. Row (b) is less extreme but there is also a loss of steepness with an increasing number of hidden layers.
 }
 \label{fig:experiment_2_layers}
 \end{figure}
