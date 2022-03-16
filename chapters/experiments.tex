@@ -187,25 +187,28 @@ Another observation we can make from Figure~\ref{fig:experiment_1_polynomial} is
 \todo[inline]{Change title of plots: , instead of with, $P_1 / P_2$ instead of Polynomial \\ Explain fitness plateau further}
 
 \subsection{Experiment 2}
-weights / layers / neurons \\ \\
-Figure~\ref{fig:experiment_2_weights} shows the results of doubling the number of weights in Subfigure~\ref{fig:NN_wfactor_2} and the results of tripling the number of weights in Subfigure~\ref{fig:NN_wfactor_3} for each network architecture. Row (a) shows the results using bias, row (b) shows the results without bias. We can barely see any difference between Subfigure~\ref{fig:NN_wfactor_2} and Subfigure~\ref{fig:NN_wfactor_3} despite the large difference in the number of weights used. Thus, we can conclude that increasing the number of weights does not impact the achieved score of the model significantly. Additionally, I conducted the same experiment with the polynomial models $P_1$ and $P_2$. We can make the same observation with these models. Therefore, changing the number of weights changes very little in the result.
+Figure~\ref{fig:experiment_2_default} shows the results of the three neural network architectures that were mentioned in Section~\ref{ssec:benchmarks}. Row (a) shows the results with bias connection, whereas row (b) shows the results with dropping bias connection. These plots show the results with the default network architectures.
+
 \begin{figure}[!ht]
-\begin{subfigure}{\textwidth}
 \begin{figrow}
-\item \label{row:NN_with_bias_wfactor_2} \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/with_bias/HL_0_HU_0_scatter_score.png}
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/with_bias/HL_1_HU_4_scatter_score.png}
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/with_bias/HL_2_HU_4_scatter_score.png}}
-\item \label{row:NN_without_bias_wfactor_2}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/without_bias/HL_0_HU_0_scatter_score.png}
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/without_bias/HL_1_HU_4_scatter_score.png}
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_2/without_bias/HL_2_HU_4_scatter_score.png}}
+\item \label{row:NN_with_bias_default} \raisebox{-0.5\height}{
+\includegraphics[width=.3\linewidth]{experiment_2/default/with_bias/HL_0_HU_0_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/default/with_bias/HL_1_HU_4_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/default/with_bias/HL_2_HU_4_scatter_score.png}}
+\item \label{row:NN_without_default}  \raisebox{-0.5\height}{
+\includegraphics[width=.3\linewidth]{experiment_2/default/without_bias/HL_0_HU_0_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/default/without_bias/HL_1_HU_4_scatter_score.png}
+\includegraphics[width=.3\linewidth]{experiment_2/default/without_bias/HL_2_HU_4_scatter_score.png}}
 \end{figrow}
-\vspace*{-5mm}
-\caption{Results of doubling weights for three neural network architectures with bias (a) and without bias (b)}
-\label{fig:NN_wfactor_2}
-\end{subfigure}
-\begin{subfigure}{\textwidth}
+\caption[Plots of neural networks with default configurations]{
+  \textbf{Plots of neural networks with default configurations.}
+   The plots show the results of the default configuration of a neural network taken from the paper. Row (a) shows the results with bias connections, whereas row (b) shows the results without bias connections.
+}
+\label{fig:experiment_2_default}
+\end{figure}
+
+Figure~\ref{fig:experiment_2_weights} shows the results of tripling the number of weights for each network architecture. Row (a) shows the results using bias, row (b) shows the results without bias. I did not include the results where I tripled the weights since there was very little difference visible in the plots.
+\begin{figure}[!ht]
 \begin{figrow}
 \item \label{row:NN_with_bias_wfactor_3} \raisebox{-0.5\height}{
 \includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/with_bias/HL_0_HU_0_scatter_score.png}
@@ -217,15 +220,14 @@ Figure~\ref{fig:experiment_2_weights} shows the results of doubling the number o
 \includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/HL_2_HU_4_scatter_score.png}}
 \end{figrow}
 \vspace*{-5mm}
-\caption{Results of tripling weights for three neural network architectures with bias (a) and without bias (b)}
-\label{fig:NN_wfactor_3}
-\end{subfigure}
 \caption[Results of experiment 2: weights]{
   \textbf{Results of experiment 2: weights.}
-   The figure shows the results of doubling the number of weights in Subfigure~\ref{fig:NN_wfactor_2} and the results of tripling the number of weights in Subfigure~\ref{fig:NN_wfactor_3}. Row (a) shows the results with using bias, row (b) shows the results without using bias. We can barely see any difference between Subfigure~\ref{fig:NN_wfactor_2} and Subfigure~\ref{fig:NN_wfactor_3} despite the largely different number of weights used.
+   The figure shows the results of tripling the number of weights for the three neural network architectures. Row (a) shows the results with bias connections, row (b) shows the results without bias connections.
 }
 \label{fig:experiment_2_weights}
 \end{figure}
+Thus, we can conclude that increasing the number of weights does not impact the achieved score of the model significantly. Additionally, I conducted the same experiment with the polynomial models $P_1$ and $P_2$. We can make the same observation with these models. Therefore, changing the number of weights changes very little in the result.
+
 
 Figure~\ref{fig:experiment_2_layers} shows the results of altering the number of layers in a network.
 \begin{figure}[!ht]
@@ -263,3 +265,5 @@ Figure~\ref{fig:experiment_2_layers} shows the results of altering the number of
 }
 \label{fig:experiment_2_neurons}
 \end{figure}
+
+\todo[inline]{Number of weights in plots is incorrect \\ Interpret results}
