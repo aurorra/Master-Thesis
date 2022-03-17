@@ -12,6 +12,7 @@ To analyze and compare the different models and their architectures, I formulate
     \item Does increasing the number of weights worsen the performance of the model?
     \item Does a neural network with more than two hidden layers yield worse scores?
     \item Does the neural network's performance suffer from an increase in the number of neurons?
+    \item Does the difficulty of the environment affect the observed effect of the bias?
   \end{enumerate}
 \end{enumerate}
 
@@ -19,7 +20,8 @@ To analyze and compare the different models and their architectures, I formulate
 To investigate and answer the formulated research questions, I conducted the following experiments:
 \begin{enumerate}
   \item I selected a few promising models to analyze. They are described in Section~\ref{ssec:models}. Similar to \citet{oller_analyzing_2020}, I used RWG to draw the weights of the models and tested the performance on a Classic Control environment from OpenAI Gym.
-  \item With the same settings for the experiments as in Section~\ref{ssec:benchmarks}, I varied the number of (a) weights, (b) hidden layers, and (c) neurons for a neural network and compared the results.
+  \item With the same settings for the experiments as in Section~\ref{ssec:benchmarks}, I varied the number of (a) weights, (b) hidden layers, and (c) neurons for a neural network and compared the results. In addition, I also increased the number of weights for the polynomial model.
+  \item For this experiment, I used the same network architectures and procedure as explained in Section~\ref{ssec:benchmarks}. But this time, I chose environments with a higher difficulty level.
 \end{enumerate}
 
 \subsection{Experiment 1}
@@ -55,15 +57,20 @@ For the second experiment, I used the same procedure as described in Section~\re
   \item In this experiment, I tested the models with different numbers of hidden layers. Each layer still has the same number of hidden neurons as before. Thus, the networks have four hidden units for each layer. I used a network with four hidden layers, one with six, and one with eight.
   \item For this experiment, I varied the number of hidden neurons for a network. I used a network with two hidden layers. For the number of hidden neurons, I chose 5, 8, and 10.
 \end{enumerate}
-\todo[inline]{Maybe add table with used architecture to make it more comprehensible}
+\todo[inline]{Maybe add table with used architecture to make it more comprehensible \\ Add more neurons?}
+
+\subsection{Experiment 3}
+For this experiment, I used the same network architectures as \citet{oller_analyzing_2020}: a neural network wihtout any hidden layers, one with one hidden layer and four hidden units, and one with two hidden layers and four hidden units for each layer. The procedure of the experiment is also analogous to the one conducted in the paper. The only thing that I vary is the choice of the environment. The environments represent a gradually increase in complexity. \\
+\todo[inline]{Try with RWG. If not possible to get any results, use CMA-ES. \\ Environments: Original Pendulum, Inverted Double Pendulum, Swing Up Double Pendulum?}
 
 \subsection{OpenAI Gym Environments}
 \begin{itemize}
   \item CartPole
   \item Acrobot
+  \item Pendulum
 \end{itemize}
 
-\todo[inline]{Explain used environments}
+\todo[inline]{Explain used environments, maybe put into Introduction section}
 
 \subsection{Models}
 \label{ssec:models}
@@ -247,6 +254,7 @@ Figure~\ref{fig:experiment_2_layers} shows the results of altering the number of
 \label{fig:experiment_2_layers}
 \end{figure}
 
+Figure~\ref{fig:experiment_2_neurons} shows the results of increasing the number of neurons in each hidden layer for a network with two hidden layers. Comparing the plots with the ones in Figure~\ref{fig:experiment_2_default}, we can see a slight improvement in the plots without bias connections in rows (a). In addition, the data points seem to be more spread out, indicating a higher variance. The results of the networks without using bias connections do not show much difference. The slope is a little less steep with increased neurons.
 \begin{figure}[!ht]
 \begin{figrow}
 \item \label{row:NN_with_bias_neurons} \raisebox{-0.5\height}{
@@ -260,9 +268,9 @@ Figure~\ref{fig:experiment_2_layers} shows the results of altering the number of
 \end{figrow}
 \caption[Results of experiment 2: neurons]{
   \textbf{Results of experiment 2: neurons.}
-   .
+  The plots show the result of increasing the number of neurons for each layer in a network with two hidden layers. The plots in row (a) represent the networks with bias connections, the ones in row (b) represent the networks without bias connections. We can see a slight improvement in row (a).
 }
 \label{fig:experiment_2_neurons}
 \end{figure}
 
-\todo[inline]{Number of weights in plots is incorrect \\ Interpret results}
+\todo[inline]{Improve interpretation, mention that these are feed forward networks (maybe experiments descr)}
