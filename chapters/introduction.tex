@@ -24,7 +24,9 @@ Covariance Matrix Adaptation Evolution Strategy (CMA-ES) ...
 We can represent many problems in machine learning as a function mapping an input space into an output space. The output space or \textit{search space} denotes the space of all feasible solutions. The underlying function is the output of the learning process of an algorithm and is often called the \textit{target function}. Optimally, we would derive the formula of the function explicitly. However, even though we suspect that such a function exists, we usually do not have enough information to derive a formula directly. Thus, we aim to approximate the target function with \textit{function approximators} by using the available data. In general, we can apply any function approximator. However, each function approximator has its advantages and limitations. For example, some may be prone to local optimum. Depending on the task, this could prevent us from finding a good solution.
 
 \subsection{Neural Networks}
-Neural networks are machine learning algorithms inspired by the functionalities of the human brain. They consist of connected neurons or nodes that imitate the biological neurons of the brain sending signals to each other. In a neural network, the neurons are arranged in connected layers. A network has at least an input and an output layer. We can further expand it with one or more hidden layers. Depending on the model, the connectivity between the layers differs. Figure~\ref{fig:neural_network_sketch} shows a sketch of a network with three hidden layers that are fully connected.
+Neural networks are machine learning algorithms inspired by the functionalities of the human brain. They consist of connected neurons or nodes that imitate the biological neurons of the brain sending signals to each other. A neuron receives one or multiple input values and calculates one or multiple output values. Figure [insert figure] illustrates one neuron. The neuron receives three input values and calculates one output value. For the caluclation of the ouptut, the neurons uses the assigned weights $w$. Thus, the output represents the sum of weighted inputs.
+
+In a neural network, the neurons are arranged in connected layers. A network has at least an input and an output layer. We can further expand it with one or more hidden layers. Depending on the model, the connectivity between the layers differs. Figure~\ref{fig:neural_network_sketch} shows a sketch of a network with three hidden layers that are fully connected.
 \begin{figure}[ht]
 \centering
 \includegraphics[width=.7\textwidth]{neural_network_sketch}
@@ -34,9 +36,13 @@ Neural networks are machine learning algorithms inspired by the functionalities 
 }
 \label{fig:neural_network_sketch}
 \end{figure}
-Each neuron holds an associated weight and threshold. It receives an input and outputs the sum of weighted inputs. If this sum is greater than the associated threshold, the neuron gets activated. A neural network with one or more hidden layers defines a non-linear function. It is theoretically able to represent any function. Thus, neural networks are \textit{generic function approximators}. In addition, neural networks are highly expressive and flexible. They are applied successfully in many areas. A large part of the success of neural networks can be traced to the use of \textit{backpropagation}. Backpropagation uses information from the previous epoch (i.e. iteration) to adjust the weights of the network using the error gradient. However, neural networks also come with a few limitations or disadvantages. The backpropagation algorithm requires the calculation of an accurate gradient. Depending on the problem, this can be a challenging task. For example, calculating an accurate gradient in RL problems is usually non-trivial. Furthermore, there is a lack of understanding. The output of a neural network is often incomprehensible because of its complex structure.
+Each neuron holds an associated weight and threshold. It receives an input and outputs the sum of weighted inputs. If this sum is greater than the associated threshold, the neuron gets activated.
 
-\todo[inline]{Explain more, e.g. bias}
+A large part of the success of neural networks can be traced to the use of \textit{backpropagation}. Backpropagation uses information from the previous epoch (i.e. iteration) to adjust the weights of the network using the error gradient.
+
+A neural network with one or more hidden layers defines a non-linear function. It is theoretically able to represent any function. Thus, neural networks are \textit{generic function approximators}. In addition, neural networks are highly expressive and flexible. They are applied successfully in many areas. However, neural networks also come with a few limitations or disadvantages. The backpropagation algorithm requires the calculation of an accurate gradient. Depending on the problem, this can be a challenging task. For example, calculating an accurate gradient in RL problems is usually non-trivial. Furthermore, there is a lack of understanding. The output of a neural network is often incomprehensible because of its complex structure.
+
+\todo[inline]{Explain more, e.g. bias, feed forward neural network}
 
 
 
@@ -55,7 +61,8 @@ Polynomials are relatively simple mathematical expressions and offer some signif
 
 \subsection{Fourier}
 
-\subsection{Bézier}
+\subsection{Splines}
+General splines, adjustments, Bézier curves maybe? 
 
 
 \section{Previous Work}
