@@ -12,18 +12,31 @@ x&: \text{Scalar} \\
 \end{align*}
 \todo[inline]{Useful? Everything covered?}
 
+\section{Reinforcement Learning Control Problems}
+mention environment, reward \\ \\
+In Reinforcement Learning (RL), we have an agent and an environment. The agent can take on actions to interact with the environment. The environment, on the other hand, always holds a certain state that can be altered by the actions of the agent. The goal of the agent is to learn a policy $\pi$ that drives the system into the desired state by taking the right actions. For example, the goal might be to solve skill games like Ball-in-a-Cup or Kendama (\cite{kober2010imitation}). However, we do not have data beforehand as we do in supervised learning problems. We only get a scalar reward signal that indicates how well the agent performs. The goal of the agent is to maximize the cumulative rewards received by the environment. Therefore, the agent needs to learn optimal behavior through trial-and-error interaction with the environment.
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=.6\textwidth]{RL_agent_env}
+\caption[Interaction loop between an RL agent and the environment]{
+  \textbf{Interaction loop between an RL agent and the environment.}
+  At timestep $t$, the agent receives the observation $o_t$ from the environment. The agent decides to select action $a_t$ and interacts with the environment. The enviornment changes and returns the next observation $o_{t+1}$ and the reward $r_{t+1}$ to the agent.
+}
+\label{fig:RL_agent_env}
+\end{figure}
+Figure~\ref{fig:RL_agent_env} illustrates the loop between the agent and the environment. The agent has received the observation $o_t$ from the environment and therefore knows the current state of it. The agent then performs some action $a_t$ in the environment. The environment changes according to the received action and returns an observation $o_{t+1}$ that indicates the current state of the environment and a reward $r_{t+1}$. One such interaction between the agent and the environment represents one \emph{timestep}.
 
-\section{Black-Box Optimization}
-\subsection{Evolution Strategies}
-Evolution Strategies (ES) ...
+The rewards correspond to an underlying reward function that is specific to the environment. The reward function is a function that maps the current state of the environment, the current action, and the subsequent state into a scalar value. The function can be deterministic or it can have a random component making it stochastic. Depending on the problem, the reward can be sparse or dense. Sparse reward means that the reward function returns zero in most of its domain and only returns a meaningful reward in a few rare settings or at the end of the experiment. That introduces a huge challenge since we cannot know which particular actions led to success or failure. Optimization problems with this setting are generally difficult. Dense reward environments return a meaningful reward at almost every time step.
 
-\subsection{Covariance Matrix Adaptation Evolution Strategy}
-Covariance Matrix Adaptation Evolution Strategy (CMA-ES) ...
+Learning a policy that maximizes the returned rewards is generally non-trivial. The agent can only learn through trial and error. If the policy is not explorative enough, we might get stuck in a local optimum and never reach the goal. However, if there is too much exploration we loose reward. Thus, there needs to be a balance between exploration and exploitation. In addition, often there is a time delay for the reward. The consequence of an action might not be immediately visible to the agent. This problem is known as the credit-assignment problem in the literature (\cite{sutton2018reinforcement}).
+\todo[inline]{Include MDP? Talk about sample efficiency? Talk about value function already? Talk about model-based and model-free?}
 
-\section{Function Approximators}
-We can represent many problems in machine learning as a function mapping an input space into an output space. The output space or \textit{search space} denotes the space of all feasible solutions. The underlying function is the output of the learning process of an algorithm and is often called the \textit{target function}. Optimally, we would derive the formula of the function explicitly. However, even though we suspect that such a function exists, we usually do not have enough information to derive a formula directly. Thus, we aim to approximate the target function with \textit{function approximators} by using the available data. In general, we can apply any function approximator. However, each function approximator has its advantages and limitations. For example, some may be prone to local optimum. Depending on the task, this could prevent us from finding a good solution.
+\section{Classic Reinforcement Learning}
+Classic RL framework and approach \\ \\
+We can solve RL problems with methods based on value functions or methods based on policy search. The value function is a prediction of future reward of landing on a specific state. It indicates how good or bad being in a certain state is. With methods based on value functions, the agent chooses the best action in the state. Methods based on policy search directly search for the optimal policy $\pi^*$ and do not need to maintain a value function model (\cite{8103164}).
+\todo[inline]{Include Q-Learning, reward shaping? show more the difference between this and dps}
 
-\subsection{Neural Networks}
+\subsection{Neural Networks as Models}
 Neural networks are machine learning algorithms inspired by the functionalities of the human brain. They consist of connected neurons or nodes that imitate the biological neurons of the brain sending signals to each other. A neuron receives one or multiple input values and calculates one or multiple output values. Figure [insert figure] illustrates one neuron. The neuron receives three input values and calculates one output value. For the caluclation of the ouptut, the neurons uses the assigned weights $w$. Thus, the output represents the sum of weighted inputs.
 
 In a neural network, the neurons are arranged in connected layers. A network has at least an input and an output layer. We can further expand it with one or more hidden layers. Depending on the model, the connectivity between the layers differs. Figure~\ref{fig:neural_network_sketch} shows a sketch of a network with three hidden layers that are fully connected.
@@ -40,110 +53,84 @@ Each neuron holds an associated weight and threshold. It receives an input and o
 
 A large part of the success of neural networks can be traced to the use of \textit{backpropagation}. Backpropagation uses information from the previous epoch (i.e. iteration) to adjust the weights of the network using the error gradient.
 
-A neural network with one or more hidden layers defines a non-linear function. It is theoretically able to represent any function. Thus, neural networks are \textit{generic function approximators}. In addition, neural networks are highly expressive and flexible. They are applied successfully in many areas. However, neural networks also come with a few limitations or disadvantages. The backpropagation algorithm requires the calculation of an accurate gradient. Depending on the problem, this can be a challenging task. For example, calculating an accurate gradient in RL problems is usually non-trivial. Furthermore, there is a lack of understanding. The output of a neural network is often incomprehensible because of its complex structure.
-
-\todo[inline]{Explain more, e.g. bias, feed forward neural network}
+A neural network with one or more hidden layers defines a non-linear function. It is theoretically able to represent any function. Thus, neural networks are \textit{generic function approximators}. In addition, neural networks are highly expressive and flexible. They are applied successfully in many areas including in RL problems. Neural networks can be used to approximate a value function or a policy function. Deep RL combines RL with the methods from deep learning. It has been used in many applications including robotics, video games, computer vision (\cite{franccois2018introduction}).
 
 
+%However, neural networks also come with a few limitations or disadvantages. The backpropagation algorithm requires the calculation of an accurate gradient. Depending on the problem, this can be a challenging task. For example, calculating an accurate gradient in RL problems is usually non-trivial. Furthermore, there is a lack of understanding. The output of a neural network is often incomprehensible because of its complex structure.
 
-\subsection{Polynomial}
-In mathematics, a polynomial is the sum of powers in one or more variables multiplied by constant coefficients. Given a field $F$, a polynomial in variable $x$ with coefficients in $F$ is a formal expression denoted by
-\begin{align*}
-  &f(x) = \Sigma_{i=0}^{n} a_i x^i \in F[x], &a_0, ..., a_n \in F, \ \ i \in \mathbb{N},
-\end{align*}
-where $F[x]$ represents the set of all such polynomials (\citet{fischer2014}, p. 61). The above formula shows the one dimensional case. For the multi-dimensional case, $x$ and the coefficients are vectors instead of scalars. Thus, a polynomial $p(\mathbf{x})$ with $\mathbf{x} = [x_0, ..., x_m]^T$ being a vector and of degree $n$ can be represented by
-\begin{align*}
-  &p(\mathbf{x}) = \Sigma_{i=0}^{n} \mathbf{w_i}^T (x_k^i)_{k \in I} \in F^n[\mathbf{x}], &\mathbf{w_0}, ... \mathbf{w_n} \in F^n, \ \ I = \{0, ..., m\}.
-\end{align*}
-Polynomials are relatively simple mathematical expressions and offer some significant advantages: their derivative and indefinite integral are easy to determine and are also polynomial. Due to their simple structure, polynomials can be valuable to analyze more complex functions using polynomial approximations. \textit{Taylor's theorem} tells us that we can locally approximate any $k$-times differentiable function by a polynomial of degree $k$. We call this approximation \textit{Taylor polynomial}. Furthermore, the \textit{Weierstrass approximation theorem} says that we can uniformly approximate every continuous function defined on a closed interval by a polynomial. Other applications of polynomials are \textit{polynomial interpolation} and \textit{polynomial splines}. Polynomial interpolation describes the problem of constructing a polynomial that passes through all given data points. Polynomial splines are piecewise polynomial functions that can be used for spline interpolation.
+\todo[inline]{Should NN be explained in more detail? Write more about DRL, include recent results, advantages, disadvantages}
 
-\todo[inline]{Include theorems (Taylor, Weierstass) \\ Explain difference between approximation and interpolation \\ Does $F^n$ make sense?}
+\section{OpenAI Gym}
+\label{sec:gym}
+mention as example of control problems, that it's a common benchmark in the literature, provides environments \\ \\
+OpenAI Gym\footnote{https://www.gymlibrary.ml/} is a toolkit that provides environments that represent general RL problems. They are easy to use and serve as benchmark problems with varying difficulty and challenges.
+\todo[inline]{Explain more, compare with Section~\ref{sec:environments} to not repeat}
 
-\subsection{Fourier}
+\section{Direct Policy Search}
+mention it as an alternative to Deep RL, mention it uses networks to approximate policy rather than value function \\ \\
+An alternative to the methods described so far is direct policy search. Instead of approximating a value function, we approximate the policy directly with an independent function approximator with its own parametrization. Using a value function can work well but there are some limitations. Studies suggest that approximating a policy can be easier to use and deliver better results (\cite{sutton1999policy}; \cite{anderson2000approximating}).
+Here we have two approaches: gradient-based and gradient-free methods.
+\todo[inline]{Explain more, go more into advantages, find more papers with comparison}
 
-\subsection{Splines}
-General splines, adjustments, Bézier curves maybe? 
+\section{Neuroevolution}
+special case of DPS: NN as policy approximator, train with evo \\ \\
+Neuroevolution is a special case of direct policy search. A neural network is used to approximate the policy and optimized with evolutionary algorithms. It was shown that genetic algorithms can work well even in hard settings (\cite{such2017deep}).
+\todo[inline]{Explain more}
 
+\section{Black-Box Optimization}
+but what is evo? here's a primer on black box optimization \\ \\
+In Black-Box Optimization (BBO), the problem structure, as well as the model, remains unknown. BBO methods optimize a parametrization without any constraints on the problem, model or solution needed. Thus, there is no constraint on differentiability or convexity. The optimization is done solely based on a score or cumulative reward, which makes these methods directly applicable to Reinforcement Learning (RL) problems.
+\todo[inline]{Explain more}
 
-\section{Previous Work}
+\subsection{Random Weight Guessing}
+Randomization and RWG (uniform distribution) \\ \\
+Random Weight Guessing (RWG) is the simplest BBO method. With RWG, we repeatedly randomly initialize the weights of a model until the resulting model classifies all training instances correctly. Then we test the model on a separate test set (\cite{schmidhuber2001evaluating}). RWG is not a reasonable learning algorithm, but it can be used as an analysis method (\cite{oller_analyzing_2020}).
+\todo[inline]{Explain more, include limitations (expensive algorithms)}
 
-\subsection{Benchmarks in Reinforcement Learning}
-\label{ssec:benchmarks}
-When developing a novel algorithm, it is important to compare our results with existing models. For this evaluation, we need standard benchmark problems. These are a set of standard optimization problems. OpenAI Gym \footnote{\url{gym.openai.com}} is a toolkit created for exactly this scenario. It contains a collection of benchmark problems with various levels of difficulty. However, not all benchmark problems are meaningful for the evaluation of an algorithm. If a problem is too trivial to solve, the results do not reflect the quality of the model adequately. We do not need to put a large amount of effort into the creation of a complex model for an easy-to-solve task.
+\subsection{Evolution Strategies}
+ES-(1+1) (normal, adapt mean) \\ \\
+Evolution Strategies (ES) belong to the class of evolutionary algorithms and are best suited for continuous optimization. They are directly inspired by the idea of evolution in nature and use the concept of mutation and selection. ES are implemented in a loop where one iteration is called a generation. In each generation new individuals (candidate solutions) are generated using the current parents. We continue with the next generation until a stopping criteria is met. ES are multi-agent algorithms which means that they generate multiple parametrizations that explore a different path or area in the optimization space independently. This exploration prevents us from landing in a local optimum.
 
-In the paper \emph{Analyzing Reinforcement Learning Benchmarks with Random Weight Guessing} (\citet{oller_analyzing_2020}), the authors analyze and visualize the complexity of standard RL benchmarks based on score distribution. They tested their approach on the five Classic Control benchmark problems from the OpenAI Gym interface: \verb|CartPole|, \verb|Acrobot|, \verb|Pendulum|, \verb|MountainCar|, and \verb|MountainCarCon-| \verb|tinuous|. Given an RL environment, the authors conducted a fixed series of experiments. For these experiments, they used three neural network architectures ($N_{architectures}=3$): a network without any hidden layers (0 HL, 0 HU), a network with a single hidden layer of 4 units (1 HL, 4 HU), and a network with two hidden layers of 4 units each (2 HL, 4 HU). With these, they cover a variety of network models that are suited to solve the given tasks. The evaluation of the benchmark problems should be as objective as possible and should not include bias in the data. To achieve this, the authors did not include any learning opportunities for the network models. Instead, they chose the network weights i.i.d. from the standard normal distribution $\mathcal{N}(0,1)$ with Random Weight Guessing (RWG). This approach assures randomness and no directed learning. The goal of the paper was not to further analyze the network models but to investigate the benchmark problems themselves. With this in mind, they initialized $10^4$ samples ($N_{samples}=10^4$) with different random weights. The number of samples would be too large for a reasonable learning strategy. However, the large number of samples serves a different purpose than optimizing the results. Instead, the aim is to draw statistical conclusions. Each of these samples of a neural network represents a controller that maps observations to actions in the environment. Later in this thesis, I will explore function approximators other than neural networks representing the controller. In the paper, the authors tested the controllers for each environment during 20 independent episodes ($N_{episodes}=20$). For each episode, they saved the score in the score tensor $S$. Algorithm~\ref{alg:environment-evaluation} illustrates the procedure with pseudocode.
-
+\textbf{(1 + 1)-ES:} The population model (1 + 1) means that we maintain only one individual. For the next generation, we generate one new offspring as a variation of the parent, drawn from the normal distribution. For this, we adapt the mean of the distribution according to the parent. Then we keep either the parent or the child based on which performed had a better fitness score. Algorithm~\ref{alg:ES} shows this process in pseudocode.
 \begin{algorithm}
-\caption{Evaluation process taken from \citet{oller_analyzing_2020}}
+\caption{(1 + 1)-ES in $d$ dimensions}
 \begin{algorithmic}[1]
-\State Initialize environment
-\State Create array $S$ of size $N_{architectures} \times N_{samples} \times N_{episodes}$
-\For{$n = 1,2,...,N_{samples}$}
-    \State Sample NN weights randomly from $\mathcal{N}(0,1)$
-    \For{$e=1,2,...,N_{episodes}$}
-      \State Reset the environment
-      \State Run episode with NN
-      \State Store accured episode reward in $S_{a,n,e}$
-    \EndFor
-\EndFor
+\State Parameter: $\sigma > 0$
+\State Initialization: $x = x_0 \in \mathbb{R}^d$
+\While{not done}
+    \State Sample $x' \sim \mathcal{N}(x, \sigma^2 I)$
+    \If{$f(x') \leq f(x)$}
+      \State $x \leftarrow x'$
+    \EndIf
+\EndWhile
+\State Return $x$
 \end{algorithmic}
-\label{alg:environment-evaluation}
+\label{alg:ES}
 \end{algorithm}
 
-After the authors obtained the scores, they calculated the mean performance over all episodes from a sample and its variance. These statistics are significant insights. They can reveal how stable the network models are in completing a given task. A low mean value suggests that, in general, the network cannot complete the task. The variance gives us further insight into the score distribution. It illustrates how spread out the scores are from their respective mean score. A high value means that we have high variability. A controller is valuable if it can solve a specific task reliably and stable. Therefore, we strive for a high value for the mean and a low value for the variance. However, training a network with random weight guessing should generally not result in a stable controller. If this is the case, we can assume that the task to solve was too trivial and is not valuable for evaluation measurements. In the illustrations of the paper, the authors ranked the samples according to their mean scores. They then visualized their results with three plots: a log-scale histogram of the mean scores, a scatter plot of the sample scores over their rank, a scatter plot of score variance over the mean score.
-
-I reproduced the results of the authors following the mentioned methodology. My findings for the environment \verb|CartPole| are displayed in Figure~\ref{fig:plots_reproduced}.
-\begin{figure}[ht]
-\centering
-\begin{subfigure}{\textwidth}
-  \centering
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_0_HU_0_histogram}
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_0_HU_0_scatter_score}
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_0_HU_0_scatter_variance}
-    \caption{Results of network architecture without hidden layers}
-    \label{fig:plots_reproduced_first}
-\end{subfigure}
-\begin{subfigure}{\textwidth}
-  \centering
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_1_HU_4_histogram}
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_1_HU_4_scatter_score}
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_1_HU_4_scatter_variance}
-    \caption{Results of network architecture with one hidden layer}
-    \label{fig:plots_reproduced_second}
-\end{subfigure}
-\begin{subfigure}{\textwidth}
-  \centering
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_2_HU_4_histogram}
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_2_HU_4_scatter_score}
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_2_HU_4_scatter_variance}
-    \caption{Results of network architecture with two hidden layers}
-    \label{fig:plots_reproduced_third}
-\end{subfigure}
-\caption[Reproduced Plots]{
-  \textbf{Results of the benchmark evaluation.}
-   The plots show a log-scale histogram of the mean scores (left images), a scatter plot of the sample scores over their rank (middle images), a scatter plot of score variance over the mean score (right image). As expected with RWG, most networks were not able to solve the given task. However, there is still a significant amount of samples achieving a mean score of 200. That suggests that the environment is trivial to solve.
-}
-\label{fig:plots_reproduced}
-\end{figure}
-The plots illustrate the results for each of the three network architectures. Each row shows the histogram of the mean score values in the left image, the scatter plot of all scores over their rank in the image in the middle, and the scatter plot of the score variance over the mean score in the right image for a specific network architecture. There are few differences, but overall all network architectures deliver similar insights. The histogram plots show that the majority of networks receive a low score. Since the weights of the networks were chosen with RWG, this is rather unsurprising. But there is still a significant amount of networks that were able to achieve a high mean value or even the maximum value of 200. With a score of 200, the network was able to solve the task each episode. Therefore, the network could reliably solve the task without any learning technique involved. This should not be the case for a complex task. Furthermore, in the scatter plot in the middle, we can see that the line plot of the mean scores is a continuous increasing line without any jumps. Thus, a suited RL algorithm should generally be able to learn the task incrementally without converging into a local optimum. At the top of the scatter plot, we can see quite a few data points with a score of 200 that have a relatively low mean score. This indicates that a network that generally performs poorly can still solve the task with the right initialization conditions. Lastly, in the scatter plot on the right, we can see the distribution of the variance according to the mean value. On the left side, we have low scores of variance corresponding with a low mean value. These networks were consistently unable to achieve a high score. Without any training involved, we can expect most networks to be in this area. However, in the middle of the plot, the data points are spread out. For a high variance, the scores of a network differ highly from the mean value. Thus, we might get lucky and receive a high score depending on initialization conditions, but we might as well get a low score. These networks are inconsistent and unstable. On the right side of the scatter plot, we can see that the data points with a high mean value are mostly of low variance. Thus, to achieve a high mean value, the network needs consistency.
-
-Interestingly, the usage of the bias had a relatively large impact on the performance of the network in my experiments. Without bias, the networks seem to achieve overall better scores. All plots in Figure~\ref{fig:plots_reproduced} illustrate the results without bias. For comparison, Figure~\ref{fig:comparison_bias} shows the results of a network with two hidden layers with the same configurations as before but this time including bias. As we can see, the networks with bias connections have a much lower score in general. The number of networks that can consistently solve the task also decreases significantly. In the paper, the authors noted that the probability mass of top-performers generally increases when dropping the bias connections for all tested environments. Thus, this is not an isolated observation. However, they did not investigate this behavior further as it was not the focus of their paper.
-\begin{figure}[ht]
-\centering
-\includegraphics[width=0.329\textwidth]{with_bias_nn/HL_2_HU_4_histogram}
-\includegraphics[width=0.329\textwidth]{with_bias_nn/HL_2_HU_4_scatter_score}
-\includegraphics[width=0.329\textwidth]{with_bias_nn/HL_2_HU_4_scatter_variance}
-\caption[Impact of Bias]{
-  \textbf{Impact of bias.}
-  The figures show the performance of a network with two hidden layers with the same settings as before but here we include bias. We can clearly see that the network with bias connection performs much worse than the one without.
-}
-\label{fig:comparison_bias}
-\end{figure}
-One possible explanation could be that guessing additional weights might be fatal for achieving a good score. Or in other words: the more possibilities we have to falsely guess a weight, the higher the probability to fail. To test this hypothesis, we can alter the number of weights and compare the results. With an increased number of weights, we would expect the networks to perform worse than before. However, it could also be that the number of weights is not as impactful as the complexity of the model in general. Randomly guessing the parameters of a simple model has a higher chance to result in a good (simple) model than guessing the parameters of a more complex model. The complexity of the network architecture gives an upper bound for the function that can be approximated. A network with high complexity maps into a larger search space with more complex functions. Since the size of the search space increases, there are also more possible samples that fail to solve the task. As the paper showed, a simple model is sufficient to solve these environments. A complex model is oversized for our purpose here. Thus, randomly guessing a simple model can yield a model with good performance with enough attempts. However, it is unlikely to randomly guess a complex model that performs well without any training involved. To test this hypothesis, we can increase the complexity of a network by varying the number of hidden layers or the number of neurons in a hidden layer. With increased complexity, we would expect the networks to perform worse than before.
-
-Another interesting aspect would be to inspect the role of the bias in connection with the environments. A simple model is sufficient to solve a simple task. But what if the environment is more difficult to solve? In that case, the undersized complexity would limit us from finding an appropriate solution as the search space is not large enough for this scenario. Therefore, including bias should improve the results.
-
-The experiments following this thought process are described in Chapter~\ref{ch:experiments}.
+\todo[inline]{Explain more}
 
 
-\todo[inline]{Add plots from Acrobot? \\ Make text easier to read with padding and more structure \\ Make captions of figures more meaningful (why is this added? why shown like this?), refer to subplots}
+\subsection{Covariance Matrix Adaptation Evolution Strategy}
+CMA-ES (which is a ES-(mu,lambda)) (normal, adapt mean, adapt covariance, large pop) \\ \\
+Covariance Matrix Adaptation Evolution Strategy (CMA-ES) is a method for non-linear, non-convex optimization problems in continuous domain. For each iteration (generation), a population of new individuals is generated by sampling a multivariate normal distribution. After each iteration, the mean and the covariance matrix is updated (\cite{hansen2016cma}).
+
+\todo[inline]{Include formulas from tutorial}
+
+\section{Research Questions}
+\label{sec:research_questions}
+Start from the experiments. They are your answer. Which question do they answer? These are your research questions. \\
+In the experiments section, mention explicitly which question each answers \\ \\
+The main goal of this thesis is to compare alternative models to neural networks. To analyze and compare the different models and their architectures, I formulated the following research questions:
+\begin{enumerate}
+  \item How do function approximators other than neural networks compare with the latter?
+  \item What impact has the bias on the performance of the model?
+  \begin{enumerate}
+    \item Does increasing the number of weights worsen the performance of the model?
+    \item Does a neural network with more than two hidden layers yield worse scores?
+    \item Does the neural network's performance suffer from an increase in the number of neurons?
+    \item Does the difficulty of the environment affect the observed effect of the bias?
+  \end{enumerate}
+\end{enumerate}
+
+\todo[inline]{Move to experiments? Or formulate questions concerning bias later? Maybe divide first question into multiple smaller ones.}
