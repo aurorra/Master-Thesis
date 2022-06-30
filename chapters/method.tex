@@ -100,7 +100,7 @@ The CartPole environment corresponds to the pole-balancing problem formulated in
 }
 \label{fig:cartpole}
 \end{figure}
-\\
+\\ \\
 \textbf{Action Space:} The CartPole environment accepts one action per step and has a discrete action space of {0, 1}. The action indicates the direction in which we push the cart by a fixed force. The actions are described in Table~\ref{table:cartpole_act}.
 \begin{table}[!ht]
   \centering
@@ -118,7 +118,7 @@ The CartPole environment corresponds to the pole-balancing problem formulated in
   }
   \label{table:cartpole_act}
 \end{table}
-\\
+\\ \\
 \textbf{Observation Space:} For CartPole, we receive four observations that inform us about the position and velocity of the cart as well as the pole. Table~\ref{table:cartpole_obs} shows all observations with the range of the values.
 \begin{table}[!ht]
   \centering
@@ -138,7 +138,7 @@ The CartPole environment corresponds to the pole-balancing problem formulated in
   }
   \label{table:cartpole_obs}
 \end{table}
-\\
+\\ \\
 \textbf{Reward:} The goal of this task is to keep the pole upright as long as possible. Thus, we get a positive reward of +1 for each step that does not meet the termination criteria. An episode terminates when either the pole angle is $\pm$12°, the cart position is $\pm$2.4, or the episode length is greater than 200 (500 for v1).
 
 \subsection{Acrobot}
@@ -152,7 +152,7 @@ The environment Acrobot is based on the paper \emph{Generalization in Reinforcem
 }
 \label{fig:acrobot}
 \end{figure}
-\\
+\\ \\
 \textbf{Action Space:} For Acrobot, the action space is discrete and deterministic and represents the torque applied to the joint between the two links, including the loose end. Table~\ref{table:acrobot_act} shows a description of all possible actions.
 \begin{table}[!ht]
   \centering
@@ -171,7 +171,7 @@ The environment Acrobot is based on the paper \emph{Generalization in Reinforcem
   }
   \label{table:acrobot_act}
 \end{table}
-\\
+\\ \\
 \textbf{Observation Space:} Acrobot returns six observations that inform us about the two rotational joint angles and their angular velocities. Table~\ref{table:acrobot_obs} contains a description for each observation. theta1 is the angle of the first joint, where an angle of 0 indicates the first link is pointing directly downwards. theta2 is relative to the angle of the first link. An angle of 0 corresponds to having the same angle between the two links.
 \begin{table}[!ht]
   \centering
@@ -193,7 +193,7 @@ The environment Acrobot is based on the paper \emph{Generalization in Reinforcem
   }
   \label{table:acrobot_obs}
 \end{table}
-\\
+\\ \\
 \textbf{Reward:} The goal is to reach the target height with as little stepts as possible. Thus, each step that does not reach the goal receives a negative reward of -1. Reaching the target height results in a reward of 0. The reward threshold is -100.
 
 \subsection{MountainCar}
@@ -208,7 +208,7 @@ robot control} (\cite{moore1990efficient}). There are two versions of this probl
 }
 \label{fig:mountain_car}
 \end{figure}
-\\
+\\ \\
 \textbf{Action Space:} The action space consists of three discrete actions. We can either accelerate the car to the right or to the left or we do not interact at all. The actions are further described in Table~\ref{table:mountaincar_act}
 \begin{table}[!ht]
   \centering
@@ -227,7 +227,7 @@ robot control} (\cite{moore1990efficient}). There are two versions of this probl
   }
   \label{table:mountaincar_act}
 \end{table}
-\\
+\\ \\
 \textbf{Observation Space:} The environment gives us two observations with information about the position and the velocity of the car. They are described in Table~\ref{table:mountaincar_obs}.
 \begin{table}[!ht]
   \centering
@@ -245,7 +245,7 @@ robot control} (\cite{moore1990efficient}). There are two versions of this probl
   }
   \label{table:mountaincar_obs}
 \end{table}
-\\
+\\ \\
 \textbf{Reward:} To solve the environment, the car has to reach the flag on the right hill as fast as possible. For every step in which the agent cannot reach the target, he receives a negativ reward of -1.
 
 \subsection{MountainCarContinuous}
@@ -268,7 +268,7 @@ In this environment, the system consists of a pendulum attached at one end to a 
 }
 \label{fig:pendulum}
 \end{figure}
-\\
+\\ \\
 \textbf{Action Space:} The environment accepts one action per step. The action represents the torque applied to the free end of the pendulum.
 \begin{table}[!ht]
   \centering
@@ -306,10 +306,20 @@ In this environment, the system consists of a pendulum attached at one end to a 
   \label{table:pendulum_obs}
 \end{table}
 
-\todo[inline]{talk about difficulty / what the environment tests, check if versions are correct, not happy with presentation of this section}
+\todo[inline]{talk about difficulty / what the environment tests, check if versions are correct, not happy with presentation of this section, reward for Pendulum missing}
 
 \section{Visualization}
-For the visualization of the results, I am using similar plots as \cite{oller_analyzing_2020}. The type of plots I will be using are already presented in Figure~\ref{fig:plots_reproduced}. However, I will mainly be using the scatter plots shown in the middle.
+For the visualization of the results, I am using similar plots as \cite{oller_analyzing_2020}. The type of plots I will be using are already presented in Figure~\ref{fig:plots_reproduced}. However, I will mainly be using the scatter plots shown in the middle. Figure~\ref{fig:visualization} shows an example of such a plot.
+\begin{figure}[!ht]
+  \centering
+\includegraphics[width=.5\linewidth]{NN/CartPole_NN_HL_0_HU_0_scatter_score.png}
+\caption[Visualization of results]{
+  \textbf{Visualization of results.}
+  Example for the visualization of the conducted experiments.
+}
+\label{fig:visualization}
+\end{figure}
+
 \todo[inline]{Rethink paper section, present plots here for the first time?}
 
 \section{Alternative Models}
@@ -399,9 +409,9 @@ Analogous to $P_1$, I tested the polynomial $p(\mathbf{x})$ with degrees 1, 2, a
 General splines, adjustments \\ \\
 Splines can also be used as function approximators. However, with splines we do not aim to approximate the whole function but rather return a piecewise approximation.
 
-\todo[inline]{First was sind splines, dann herleitung in this case}
+\todo[inline]{First was sind splines, dann herleitung in this case.}
 
 
 \subsection{Binary Trees}
 A binary tree is a fairly simple data structure in computer science. A binary tree consists of nodes that each have at most two children, referred to as left child and right child.
-\todo[inline]{Herleitung von splines erklären -> vielleicht in vorheriger subsection?}
+\todo[inline]{Herleitung von splines erklären -> vielleicht in vorheriger subsection? Explain continuous envs.}
