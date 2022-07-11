@@ -87,7 +87,7 @@ The experiments following this thought process are described in Chapter~\ref{ch:
 
 \section{OpenAI Gym Environments}
 \label{sec:environments}
-OpenAI Gym offers five classic control environments ready to use: CartPole, Acrobot, MountainCar, MountainCarContiuous, and Pendulum. The initial state of each environment is stochastic. Out of all environments OpenAI Gym provides, the classic control environments are considered as easier ones to solve. Each environment has an observation and an action space. An agent performs some action from the action space and observes how the environment state changes.
+OpenAI Gym offers five classic control environments ready to use: \verb|CartPole|, \verb|Acrobot|, \verb|MountainCar|, \verb|MountainCarContiuous|, and \verb|Pendulum|. The initial state of each environment is stochastic. Out of all environments OpenAI Gym provides, the classic control environments are considered as easier ones to solve. Each environment has an observation and an action space. An agent performs some action from the action space and observes how the environment state changes.
 
 \subsection{CartPole}
 The CartPole environment corresponds to the pole-balancing problem formulated in \emph{Neuronlike Adaptive Elements That Can Solve Difficult Learning Control Problems} (\cite{6313077}). A pole is attached to a cart that the agent can move along a one-dimensional track. Fig.~\ref{fig:cartpole} shows one possible state of this problem.
@@ -309,16 +309,17 @@ In this environment, the system consists of a pendulum attached at one end to a 
 \todo[inline]{talk about difficulty / what the environment tests, check if versions are correct, not happy with presentation of this section, reward for Pendulum missing}
 
 \section{Visualization}
-For the visualization of the results, I am using similar plots as \cite{oller_analyzing_2020}. The type of plots I will be using are already presented in Figure~\ref{fig:plots_reproduced}. However, I will mainly be using the scatter plots shown in the middle. Figure~\ref{fig:visualization} shows an example of such a plot.
+For the visualization of the results, I am using similar plots as \cite{oller_analyzing_2020}. The type of plots I will be using is already presented in Figure~\ref{fig:plots_reproduced}. However, I will mainly be using the scatter plots shown in the middle. Figure~\ref{fig:visualization} shows an example of such a plot.
 \begin{figure}[!ht]
   \centering
 \includegraphics[width=.5\linewidth]{NN/CartPole_NN_HL_0_HU_0_scatter_score.png}
 \caption[Visualization of results]{
   \textbf{Visualization of results.}
-  Example for the visualization of the conducted experiments.
+  The image shows an example of the visualization of the conducted experiments. The scatter plot represents the individual sample scores $S_{n,e}$ for episode $e$ over the rank $R(n)$ of the sample $n$. The overlaid line plot consists of the mean scores $M_n$ for each sample.
 }
 \label{fig:visualization}
 \end{figure}
+For a better analysis, the samples are sorted according to their mean score. The position of a sample $n$ within the sorted list is referred to as its rank $R(n)$. In the plot, the samples are aligned according to their rank on the x-axis. Each red dot represents the individual sample score $S_{n,e}$ for sample $n$ in episode $e$. The overlaid line plot represents the mean score $M_n$ of sample $n$ over all episodes. Thus, the line plot is a naturally increasing curve of the mean scores. The scatter plot indicates the variety of scores for one sample. The title of the plot informs us which model and how many weights were used. In addition, the corresponding OpenAI gym environment is declared.
 
 \todo[inline]{Rethink paper section, present plots here for the first time?}
 
@@ -351,47 +352,12 @@ In the formulas, $n$ denotes the degree of the polynomial. In my experiments, I 
 }
 \label{fig:bounds}
 \end{figure}
-So, I scaled the outputs with a sigmoid function. A sigmoid function is a mathematical function that maps an arbitrary input space into an output space with a small range, for example, 0 and 1. The function has a characteristic S-shaped curve. We can interpret the output space of the sigmoid function as a probability. In this case, we search for the probability that a specific action is the reasonable one given an observation $\mathbf{x}$. Thus, for our example with the \verb|CartPole| environment, we can interpret $sig(p_0)$ as the probability that action 0 is the correct one and $sig(p_1)$ as the probability that action 1 is the correct one. Putting this thought into a formula for $P_1$ and the \verb|CartPole| environment, we get:
+So, I scaled the outputs with a sigmoid function. We can interpret the output space of the sigmoid function as a probability as discussed in Section~\ref{subsec:NN}. In this case, we search for the probability that a specific action is the reasonable one given an observation $\mathbf{x}$. Thus, for our example with the \verb|CartPole| environment, we can interpret $sig(p_0)$ as the probability that action 0 is the correct one and $sig(p_1)$ as the probability that action 1 is the correct one. Putting this thought into a formula for $P_1$ and the \verb|CartPole| environment, we get:
 \[
   P_1(\mathbf{x}) =
   \begin{cases}1~&{\text{ if }}~sig(p_1(\mathbf{x})) > sig(p_0(\mathbf{x}))~,\\0~&~\text{otherwise}~.\end{cases}
 \]
-For the sigmoid function, I used the logistic sigmoid function. The formula and a plot of the function in 2D are shown in Figure~\ref{fig:sigmoid}.
-\begin{figure}[ht]
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-      xmin = -5, xmax = 5,
-      ymin = 0, ymax = 1,
-      legend cell align = {left},
-      legend pos = north west,
-      width = 0.5\textwidth,
-      height = 0.4\textwidth,
-      xlabel = \(x\),
-      ylabel = {\(sig(x)\)}
-    ]
-    \addplot[
-        smooth,
-        thick,
-        purple
-    ] {1 / (1 + exp(-x))};
-    \addlegendentry{
-    $sig(x) = \frac{1}{1 + exp(-x)}$
-    }
-    \addplot[
-        smooth,
-        thick,
-        blue,
-        dotted
-    ] {0.5};
-\end{axis}
-\end{tikzpicture}
-\caption[Sigmoid function]{
-  \textbf{Sigmoid function.}
-  The figure shows a plot of the logistic sigmoid function. The function maps an arbitrary input space into the range between 0 and 1. The output of the function can be interpreted as a probability. It is useful to scale data into a meaningful value.
-}
-\label{fig:sigmoid}
-\end{figure}
+For the sigmoid function, I used the logistic sigmoid function.
 
 The second model $P_2$ is constructed similarly to $P_1$, but it only consists of one polynomial instead of one for each possible action. For the \verb|CartPole| environment, this means $P_2$ consists of:
 \[

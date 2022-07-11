@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nn}{gym}
+\PYG{n}{env} \PYG{o}{=} \PYG{n}{gym}\PYG{o}{.}\PYG{n}{make}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}CartPole\PYGZhy{}v0\PYGZdq{}}\PYG{p}{)}
+\end{Verbatim}
