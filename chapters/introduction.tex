@@ -1,7 +1,7 @@
 % !TEX root = ../main.tex
 
 \chapter{Introduction}
-\label{ch:introduction}
+\label{ch:introduction} 
 
 % \section{General Notation}
 % First, I am defining the notation I used throughout this thesis. For the scalars, I used regular, normal-weight variables such as $x$. Vectors are represented by bold lower-case variables like $\mathbf{x}$. Tensors and matrices are denoted by bold upper-case characters, such as $\mathbf{X}$. In summary:
@@ -18,6 +18,8 @@ Control problems appear in the context of both reinforcement learning and contro
 Reinforcement learning is an area of machine learning that involves learning the optimal behavior to maximize a reward signal inside a dynamic environment. The learning process is marked by trial-and-error interactions with the environment. The learner does not know which actions lead to which rewards until he tries them (\cite{kaelbling1996reinforcement}).
 
 Reinforcement learning differs from supervised learning, where learning is achieved through a training set with labeled examples. Each sample of the training data represents a description of the situation together with a label that marks how the system should react in that situation. The goal of the learning process is to generalize the optimal actions given a certain situation so that the system acts correctly in situations outside of the training set. In reinforcement learning, there are no labels available beforehand. In addition, we can also not classify reinforcement learning as unsupervised learning, where we typically try to find a hidden structure in a set of unlabeled data. With reinforcement learning, we do not try to find some structure in the data but solely try to maximize the reward signal. Therefore, alongside supervised learning, unsupervised learning, and maybe additional paradigms, reinforcement learning is considered to be a third machine learning paradigm. One additional challenge we do not see in the other branches of machine learning is the trade-off between \textit{exploration} and \textit{exploitation}. For a high reward, the reinforcement learning agent should take an action that it has tried in the past and was effective. It should therefore exploit the knowledge gained previously. However, to discover this beneficial action, it has to explore actions it has not taken before (\cite{sutton2018reinforcement}).
+
+We can represent many problems in machine learning, including reinforcement learning problems, as a function mapping an input space into an output space. The output space or \textit{search space} denotes the space of all feasible solutions. In reinforcement learning, the output space contains any action that could be taken given a certain situation. The underlying function is the output of the learning process of an algorithm and is often called the \textit{target function}. Optimally, we would derive the formula of the function explicitly. However, even though we suspect that such a function exists, we usually do not have enough information to derive a formula directly. Especially in reinforcement learning, the available information is very sparse. Thus, we aim to approximate the target function with \textit{function approximators} by using the available data. Hereafter, I will often talk about models to solve a reinforcement learning task. The models generally represent function approximators to solve a given problem.
 
 To overcome the mentioned difficulties unique to reinforcement learning, we need to experiment with alternative models and strategies than those used for supervised or unsupervised learning.
 
@@ -106,6 +108,8 @@ A sigmoid function is a mathematical function that maps an arbitrary input space
 
 The backpropagation algorithm's efficiency in calculating the gradient of an objective function is a key component of deep learning's success. However, there are certain limitations. For the backpropagation algorithm to be efficient, it relies on calculating accurate gradients. In fields like reinforcement learning, where we only have a reward signal that might be time delayed, this is a non-trivial task. In addition, there is a risk of getting stuck in a local optimum (\cite{ha2017visual}). These limits raise the question of which alternative models or techniques could be used that overcome these difficulties.
 
+\todo[inline]{Integrate sigmoid function. Better connect text.}
+
 
 %However, neural networks also come with a few limitations or disadvantages. The backpropagation algorithm requires the calculation of an accurate gradient. Depending on the problem, this can be a challenging task. For example, calculating an accurate gradient in RL problems is usually non-trivial. Furthermore, there is a lack of understanding. The output of a neural network is often incomprehensible because of its complex structure.
 
@@ -144,6 +148,8 @@ Neuroevolution is a method that we can use for direct policy search. Like deep r
 \section{Black-Box Optimization}
 but what is evo? here's a primer on black box optimization \\ \\
 In Black-Box Optimization (BBO), the problem structure, as well as the model, remains unknown. BBO methods optimize a parametrization without any constraints on the problem, model or solution needed. Thus, there is no constraint on differentiability or convexity. The optimization is done solely based on a score or cumulative reward, which makes these methods directly applicable to reinforcement learning problems.
+
+With BBO, we can use any function approximator.
 \todo[inline]{Explain more}
 
 \subsection{Random Weight Guessing}
@@ -180,9 +186,6 @@ CMA-ES (which is a ES-(mu,lambda)) (normal, adapt mean, adapt covariance, large 
 Covariance Matrix Adaptation Evolution Strategy (CMA-ES) is a method for non-linear, non-convex optimization problems in continuous domain. For each iteration (generation), a population of new individuals is generated by sampling a multivariate normal distribution. After each iteration, the mean and the covariance matrix is updated (\cite{hansen2016cma}).
 
 \todo[inline]{Include formulas from tutorial}
-
-\subsection{Function Approximators}
-With BBO, we can use any function approximator.
 
 \section{Research Questions}
 \label{sec:research_questions}
