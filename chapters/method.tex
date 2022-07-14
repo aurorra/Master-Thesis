@@ -3,91 +3,9 @@
 \chapter{Method}
 \label{ch:method}
 
-\section{Benchmarks in Reinforcement Learning}
-\label{sec:benchmarks}
-When developing a novel algorithm, it is important to compare our results with existing models. For this evaluation, we need standard benchmark problems. These are a set of standard optimization problems. OpenAI Gym is a toolkit created for exactly this scenario. As mentioned in Section~\ref{sec:gym}, it contains a collection of benchmark problems with various levels of difficulty. However, not all benchmark problems are meaningful for the evaluation of an algorithm. If a problem is too trivial to solve, the results do not reflect the quality of the model adequately. We do not need to put a large amount of effort into the creation of a complex model for an easy-to-solve task.
-
-In the paper \emph{Analyzing Reinforcement Learning Benchmarks with Random Weight Guessing} (\cite{oller_analyzing_2020}), the authors analyze and visualize the complexity of standard RL benchmarks based on score distribution. They tested their approach on the five Classic Control benchmark problems from the OpenAI Gym interface: \verb|CartPole|, \verb|Acrobot|, \verb|Pendulum|, \verb|MountainCar|, and \verb|MountainCarCon-| \verb|tinuous|. Given an RL environment, the authors conducted a fixed series of experiments. For these experiments, they used three neural network architectures ($N_{architectures}=3$): a network without any hidden layers (0 HL, 0 HU), a network with a single hidden layer of 4 units (1 HL, 4 HU), and a network with two hidden layers of 4 units each (2 HL, 4 HU). With these, they cover a variety of network models that are suited to solve the given tasks. The evaluation of the benchmark problems should be as objective as possible and should not include bias in the data. To achieve this, the authors did not include any learning opportunities for the network models. Instead, they chose the network weights i.i.d. from the standard normal distribution $\mathcal{N}(0,1)$ with Random Weight Guessing (RWG). This approach assures randomness and no directed learning. The goal of the paper was not to further analyze the network models but to investigate the benchmark problems themselves. With this in mind, they initialized $10^4$ samples ($N_{samples}=10^4$) with different random weights. The number of samples would be too large for a reasonable learning strategy. However, the large number of samples serves a different purpose than optimizing the results. Instead, the aim is to draw statistical conclusions. Each of these samples of a neural network represents a controller that maps observations to actions in the environment. Later in this thesis, I will explore function approximators other than neural networks representing the controller. In the paper, the authors tested the controllers for each environment during 20 independent episodes ($N_{episodes}=20$). For each episode, they saved the score in the score tensor $S$. Algorithm~\ref{alg:environment-evaluation} illustrates the procedure with pseudocode.
-
-\begin{algorithm}
-\caption{Evaluation process taken from \cite{oller_analyzing_2020}}
-\begin{algorithmic}[1]
-\State Initialize environment
-\State Create array $S$ of size $N_{architectures} \times N_{samples} \times N_{episodes}$
-\For{$n = 1,2,...,N_{samples}$}
-    \State Sample NN weights randomly from $\mathcal{N}(0,1)$
-    \For{$e=1,2,...,N_{episodes}$}
-      \State Reset the environment
-      \State Run episode with NN
-      \State Store accured episode reward in $S_{a,n,e}$
-    \EndFor
-\EndFor
-\end{algorithmic}
-\label{alg:environment-evaluation}
-\end{algorithm}
-
-After the authors obtained the scores, they calculated the mean performance over all episodes from a sample and its variance. These statistics are significant insights. They can reveal how stable the network models are in completing a given task. A low mean value suggests that, in general, the network cannot complete the task. The variance gives us further insight into the score distribution. It illustrates how spread out the scores are from their respective mean score. A high value means that we have high variability. A controller is valuable if it can solve a specific task reliably and stable. Therefore, we strive for a high value for the mean and a low value for the variance. However, training a network with random weight guessing should generally not result in a stable controller. If this is the case, we can assume that the task to solve was too trivial and is not valuable for evaluation measurements. In the illustrations of the paper, the authors ranked the samples according to their mean scores. They then visualized their results with three plots: a log-scale histogram of the mean scores, a scatter plot of the sample scores over their rank, a scatter plot of score variance over the mean score.
-
-I reproduced the results of the authors following the mentioned methodology. My findings for the environment \verb|CartPole| are displayed in Figure~\ref{fig:plots_reproduced}.
-\begin{figure}[ht]
-\centering
-\begin{subfigure}{\textwidth}
-  \centering
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_0_HU_0_histogram}
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_0_HU_0_scatter_score}
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_0_HU_0_scatter_sd}
-    \caption{Results of network architecture without hidden layers}
-    \label{fig:plots_reproduced_first}
-\end{subfigure}
-\begin{subfigure}{\textwidth}
-  \centering
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_1_HU_4_histogram}
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_1_HU_4_scatter_score}
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_1_HU_4_scatter_sd}
-    \caption{Results of network architecture with one hidden layer}
-    \label{fig:plots_reproduced_second}
-\end{subfigure}
-\begin{subfigure}{\textwidth}
-  \centering
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_2_HU_4_histogram}
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_2_HU_4_scatter_score}
-  \includegraphics[width=0.329\textwidth]{reproduced_plots/HL_2_HU_4_scatter_sd}
-    \caption{Results of network architecture with two hidden layers}
-    \label{fig:plots_reproduced_third}
-\end{subfigure}
-\caption[Reproduced Plots]{
-  \textbf{Results of the benchmark evaluation.}
-   The plots show a log-scale histogram of the mean scores (left images), a scatter plot of the sample scores over their rank (middle images), a scatter plot of score variance over the mean score (right image). As expected with RWG, most networks were not able to solve the given task. However, there is still a significant amount of samples achieving a mean score of 200. That suggests that the environment is trivial to solve.
-}
-\label{fig:plots_reproduced}
-\end{figure}
-The plots illustrate the results for each of the three network architectures. Each row shows the histogram of the mean score values in the left image, the scatter plot of all scores over their rank in the image in the middle, and the scatter plot of the score variance over the mean score in the right image for a specific network architecture. There are few differences, but overall all network architectures deliver similar insights. The histogram plots show that the majority of networks receive a low score. Since the weights of the networks were chosen with RWG, this is rather unsurprising. But there is still a significant amount of networks that were able to achieve a high mean value or even the maximum value of 200. With a score of 200, the network was able to solve the task each episode. Therefore, the network could reliably solve the task without any learning technique involved. This should not be the case for a complex task. Furthermore, in the scatter plot in the middle, we can see that the line plot of the mean scores is a continuous increasing line without any jumps. Thus, a suited RL algorithm should generally be able to learn the task incrementally without converging into a local optimum. At the top of the scatter plot, we can see quite a few data points with a score of 200 that have a relatively low mean score. This indicates that a network that generally performs poorly can still solve the task with the right initialization conditions. Lastly, in the scatter plot on the right, we can see the distribution of the variance according to the mean value. On the left side, we have low scores of variance corresponding with a low mean value. These networks were consistently unable to achieve a high score. Without any training involved, we can expect most networks to be in this area. However, in the middle of the plot, the data points are spread out. For a high variance, the scores of a network differ highly from the mean value. Thus, we might get lucky and receive a high score depending on initialization conditions, but we might as well get a low score. These networks are inconsistent and unstable. On the right side of the scatter plot, we can see that the data points with a high mean value are mostly of low variance. Thus, to achieve a high mean value, the network needs consistency.
-
-\subsection{Impact of Bias}
-Interestingly, the usage of the bias had a relatively large impact on the performance of the network in my experiments. Without bias, the networks seem to achieve overall better scores. All plots in Figure~\ref{fig:plots_reproduced} illustrate the results without bias. For comparison, Figure~\ref{fig:comparison_bias} shows the results of a network with two hidden layers with the same configurations as before but this time including bias. As we can see, the networks with bias connections have a much lower score in general. The number of networks that can consistently solve the task also decreases significantly. In the paper, the authors noted that the probability mass of top-performers generally increases when dropping the bias connections for all tested environments. Thus, this is not an isolated observation. However, they did not investigate this behavior further as it was not the focus of their paper.
-\begin{figure}[ht]
-\centering
-\includegraphics[width=0.329\textwidth]{with_bias_nn/HL_2_HU_4_histogram}
-\includegraphics[width=0.329\textwidth]{with_bias_nn/HL_2_HU_4_scatter_score}
-\includegraphics[width=0.329\textwidth]{with_bias_nn/HL_2_HU_4_scatter_sd}
-\caption[Impact of Bias]{
-  \textbf{Impact of bias.}
-  The figures show the performance of a network with two hidden layers with the same settings as before but here we include bias. We can clearly see that the network with bias connection performs much worse than the one without.
-}
-\label{fig:comparison_bias}
-\end{figure}
-One possible explanation could be that guessing additional weights might be fatal for achieving a good score. Or in other words: the more possibilities we have to falsely guess a weight, the higher the probability to fail. To test this hypothesis, we can alter the number of weights and compare the results. With an increased number of weights, we would expect the networks to perform worse than before. However, it could also be that the number of weights is not as impactful as the complexity of the model in general. Randomly guessing the parameters of a simple model has a higher chance to result in a good (simple) model than guessing the parameters of a more complex model. The complexity of the network architecture gives an upper bound for the function that can be approximated. A network with high complexity maps into a larger search space with more complex functions. Since the size of the search space increases, there are also more possible samples that fail to solve the task. As the paper showed, a simple model is sufficient to solve these environments. A complex model is oversized for our purpose here. Thus, randomly guessing a simple model can yield a model with good performance with enough attempts. However, it is unlikely to randomly guess a complex model that performs well without any training involved. To test this hypothesis, we can increase the complexity of a network by varying the number of hidden layers or the number of neurons in a hidden layer. With increased complexity, we would expect the networks to perform worse than before.
-
-Another interesting aspect would be to inspect the role of the bias in connection with the environments. A simple model is sufficient to solve a simple task. But what if the environment is more difficult to solve? In that case, the undersized complexity would limit us from finding an appropriate solution as the search space is not large enough for this scenario. Therefore, including bias should improve the results.
-
-The experiments following this thought process are described in Chapter~\ref{ch:experiments}.
-
-
-\todo[inline]{How much should be included here and how much in experiments/visualization? Rename section name?}
-
 \section{OpenAI Gym Environments}
 \label{sec:environments}
-OpenAI Gym offers five classic control environments ready to use: \verb|CartPole|, \verb|Acrobot|, \verb|MountainCar|, \verb|MountainCarContiuous|, and \verb|Pendulum|. The initial state of each environment is stochastic. Out of all environments OpenAI Gym provides, the classic control environments are considered the easier ones to solve. Each environment holds an observation and an action space. An agent performs some action from the action space and receives an observation describing how the environment's state changed.
+OpenAI Gym offers five classic control environments ready to use: \verb|CartPole|, \texttt{Acrobot}, \verb|MountainCar|, \verb|MountainCarContiuous|, and \verb|Pendulum|. The initial state of each environment is stochastic. Out of all environments OpenAI Gym provides, the classic control environments are considered the easier ones to solve. Each environment holds an observation and an action space. An agent performs some action from the action space and receives an observation describing how the environment's state changed.
 
 \subsection{CartPole}
 The \verb|CartPole| environment corresponds to the pole-balancing problem formulated in \emph{Neuronlike Adaptive Elements That Can Solve Difficult Learning Control Problems} (\cite{6313077}). A pole is attached to a cart that the agent can move along a one-dimensional track. Fig.~\ref{fig:cartpole} shows two possible states of this problem. In the image on the left, the pole is perfectly balanced and upright. The right image shows the pole tilted to the left. Thus, the cart should go to the left to correct the angle of the pole.
@@ -119,7 +37,7 @@ The \verb|CartPole| environment corresponds to the pole-balancing problem formul
   \label{table:cartpole_act}
 \end{table}
 
-\paragraph*{Observation Space:} For \verb|CartPole|, we receive four observations that inform us about the position and velocity of the cart and the pole. Table~\ref{table:cartpole_obs} shows all observations with the range of the corresponding values.
+\paragraph*{Observation Space:} For \verb|CartPole|, we receive four observations informing us about the position and velocity of the cart and the pole. Table~\ref{table:cartpole_obs} shows all observations with the range of the corresponding values.
 \begin{table}[!ht]
   \centering
   \begin{tabular}{ |c|c|c| }
@@ -194,10 +112,10 @@ The environment \verb|Acrobot| is based on the paper \emph{Generalization in Rei
   \label{table:acrobot_obs}
 \end{table}
 
-\paragraph*{Reward:} The goal of this task is to reach the target height with as few steps as possible. Thus, each step that does not attain the goal receives a negative reward of -1. Reaching the target height results in a reward of 0. The reward threshold is -100.
+\paragraph*{Reward:} The goal of this task is to reach the target height with as few steps as possible. Thus, each step that does not attain the goal receives a negative reward of -1. Reaching the target height results in a reward of 0. An episode ends after 500 time steps. \verb|Acrobot| is considered an unsolved environment, meaning there is no reward threshold at which we would consider it solved.
 
 \subsection{MountainCar and MountainCarContiuous}
-The environments \verb|MountainCar| and \verb|MountainCarContiuous| are two different versions of the same problem. The difference between the two is that \verb|MountainCar| has a discrete action space, and \verb|MountainCarContinuous| has a continuous action space. The goal of the task is to maneuver a car up a hill to its target. To achieve this, we need to strategically accelerate the car. An agent ought to learn how to swing from left to right to reach the target. This task is rather difficult to learn since we counterintuitively need to move in the opposite direction of the target to swing up. The problem first appeared in Andrew Moore's PhD thesis \emph{Efficient memory-based learning for robot control} (\cite{moore1990efficient}). Fig~\ref{fig:mountain_car} shows one possible state in the left image and the target state of the two environments in the right image.
+The environments \verb|MountainCar| and \verb|MountainCarContiuous| are two different versions of the same problem. The difference between the two is that \verb|MountainCar| has a discrete action space, and \verb|MountainCarContinuous| has a continuous action space. The goal of the task is to maneuver a car up a mountain to its target. However, the car's engine is not strong enough to drive up the mountain in one pass. To achieve the goal, we need to accelerate the car strategically. An agent should learn to swing from left to right to reach the target. This task is rather difficult to learn since we counterintuitively need to move in the opposite direction of the target to swing up. The problem first appeared in Andrew Moore's PhD thesis \emph{Efficient memory-based learning for robot control} (\cite{moore1990efficient}). Fig~\ref{fig:mountain_car} shows one possible state in the left image and the target state of the two environments in the right image.
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=0.4\textwidth]{mountain_car} \hspace*{10mm} \includegraphics[width=0.4\textwidth]{mountain_car_solved}
@@ -226,7 +144,7 @@ The environments \verb|MountainCar| and \verb|MountainCarContiuous| are two diff
   }
   \label{table:mountaincar_act}
 \end{table}
-The environment \verb|MountainCarContiuous|, on the other hand, accepts one continuous action per step. The action represents the directional force on the car and is clipped in the range of [-1, 1] and multiplied by a power of 0.0015.
+On the other hand, the environment \verb|MountainCarContiuous| accepts one continuous action per step. The action represents the directional force on the car and is clipped in the range of [-1, 1] and multiplied by a power of 0.0015.
 
 \paragraph*{Observation Space:} The environments \verb|MountainCar| and \verb|MountainCarContiuous| share the same observation space. They return two observations with information about the car's position and velocity. The observations are further described in Table~\ref{table:mountaincar_obs}.
 \begin{table}[!ht]
@@ -246,7 +164,7 @@ The environment \verb|MountainCarContiuous|, on the other hand, accepts one cont
   \label{table:mountaincar_obs}
 \end{table}
 
-\paragraph*{Reward:} To solve the task, the car has to reach the flag on the right hill as fast as possible. Each time step in which the agent cannot get tp the target, it receives a negative reward of -1 for the environment \verb|MountainCar|. For the environment \verb|MountainCarContiuous|, we receive a negative reward of $-0.1 * \text{action}^2$ for each step in which the car does not reach the target to penalize actions of large magnitude. When reaching the goal, we receive a positive reward of +100.
+\paragraph*{Reward:} To solve the task, the car has to reach the flag on the right hill as fast as possible. Each time step in which the agent cannot get to the target, it receives a negative reward of -1 for the environment \verb|MountainCar|. The task is considered solved when getting an average reward of -110.0 over 100 consecutive trials. For the environment \verb|MountainCarContiuous|, we receive a negative reward of $-0.1 * \text{action}^2$ for each step in which the car does not reach the target to penalize actions of large magnitude. When reaching the goal, we receive a positive reward of +100. \verb|MountainCarContiuous| is considered solved when getting an average reward of 90.0 over 100 consecutive trials.
 
 \subsection{Pendulum}
 For the environment \verb|Pendulum|, the system consists of a pendulum attached at one end to a fixed point and the other end being free. The goal is to apply torque on the free end to swing it to an upright position. This task is known as the inverted pendulum swing-up problem and is based on the classic problem in control theory. Figure~\ref{fig:pendulum} shows one possible state of the environment in the left image and the target state in the right one.
@@ -298,22 +216,108 @@ For the environment \verb|Pendulum|, the system consists of a pendulum attached 
   \label{table:pendulum_obs}
 \end{table}
 
-\paragraph*{Reward:} The reward function is defined as $r$ = -($\text{theta}^2$ + 0.1 * $\text{theta\_dt}^2$ + 0.001 * $\text{torque}^2$). Regardless of the received reward, an episode ends after 200 time steps.
+\paragraph*{Reward:} The reward function is defined as $r$ = -($\text{theta}^2$ + 0.1 * $\text{theta\_dt}^2$ + 0.001 * $\text{torque}^2$). Regardless of the received reward, an episode ends after 200 time steps. \verb|Pendulum| is an unsolved environment meaning that it has no reward threshold at which we consider it solved.
 
-\section{Visualization}
-For the visualization of the results, I am using similar plots as \cite{oller_analyzing_2020}. The type of plots I will be using is already presented in Figure~\ref{fig:plots_reproduced}. However, I will mainly be using the scatter plots shown in the middle. Figure~\ref{fig:visualization} shows an example of such a plot.
+
+\section{Analysis and Visualization}
+\label{sec:benchmarks}
+This thesis aims to deliver a proper analysis of different kinds of models in reinforcement learning. For this, we need appropriate methods and visualizations guaranteeing objectivity in evaluation.
+ % When developing a novel algorithm, it is important to compare our results with existing models. For this evaluation, we need standard benchmark problems. These are a set of standard optimization problems. OpenAI Gym is a toolkit created for exactly this scenario. As mentioned in Section~\ref{sec:gym}, it contains a collection of benchmark problems with various levels of difficulty. However, not all benchmark problems are meaningful for the evaluation of an algorithm. If a problem is too trivial to solve, the results do not reflect the quality of the model adequately. We do not need to put a large amount of effort into the creation of a complex model for an easy-to-solve task.
+\subsection{RWG-Paper}
+\cite{oller_analyzing_2020} deliver an excellent foundation for analysis in their paper \emph{Analyzing Reinforcement Learning Benchmarks with Random Weight Guessing}. Although their focus was not on the model's performance but on the complexity of reinforcement learning benchmarks, their framework can be easily adjusted to fit our purpose. In the paper, the authors analyze and visualize the complexity of standard reinforcement learning benchmarks based on score distribution. They tested their approach on the five classic control benchmark problems from the OpenAI Gym interface discussed in Section~\ref{sec:environments}. The authors conducted a fixed series of experiments with a reinforcement learning environment. For these experiments, they used three neural network architectures ($N_{architectures}=3$): a network without any hidden layers (0 HL, 0 HU), a network with a single hidden layer of 4 units (1 HL, 4 HU), and a network with two hidden layers of 4 units each (2 HL, 4 HU). With these, they cover a variety of network models that are suited to solve the given tasks.
+
+The evaluation of the benchmark problems should be as objective as possible and should not include bias in the data. To achieve this, the authors did not include learning opportunities for the network models. Instead, they chose the network weights i.i.d. from the standard normal distribution $\mathcal{N}(0,1)$ with RWG. This approach assures randomness and no directed learning. They initialized $10^4$ samples ($N_{samples}=10^4$) with different random weights. The number of samples would be too large for a reasonable learning strategy. However, the large number of samples serves a different purpose than optimizing the results. Instead, the aim is to draw statistical conclusions. Each of these neural network samples represents a controller that maps observations to actions in the environment. Chapter~\ref{ch:experiments} aims to explore function approximators other than neural networks representing the controller. In the paper, the authors tested the controllers for each environment during 20 independent episodes ($N_{episodes}=20$). They saved the score in the score tensor $S$ for each episode. Algorithm~\ref{alg:environment-evaluation} illustrates the procedure with pseudocode.
+
+\begin{algorithm}
+\caption{Evaluation process taken from \cite{oller_analyzing_2020}}
+\begin{algorithmic}[1]
+\State Initialize environment
+\State Create array $S$ of size $N_{architectures} \times N_{samples} \times N_{episodes}$
+\For{$n = 1,2,...,N_{samples}$}
+    \State Sample NN weights randomly from $\mathcal{N}(0,1)$
+    \For{$e=1,2,...,N_{episodes}$}
+      \State Reset the environment
+      \State Run episode with NN
+      \State Store accured episode reward in $S_{a,n,e}$
+    \EndFor
+\EndFor
+\end{algorithmic}
+\label{alg:environment-evaluation}
+\end{algorithm}
+
+After obtaining the scores, the authors calculated the mean performance over all episodes from a sample and its variance. These statistics are significant insights. They can reveal how stable the network models are in completing a task. A low mean value suggests that, in general, the network cannot complete the task. The variance gives us further insight into the score distribution. It illustrates how spread out the scores are from their respective mean score. A high value means that we have high variability. A controller is valuable if it can solve a specific task reliably and stable. Therefore, we strive for a high value for the mean and a low value for the variance. However, training a network with random weight guessing should generally not result in a stable controller. If this is the case, we can assume that the task to solve was too trivial and is not valuable for evaluation measurements. In the illustrations of the paper, the authors ranked the samples according to their mean scores. They then visualized their results with three plots: a log-scale histogram of the mean scores, a scatter plot of the sample scores over their rank, and a scatter plot of score variance over the mean score.
+
+\paragraph*{Reproduction of the results:} I reproduced the results of the authors following the mentioned methodology. My findings for the environment \verb|CartPole| are displayed in Figure~\ref{fig:plots_reproduced}.
+\begin{figure}[ht]
+\centering
+\begin{subfigure}{\textwidth}
+  \centering
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/CartPole-v0_NN_HL_0_HU_0_histogram}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/CartPole-v0_NN_HL_0_HU_0_scatter_score}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/CartPole-v0_NN_HL_0_HU_0_scatter_sd}
+    \caption{Results of the network architecture without hidden layers}
+    \label{fig:plots_reproduced_first}
+\end{subfigure}
+\begin{subfigure}{\textwidth}
+  \centering
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/CartPole-v0_NN_HL_1_HU_4_histogram}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/CartPole-v0_NN_HL_1_HU_4_scatter_score}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/CartPole-v0_NN_HL_1_HU_4_scatter_sd}
+    \caption{Results of the network architecture with one hidden layer}
+    \label{fig:plots_reproduced_second}
+\end{subfigure}
+\begin{subfigure}{\textwidth}
+  \centering
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/CartPole-v0_NN_HL_2_HU_4_histogram}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/CartPole-v0_NN_HL_2_HU_4_scatter_score}
+  \includegraphics[width=0.329\textwidth]{reproduced_plots/CartPole-v0_NN_HL_2_HU_4_scatter_sd}
+    \caption{Results of the network architecture with two hidden layers}
+    \label{fig:plots_reproduced_third}
+\end{subfigure}
+\caption[Results of the benchmark evaluation]{
+  \textbf{Results of the benchmark evaluation.}
+   The plots show a log-scale histogram of the mean scores (left images), a scatter plot of the sample scores over their rank (middle images), and a scatter plot of score variance over the mean score (right image). As expected with RWG, most networks could not solve the given task. However, a significant number of samples still achieve a mean score of 200. That suggests that the environment is trivial to solve.
+}
+\label{fig:plots_reproduced}
+\end{figure}
+The plots illustrate the results for each of the three network architectures. Each row shows the histogram of the mean score values in the left image, the scatter plot of all scores over their rank in the image in the middle, and the scatter plot of the score variance over the mean score in the right image for the corresponding network architecture. There are few differences, but overall all network architectures deliver similar insights.
+
+The histogram plots show that most networks receive a low score. Since the weights of the networks were chosen with RWG, this is relatively unsurprising. Nevertheless, there is still a significant amount of networks that were able to achieve a high mean value or even the maximum value of 200. With a score of 200, the network solved the task in each episode. Therefore, the network could reliably solve the task without any learning technique involved. This behavior should not be the case for a complex task. Furthermore, in the scatter plot in the middle, we can see that the line plot of the mean scores is a continuous increasing line without any jumps. Thus, a suited learning algorithm should generally be able to learn the task incrementally without converging into a local optimum. At the top of the scatter plot, we can see quite a few data points with a score of 200 that have a relatively low mean score. This behavior indicates that a network that generally performs poorly can still solve the task with the right initialization conditions. Lastly, in the scatter plot on the right, we can see the distribution of the variance according to the mean value. On the left side, we have low scores of variance corresponding with a low mean value. These networks were consistently unable to achieve a high score. We can expect most networks to be in this area without any training. However, the data points are spread out in the middle of the plot. For a high variance, the scores of a network differ highly from the mean value. Thus, we might get lucky and receive a high score depending on initialization conditions, but we might also get a low score. These networks are inconsistent and unstable. On the right side of the scatter plot, we can see that the data points with a high mean value are primarily of low variance. Thus, to achieve a high mean value, the network needs consistency.
+
+\paragraph*{Impact of Bias:} Interestingly, the usage of the bias had a relatively significant impact on the performance of the network in my experiments. Without bias, the networks seem to achieve better scores overall. All plots in Figure~\ref{fig:plots_reproduced} illustrate the results without bias. For comparison, Figure~\ref{fig:comparison_bias} shows the results of a network with two hidden layers with the same configurations as before, but this time including bias.
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.329\textwidth]{with_bias_nn/CartPole-v0_NN_HL_2_HU_4_histogram}
+\includegraphics[width=0.329\textwidth]{with_bias_nn/CartPole-v0_NN_HL_2_HU_4_scatter_score}
+\includegraphics[width=0.329\textwidth]{with_bias_nn/CartPole-v0_NN_HL_2_HU_4_scatter_sd}
+\caption[Impact of bias]{
+  \textbf{Impact of bias.}
+  The figures show the performance of a network with two hidden layers with the same settings as before, but here we include bias. We can see that the network with bias connections performs much worse than those without bias connections.
+}
+\label{fig:comparison_bias}
+\end{figure}
+As we can see, the networks with bias connections generally have a much lower score. The number of networks that can consistently solve the task also decreases significantly. In the paper, the authors noted that the probability mass of top-performers generally increases when all tested environments drop the bias connections. Thus, this is not an isolated observation. However, they did not investigate this behavior further as it was not the focus of their paper.
+
+One possible explanation could be that guessing additional weights might be fatal for achieving a good score. In other words: the more possibilities we have to guess a weight falsely, the higher the probability of failing. To test this hypothesis, we can alter the number of weights and compare the results. With an increased number of weights, we would expect the networks to perform worse than before. However, it could also be that the number of weights is not as impactful as the complexity of the model. Randomly guessing the parameters of a simple model has a higher chance of resulting in a good (simple) model than guessing the parameters of a more complex model. The complexity of the network architecture gives an upper bound for the function that we can approximate. A network with high complexity maps into a larger search space with more complex functions. Since the size of the search space increases, there are also more possible samples that fail to solve the task. The paper showed that a simple model is sufficient to solve these environments. A complex model is oversized for our purpose here. Thus, randomly guessing a simple model can yield a model with good performance with enough attempts. However, it is unlikely to randomly guess a complex model that performs well without any training involved. To test this hypothesis, we can increase the complexity of a network by varying the number of hidden layers or the number of neurons in a hidden layer. With increased complexity, we would expect the networks to perform worse than before.
+
+Another interesting aspect would be to inspect the role of the bias in connection with the environments. A simple model is sufficient to solve a simple task. Nevertheless, what if the environment is more difficult to solve? In that case, the undersized complexity would limit us from finding an appropriate solution as the search space is not large enough for this scenario. Therefore, including bias should improve the results.
+
+Next to the analysis of the models, Chapter~\ref{ch:experiments} also contains the experiments following this thought process.
+
+\subsection{Visualization}
+For the visualization of the results, I am using similar plots as \cite{oller_analyzing_2020}. Figure~\ref{fig:plots_reproduced} already presented the type of plots used for the visualization in Chapter~\ref{ch:experiments}. However, I only use the scatter plots in the middle image because it transparently illustrates a high amount of information. Figure~\ref{fig:visualization} shows an example of such a plot.
 \begin{figure}[!ht]
   \centering
-\includegraphics[width=.5\linewidth]{NN/CartPole_NN_HL_0_HU_0_scatter_score.png}
+\includegraphics[width=.85\linewidth]{NN/NN_CartPole}
 \caption[Visualization of results]{
   \textbf{Visualization of results.}
-  The image shows an example of the visualization of the conducted experiments. The scatter plot represents the individual sample scores $S_{n,e}$ for episode $e$ over the rank $R(n)$ of the sample $n$. The overlaid line plot consists of the mean scores $M_n$ for each sample.
+  The image shows an example of the visualization of the conducted experiments. The scatter plot represents the individual sample scores $S_{n,e}$ for episode $e$ over the rank $R(n)$ of the sample $n$. The overlaid line plot consists of each sample's mean scores $M_n$.
 }
 \label{fig:visualization}
 \end{figure}
-For a better analysis, the samples are sorted according to their mean score. The position of a sample $n$ within the sorted list is referred to as its rank $R(n)$. In the plot, the samples are aligned according to their rank on the x-axis. Each red dot represents the individual sample score $S_{n,e}$ for sample $n$ in episode $e$. The overlaid line plot represents the mean score $M_n$ of sample $n$ over all episodes. Thus, the line plot is a naturally increasing curve of the mean scores. The scatter plot indicates the variety of scores for one sample. The title of the plot informs us which model and how many weights were used. In addition, the corresponding OpenAI gym environment is declared.
+The different architectures of the model are aligned in the columns, and the row represents the environment. In this case, I am using three neural network architectures and the \verb|CartPole| environment. In each image, the samples are sorted according to their mean score for better analysis. The position of a sample $n$ within the sorted list is referred to as its rank $R(n)$. In the plot, the samples are aligned according to their rank on the x-axis. Each red dot represents the individual sample score $S_{n,e}$ for sample $n$ in episode $e$. The overlaid line plot represents the mean score $M_n$ of sample $n$ over all episodes. Thus, the line plot is a naturally increasing curve of the mean scores. The scatter plot indicates the variety of scores for one sample. The title of the plot informs us which model and how many weights were used. In addition, the corresponding OpenAI gym environment is declared.
 
-\todo[inline]{Rethink paper section, present plots here for the first time?}
+%\todo[inline]{Maybe explain more.}
 
 \section{Alternative Models}
 \label{sec:models}
@@ -330,7 +334,7 @@ where $F[x]$ represents the set of all such polynomials (\cite{fischer2014}, p. 
 \end{align*}
 Polynomials are relatively simple mathematical expressions and offer some significant advantages: their derivative and indefinite integral are easy to determine and are also polynomial. Due to their simple structure, polynomials can be valuable to analyze more complex functions using polynomial approximations. \textit{Taylor's theorem} tells us that we can locally approximate any $k$-times differentiable function by a polynomial of degree $k$. We call this approximation \textit{Taylor polynomial}. Furthermore, the \textit{Weierstrass approximation theorem} says that we can uniformly approximate every continuous function defined on a closed interval by a polynomial. Other applications of polynomials are \textit{polynomial interpolation} and \textit{polynomial splines}. Polynomial interpolation describes the problem of constructing a polynomial that passes through all given data points. Polynomial splines are piecewise polynomial functions that can be used for spline interpolation.
 
-For the experiments with the polynomial model in Chapter~\ref{ch:experiments}, I constructed the model $P_1$. It consists of one polynomial for each possible action in a discrete action space. The input of the model is the observation of the environment. The dimension of the weight vectors is according to the dimension of the input vector. For example, for the environment \verb|CartPole| with the discrete action space $\{0, 1\}$ and observation $\mathbf{x} = [x_0, x_1, x_2, x_3]^T$, this means that $P_1$ consists of two polynomials:
+\paragraph*{Construction of the model:} For the experiments with the polynomial model in Chapter~\ref{ch:experiments}, I constructed the model $P_1$. It consists of one polynomial for each possible action in a discrete action space. The input of the model is the observation of the environment. The dimension of the weight vectors is according to the dimension of the input vector. For example, for the environment \verb|CartPole| with the discrete action space $\{0, 1\}$ and observation $\mathbf{x} = [x_0, x_1, x_2, x_3]^T$, this means that $P_1$ consists of two polynomials:
 \begin{align*}
   &p_0(\mathbf{x}) = \Sigma_{i=0}^{n} \mathbf{w_i}^T (x_k^i)_{k \in I} \in \mathbb{R}, &\mathbf{w_0}, ..., \mathbf{w_3}, \mathbf{x} \in \mathbb{R}^4, \ \ I = \{0, 1, 2, 3\} \\
   &p_1(\mathbf{x}) = \Sigma_{i=0}^{n} \mathbf{\hat{w}_i}^T (x_k^i)_{k \in I} \in \mathbb{R}, &\mathbf{\hat{w}_0}, ..., \mathbf{\hat{w}_3}, \mathbf{x} \in \mathbb{R}^4, \ \ I = \{0, 1, 2, 3\}
@@ -361,29 +365,48 @@ So, I scaled the outputs with the logistic sigmoid function. We can interpret th
 %   \begin{cases}1~&{\text{ if }}~sig(p(\mathbf{x}))>0.5~,\\0~&~\text{otherwise}~.\end{cases}
 % \]
 
-\todo[inline]{Include theorems (Taylor, Weierstass) \\ Explain difference between approximation and interpolation \\ Does $F^n$ make sense?}
-
-\subsection{Splines}
-General splines, adjustments \\ \\
-Splines can also be used as function approximators. However, with splines we do not aim to approximate the whole function but rather return a piecewise approximation.
-
-\todo[inline]{First was sind splines, dann herleitung in this case.}
+% \subsection{Splines}
+% General splines, adjustments \\ \\
+% Splines can also be used as function approximators. However, with splines we do not aim to approximate the whole function but rather return a piecewise approximation.
+%
+% \todo[inline]{First was sind splines, dann herleitung in this case.}
 
 
 \subsection{Binary Trees}
-A binary trees are data structures in computer science with a rather simple structure. The tree consists of nodes that each have at most two children, referred to as left child and right child.
-
+A binary tree is an abstract data type in computer science with a relatively simple design. A binary tree represents a hierarchical tree structure consisting of a set of connected nodes. A node is a structure that can hold data and connections to other nodes, also called links or edges. Nodes in a binary tree can have at most two child nodes. A node's child nodes are those connected to it and situated beneath it in the tree. The node is then called the parent node in the perspective of its child nodes. Since there are at most two child nodes, we typically refer to them as left child and right child, depending on their position. Figure~\ref{fig:binary_tree_illustration} illustrates an example of a binary tree with seven nodes.
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=0.4\textwidth]{binary_tree}
 \caption[Example of a binary tree]{
   \textbf{Example of a binary tree.}
-  The figure shows an example of a binary tree with seven nodes.
+  The figure shows an example of a binary tree consisting of seven nodes.
 }
 \label{fig:binary_tree_illustration}
 \end{figure}
+The topmost node is called the root node. By design, there exists a path from the root node to every other node of the tree. The nodes which do not have child nodes are commonly called leaf nodes.
 
-There exist already some tree-based machine learning algorithms. However, they are mostly used in supervised learning.
-% https://medium.com/analytics-vidhya/tree-based-machine-learning-algorithms-explained-b50937d3cf8e
+There are many applications for binary trees. One important example is the binary search tree. Each node of the binary search tree contains a key. The nodes are positioned according to their key in the hierarchy of the tree. For this reason, binary search trees are very efficient for searching. In addition, we can use binary trees as decision trees for machine learning problems. Decision trees represent a predictive model to come to conclusions about a set of observations. For each node, we assess a feature, and a child node is selected accordingly. This process starts at the root node, and we repeat it until reaching a leaf node. The leaf node then holds the value of the target variable. In classification problems, the target variable takes on a value inside a discrete set of values. The leaves then represent the class labels. The target variable can also take on a constant value inside a specified range for regression problems.
 
-\todo[inline]{Herleitung von splines erklären -> vielleicht in vorheriger subsection? Explain continuous envs.}
+The approach to decision trees is simple and intuitive when comparing them with other algorithms in machine learning. Decision trees split the input space into multiple partitions. When the dataset is splittable, it works well with fast predictions. Tree-based models like C4.5 which is an extension of the earlier ID3 algorithm and CART became quite popular (\cite{quinlan2014c4}; \cite{breiman2017classification}). C4.5 was even ranked one of the top ten algorithms in data mining (\cite{wu2008top}). Another advantage of decision trees is their interpretability since they implement rules humans can easily analyze. There were also approaches combining neural networks and decision trees. \cite{yang2018deep} introduced a neural network-based tree model DNDT which performed better for some datasets than neural networks while providing an interpretable decision process. Despite the success of decision trees in supervised learning problems, decision trees are not commonly used in reinforcement learning. Reinforcement learning introduces many challenges, including that the model has to constantly adapt as the interaction between the agent and the environment continues. \cite{silva2020optimization} approached this challenge by allowing for a gradient update over the entire tree.
+
+\paragraph*{Construction of the model:} Since this study aims to experiment with models that will be optimized with black-box optimization techniques, we can use a simple binary tree model without any constraints on it. Each node holds three properties: \verb|values|, \verb|left|, \verb|right|. The variables \verb|left| and \verb|right| contain the two child nodes. If they are empty, the node is a leaf. The variable \verb|values| holds the model's output if the node is a leaf. Otherwise, it contains the weights used for the decision strategy. Figure~\ref{fig:binary_tree_model_illustration} illustrates the decision process of the binary tree model for the environment \verb|CartPole|.
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=0.5\textwidth]{binary_tree_model}
+\caption[Illustration of binary tree model]{
+  \textbf{Illustration of binary tree model.}
+  The figure illustrates the binary tree model with the environment \texttt{CartPole}.
+}
+\label{fig:binary_tree_model_illustration}
+\end{figure}
+The illustrated model has one node for the decision finding and two leaf nodes containing the two possible discrete actions, 0 and 1. The dot product defines the decision-making process. For the environment \verb|CartPole| with observations $\mathbf{x} = [x_0, x_1, x_2, x_3]^T$, this results in the following formula:
+\[
+  f(\mathbf{x}) = \mathbf{w}^T\mathbf{x} = w_0 x_0 + w_1 x_1 + w_2 x_2 + w_3 x_3
+\]
+The variable $w$ represents the weights of the model. The actions of the leaves are fixed, whereas an optimization technique optimizes the weights of the nodes involved in the decision-making process.
+
+The implementation is straightforward for environments like \verb|CartPole| where we only have two possible discrete actions. However, for an action space with more than two actions possible, the binary tree still has the same structure, but the decision is fixed between the minimum action and the maximum action. For example, for the environment \verb|Acrobot|, the minimum action is to apply -1 torque to the joint, and the maximum action is to apply 1 torque to the joint. In this case, we discard the action of applying 0 torque to the joint. Similarly, for environments with a continuous action space, we again take the minimum and the maximum of the value of the action. For the environment \verb|Pendulum|, this would be -2.0 and +2.0.
+
+The only hyperparameter we have with this model is the number of nodes for the decision process. That makes hyperparameter tuning much more straightforward than it would be for other models like neural networks. Note that the leaves do not count as nodes for the model's architecture since each path in the tree has to result in a final decision between two actions. The leaf nodes are mandatory in that sense and thus cannot be altered in their number.
+
+%\todo[inline]{Herleitung von splines erklären?}

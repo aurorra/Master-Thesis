@@ -7,13 +7,13 @@ This chapter aims to answer the research questions formulated in Section~\ref{se
 \section{Experiments}
 This section describes the experiments I used in order to investigate and answer the formulated research questions. We can break down the experiments into three categories: reproduction of the results of the paper \emph{Analyzing Reinforcement Learning Benchmarks with Random Weight Guessing}, comparison of the alternative models described in Section~\ref{sec:models} to neural networks, and an analysis of the impact of bias in these settings.
 
-\subsection{Reproduction of RWG-Paper}
+\subsection{Reproduction of the RWG-Paper}
 For a starting point, I reproduced the results of the paper \emph{Analyzing Reinforcement Learning Benchmarks with Random Weight Guessing} discussed in Section~\ref{sec:benchmarks}. I used the same methodology as the authors of the paper did. In specific, I used three network architectures: a network without any hidden layers (0 HL, 0 HU), a network with a single hidden layer of 4 units (1 HL, 4 HU), and a network with two hidden layers of 4 units each (2 HL, 4 HU). I used the same procedure as explained in pseudocode in Algorithm~\ref{alg:environment-evaluation} using RWG. I tested the three neural networks for all five classic control environments provided by the OpenAI Gym interface: \verb|CartPole|, \verb|Acrobot|, \verb|Pendulum|, \verb|MountainCar|, and \verb|MountainCarContinuous|. For the next experiments, the reproduced results serve as a guideline to judge the effectiveness of the alternative models in comparison with neural networks.
 
 \subsection{Comparison of Alternative Models to Neural Networks}
 This experiment aims to provide a comparison of alternative models to the commonly used neural network model. I selected a few promising models and analyzed them with the help of the classic control environments. Analogous to the neural networks, I used three architectures for each model with increasing complexity. I conducted the following experiments:
 \begin{enumerate}[label=(\alph*)]
-  \item In the first experiment, I took the polynomial model $P_1$ and $P_2$ and tested them on the discrete classic control environments. I used polynomials of degrees 1, 2, and 3.
+  \item In the first experiment, I took the polynomial model $P_1$ and tested it on the discrete classic control environments. I used polynomials of degrees 1, 2, and 3.
   \item In the second experiment, I tested the binary tree model on all five classic control environments. I used binary trees with 1, 4, and 8 nodes.
 \end{enumerate}
 I described the models in more detail in Section~\ref{sec:environments}. For the experiments, I used the same procedure as in \emph{Analyzing Reinforcement Learning Benchmarks with Random Weight Guessing} with only slight adaption. Thus, we can directly compare the results of the alternative models to those of neural networks. Another important aspect of this procedure is that there is no learning involved. For their paper, the authors were interested in the complexity of the environment, whereas I aim to find out more about the nature of the models. The classic control environments are relatively easy to solve, as explained in Section~\ref{sec:benchmarks}. Therefore, we expect some controllers to solve the task even without any learning involved.
@@ -37,8 +37,6 @@ For the experiments, first, I initialized the environment. Second, I initialized
 \label{alg:model-evaluation}
 \end{algorithm}
 
-\todo[inline]{Include splines or not?}
-
 \subsection{Analysis of the Impact of Bias}
 The authors of the paper \emph{Analyzing Reinforcement Learning Benchmarks with Random Weight Guessing} indicate that using bias worsens the performance of neural networks in their experimental setting. This experiment serves to analyze this behavior. I used the same procedure as explained in the paper with the same three neural network architectures: a network without any hidden layers (0 HL, 0 HU), a network with a single hidden layer of 4 units (1 HL, 4 HU), and a network with two hidden layers of 4 units each (2 HL, 4 HU). First, I reproduced the results for the networks with bias to confirm their findings. Then, I varied the number of (a) weights, (b) hidden layers, and (c) neurons for a neural network. To get insights into whether this observation is specific to neural networks, I additionally used the polynomial model for the experiment concerning the variation of the weights of the model. In more detail, the experiments I conducted in this matter are the following:
 \begin{enumerate}[label=(\alph*)]
@@ -54,28 +52,12 @@ The authors of the paper \emph{Analyzing Reinforcement Learning Benchmarks with 
 \subsection{Reproduction of RWG-Paper}
 Figure~\ref{fig:results_NN} shows the results for all five classic control environments using neural networks without bias.
 \begin{figure}[!ht]
-\begin{figrow}
-\item \label{row:NN_CartPole}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{NN/CartPole_NN_HL_0_HU_0_scatter_score.png}
-\includegraphics[width=.3\linewidth]{NN/CartPole_NN_HL_1_HU_4_scatter_score.png}
-\includegraphics[width=.3\linewidth]{NN/CartPole_NN_HL_2_HU_4_scatter_score.png}}
-\item \label{row:NN_Acrobot}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{NN/Acrobot_NN_HL_0_HU_0_scatter_score.png}
-\includegraphics[width=.3\linewidth]{NN/Acrobot_NN_HL_1_HU_4_scatter_score.png}
-\includegraphics[width=.3\linewidth]{NN/Acrobot_NN_HL_2_HU_4_scatter_score.png}}
-\item \label{row:NN_MountainCar}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{NN/MountainCar_NN_HL_0_HU_0_scatter_score.png}
-\includegraphics[width=.3\linewidth]{NN/MountainCar_NN_HL_1_HU_4_scatter_score.png}
-\includegraphics[width=.3\linewidth]{NN/MountainCar_NN_HL_2_HU_4_scatter_score.png}}
-\item \label{row:NN_MountainCarCont}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{NN/MountainCarCont_NN_HL_0_HU_0_scatter_score.png}
-\includegraphics[width=.3\linewidth]{NN/MountainCarCont_NN_HL_1_HU_4_scatter_score.png}
-\includegraphics[width=.3\linewidth]{NN/MountainCarCont_NN_HL_2_HU_4_scatter_score.png}}
-\item \label{row:NN_Pendulum}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{NN/Pendulum_NN_HL_0_HU_0_scatter_score.png}
-\includegraphics[width=.3\linewidth]{NN/Pendulum_NN_HL_1_HU_4_scatter_score.png}
-\includegraphics[width=.3\linewidth]{NN/Pendulum_NN_HL_2_HU_4_scatter_score.png}}
-\end{figrow}
+  \centering
+  \includegraphics[width=.85\linewidth]{NN/NN_CartPole}
+  \includegraphics[width=.85\linewidth]{NN/NN_Acrobot}
+  \includegraphics[width=.85\linewidth]{NN/NN_MountainCar}
+  \includegraphics[width=.85\linewidth]{NN/NN_MountainCarContinuous}
+  \includegraphics[width=.85\linewidth]{NN/NN_Pendulum}
 \caption[Results for all classic control environments using neural networks without bias]{
   \textbf{Results for all classic control environments using neural networks without bias.}
    Each row shows the results of one environment, whereas the columns represent the different network architectures. These plots are a reproduction of the results of the RWG-paper. My results are consistent with those shown in the paper.
@@ -87,20 +69,10 @@ For each plot, the samples are ranked according to their mean score and aligned 
 \subsection{Polynomial Model}
 Figure~\ref{fig:results_Polynomial} shows the results for the discrete classic control environments using the polynomial model $P_1$ without bias. The visualization is identical to the one I used for the neural networks in Figure~\ref{fig:results_NN}. The rows show the results for the different environments, and the columns show the polynomial with degrees 1, 2, and 3.
 \begin{figure}[!ht]
-\begin{figrow}
-\item \label{row:Polynomial_CartPole}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{PolynomialNN/without_bias/CartPole-v0_PolynomialNN_degree_1_scatter_score}
-\includegraphics[width=.3\linewidth]{PolynomialNN/without_bias/CartPole-v0_PolynomialNN_degree_2_scatter_score}
-\includegraphics[width=.3\linewidth]{PolynomialNN/without_bias/CartPole-v0_PolynomialNN_degree_3_scatter_score}}
-\item \label{row:Polynomial_Acrobot}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{PolynomialNN/without_bias/Acrobot-v1_PolynomialNN_degree_1_scatter_score}
-\includegraphics[width=.3\linewidth]{PolynomialNN/without_bias/Acrobot-v1_PolynomialNN_degree_2_scatter_score}
-\includegraphics[width=.3\linewidth]{PolynomialNN/without_bias/Acrobot-v1_PolynomialNN_degree_3_scatter_score}}
-\item \label{row:Polynomial_MountainCar}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{PolynomialNN/without_bias/MountainCar-v0_PolynomialNN_degree_1_scatter_score}
-\includegraphics[width=.3\linewidth]{PolynomialNN/without_bias/MountainCar-v0_PolynomialNN_degree_2_scatter_score}
-\includegraphics[width=.3\linewidth]{PolynomialNN/without_bias/MountainCar-v0_PolynomialNN_degree_3_scatter_score}}
-\end{figrow}
+  \centering
+  \includegraphics[width=0.85\linewidth]{PolynomialNN/without_bias/P_CartPole.png}
+  \includegraphics[width=0.85\linewidth]{PolynomialNN/without_bias/P_Acrobot.png}
+  \includegraphics[width=0.85\linewidth]{PolynomialNN/without_bias/P_Acrobot.png}
 \caption[Results for the discrete classic control environments using the polynomial model $\mathbf{P_1}$ without bias]{
   \textbf{Results for the discrete classic control environments using the polynomial model $\mathbf{P_1}$ without bias.}
    Each row shows the results of one environment. The columns represent the different degrees of the polynomials. In these plots, the model $P_1$ was used. The results aligned in the first column are almost indistinguishable from the ones of the neural networks without hidden layers. Nonetheless, the environments \texttt{CartPole} and \texttt{Acrobot} deliver different results for a higher degree of the polynomial.
@@ -117,20 +89,10 @@ Looking at the first column, we can see a striking resemblance to the performanc
 
 \paragraph*{Bias:} Figure~\ref{fig:results_Polynomial_bias} shows the results of using the polynomial model $P_1$ to solve the discrete classic control environments using bias.
 \begin{figure}[!ht]
-\begin{figrow}
-\item \label{row:Polynomial_CartPole_bias}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{PolynomialNN/with_bias/CartPole-v0_PolynomialNN_degree_1_scatter_score}
-\includegraphics[width=.3\linewidth]{PolynomialNN/with_bias/CartPole-v0_PolynomialNN_degree_2_scatter_score}
-\includegraphics[width=.3\linewidth]{PolynomialNN/with_bias/CartPole-v0_PolynomialNN_degree_3_scatter_score}}
-\item \label{row:Polynomial_Acrobot_bias}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{PolynomialNN/with_bias/Acrobot-v1_PolynomialNN_degree_1_scatter_score}
-\includegraphics[width=.3\linewidth]{PolynomialNN/with_bias/Acrobot-v1_PolynomialNN_degree_2_scatter_score}
-\includegraphics[width=.3\linewidth]{PolynomialNN/with_bias/Acrobot-v1_PolynomialNN_degree_3_scatter_score}}
-\item \label{row:Polynomial_MountainCar_bias}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{PolynomialNN/with_bias/MountainCar-v0_PolynomialNN_degree_1_scatter_score}
-\includegraphics[width=.3\linewidth]{PolynomialNN/with_bias/MountainCar-v0_PolynomialNN_degree_2_scatter_score}
-\includegraphics[width=.3\linewidth]{PolynomialNN/with_bias/MountainCar-v0_PolynomialNN_degree_3_scatter_score}}
-\end{figrow}
+  \centering
+  \includegraphics[width=.85\linewidth]{PolynomialNN/with_bias/P_CartPole}
+  \includegraphics[width=.85\linewidth]{PolynomialNN/with_bias/P_Acrobot}
+  \includegraphics[width=.85\linewidth]{PolynomialNN/with_bias/P_MountainCar}
 \caption[Results for the discrete classic control environments using the polynomial model $\mathbf{P_1}$ with bias]{
   \textbf{Results for the discrete classic control environments using the polynomial model $\mathbf{P_1}$ with bias.}
    Each row shows the results of one environment. The columns represent the different degrees of the polynomials. For these plots, the polynomial model $P_1$ was used. Overall, the model performs noticeably worse with bias as opposed to without bias.
@@ -139,33 +101,15 @@ Looking at the first column, we can see a striking resemblance to the performanc
 \end{figure}
 Comparing these results with those without using bias in Figure~\ref{fig:results_Polynomial} shows a significant difference. The bias influences the performance of the model negatively. The individual and mean scores are visibly lower for all three environments for all three configurations of the model. Thus, the observation about the bias the authors made in the paper \emph{Analyzing Reinforcement Learning Benchmarks with Random Weight Guessing} is not specific to neural networks but seems to be more of a general factor.
 
-\todo[inline]{Mention $P_2$ (failed for MountainCar otherwise similar results).}
-
 \subsection{Binary Tree Model}
 For the binary trees, I tested three models, one with 1 node, one with 4 nodes, and one with 8 nodes. Since the previous experiments suggest that using bias has a negative effect, the following experiments do not include bias. Figure~\ref{fig:results_BinaryTree} shows the results for all five classic control environments with the binary tree model.
 \begin{figure}[!ht]
-\begin{figrow}
-\item \label{row:BinaryTree_CartPole} \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{Binary_Tree/CartPole_BinaryTree_1_nodes_scatter_score.png}
-\includegraphics[width=.3\linewidth]{Binary_Tree/CartPole_BinaryTree_4_nodes_scatter_score.png}
-\includegraphics[width=.3\linewidth]{Binary_Tree/CartPole_BinaryTree_8_nodes_scatter_score.png}}
-\item \label{row:BinaryTree_Acrobot} \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{Binary_Tree/Acrobot_BinaryTree_1_nodes_scatter_score.png}
-\includegraphics[width=.3\linewidth]{Binary_Tree/Acrobot_BinaryTree_4_nodes_scatter_score.png}
-\includegraphics[width=.3\linewidth]{Binary_Tree/Acrobot_BinaryTree_8_nodes_scatter_score.png}}
-\item \label{row:BinaryTree_MountainCar} \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{Binary_Tree/MountainCar_BinaryTree_1_nodes_scatter_score.png}
-\includegraphics[width=.3\linewidth]{Binary_Tree/MountainCar_BinaryTree_4_nodes_scatter_score.png}
-\includegraphics[width=.3\linewidth]{Binary_Tree/MountainCar_BinaryTree_8_nodes_scatter_score.png}}
-\item \label{row:BinaryTree_MountainCarCont}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{Binary_Tree/MountainCarCont_BinaryTree_1_nodes_scatter_score.png}
-\includegraphics[width=.3\linewidth]{Binary_Tree/MountainCarCont_BinaryTree_4_nodes_scatter_score.png}
-\includegraphics[width=.3\linewidth]{Binary_Tree/MountainCarCont_BinaryTree_8_nodes_scatter_score.png}}
-\item \label{row:BinaryTree_Pendulum} \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{Binary_Tree/Pendulum_BinaryTree_1_nodes_scatter_score.png}
-\includegraphics[width=.3\linewidth]{Binary_Tree/Pendulum_BinaryTree_4_nodes_scatter_score.png}
-\includegraphics[width=.3\linewidth]{Binary_Tree/Pendulum_BinaryTree_8_nodes_scatter_score.png}}
-\end{figrow}
+  \centering
+  \includegraphics[width=0.85\linewidth]{BT/BT_CartPole}
+  \includegraphics[width=0.85\linewidth]{BT/BT_Acrobot}
+  \includegraphics[width=0.85\linewidth]{BT/BT_MountainCar}
+  \includegraphics[width=0.85\linewidth]{BT/BT_MountainCarContinuous}
+  \includegraphics[width=0.85\linewidth]{BT/BT_Pendulum}
 \caption[Results for the classic control environments using binary trees without bias]{
   \textbf{Results for the classic control environments using binary trees without bias.}
    Each row shows the results of one environment. The columns represent the different configurations for the binary tree models. Even with only one node, the results are comparable to those from neural networks or outperform them.
@@ -179,37 +123,31 @@ For the binary trees, I tested three models, one with 1 node, one with 4 nodes, 
 
 \paragraph*{MountainCar:} Comparing the two models, binary trees and neural networks, for the environment \verb|MountainCar|, we can see that they reach similar mean scores. However, the binary trees are more likely to reach more and higher individual scores. The risk of being stuck in a fitness plateau remains for the binary trees. In addition, the scores are spread wider for the binary tree than for the neural network.
 
-\paragraph*{MountainCarContinuous:} The results for the environment \verb|MountainCarContinuous| look very different for the binary trees than for the neural networks. Neural networks show a slowly increasing curve with a peak after 9'500-9'900 samples for the mean scores. The binary trees have a lot of low performers displayed as a plateau of minimum scores. We cannot see this bad behavior in the results of the neural network models. However, there are a few samples that are able to reach a positive score. The neural network without hidden layers could not achieve these high mean scores.
+\paragraph*{MountainCarContinuous:} The results for the environment \verb|MountainCarContinuous| look very different for the binary trees than for the neural networks. Neural networks show a slowly increasing curve with a peak after 9'500-9'900 samples for the mean scores. The binary trees have a lot of low performers displayed as a plateau of minimum scores. We cannot see this bad behavior in the results of the neural network models. However, there are a few samples that can reach a positive score. The neural network without hidden layers could not achieve these high mean scores.
+
+This behavior is likely caused by the binary tree outputting discrete values instead of continuous ones, as it is the case for neural networks. The actions are fixed with the current implementation of the binary tree model. The two possible actions are the minimum and maximum of the action defined by the environment. In the case of \verb|MountainCarContiuous|, this results in either -1 or 1. However, experimenting with this action pair shows us some interesting results for the environment \verb|MountainCarContiuous|. Fiugure~\ref{fig:binary_tree_mountain_car_continuous} shows the results of using the action pair 0 and 1 instead of -1 and 1.
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.85\linewidth]{BT/BT_MountainCarContinuous_0-1}
+\caption[MountainCarContiuous using the binary tree model with actions 0 and 1]{
+  \textbf{MountainCarContiuous using the binary tree model with actions 0 and 1.}
+  The figures show the results of the environment \texttt{MountainCarContiuous} using binary trees with fixed actions 0 and 1 as opposed to -1 and 1. The model's performance increased significantly compared to the results in Figure~\ref{fig:results_BinaryTree}.
+}
+\label{fig:binary_tree_mountain_car_continuous}
+\end{figure}
+There is a significant improvement in the model's performance. There are still some low performers, but the score distribution improved noticeably. However, many samples produce a zero score, resulting in a large fitness plateau.
 
 \paragraph*{Pendulum:} For the \verb|Pendulum| environment, we can see that the binary trees perform increasingly better with more nodes. The binary tree with one node reaches a mean score of around -1'500 in the large middle area. These scores are slightly higher than those of the neural network without hidden layers in the middle area. However, the neural network reached a higher maximum mean score than the binary tree. With an increased number of nodes, the binary tree model even outperforms the neural networks with remarkably higher mean scores. Even though the actions produced by the binary trees are discrete instead of continuous, the curve of the mean scores looks very similar to the one of neural networks.
-
-\todo[inline]{Explain how model handeled continuous environments in models section. Show MountainCarContiuous with better results?}
 
 \subsection{Bias Investigation}
 In their paper, \citet{oller_analyzing_2020} mentioned that using bias negatively affects the score distribution leading to fewer top performers and generally lower scores. Figure~\ref{fig:results_NN_bias} shows my results for all classic control environments with neural networks without using bias.
 \begin{figure}[!ht]
-\begin{figrow}
-\item \label{row:NN_with_bias_CartPole} \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{experiment_2/default/with_bias/CartPole-v0_NN_HL_0_HU_0_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/default/with_bias/CartPole-v0_NN_HL_1_HU_4_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/default/with_bias/CartPole-v0_NN_HL_2_HU_4_scatter_score}}
-\item \label{row:NN_with_bias_Acrobot} \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{experiment_2/default/with_bias/Acrobot-v1_NN_HL_0_HU_0_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/default/with_bias/Acrobot-v1_NN_HL_1_HU_4_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/default/with_bias/Acrobot-v1_NN_HL_2_HU_4_scatter_score}}
-\item \label{row:NN_with_bias_MountainCar} \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{experiment_2/default/with_bias/MountainCar-v0_NN_HL_0_HU_0_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/default/with_bias/MountainCar-v0_NN_HL_1_HU_4_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/default/with_bias/MountainCar-v0_NN_HL_2_HU_4_scatter_score}}
-\item \label{row:NN_with_bias_MountainCarCont} \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{experiment_2/default/with_bias/MountainCarContinuous-v0_NN_HL_0_HU_0_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/default/with_bias/MountainCarContinuous-v0_NN_HL_1_HU_4_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/default/with_bias/MountainCarContinuous-v0_NN_HL_2_HU_4_scatter_score}}
-\item \label{row:NN_with_bias_Pendulum} \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{experiment_2/default/with_bias/Pendulum-v1_NN_HL_0_HU_0_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/default/with_bias/Pendulum-v1_NN_HL_1_HU_4_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/default/with_bias/Pendulum-v1_NN_HL_2_HU_4_scatter_score}}
-\end{figrow}
+  \centering
+\includegraphics[width=.85\linewidth]{NN/with_bias/NN_CartPole}
+\includegraphics[width=.85\linewidth]{NN/with_bias/NN_Acrobot}
+\includegraphics[width=.85\linewidth]{NN/with_bias/NN_MountainCar}
+\includegraphics[width=.85\linewidth]{NN/with_bias/NN_MountainCarContinuous}
+\includegraphics[width=.85\linewidth]{NN/with_bias/NN_Pendulum}
 \caption[Results for all classic control environments using neural networks with bias]{
   \textbf{Results for all classic control environments using neural networks with bias.}
    Each row shows the results of one environment, whereas the columns represent the different network architectures. For most environments, we can see that introducing a bias has a negative effect on the score distribution.
@@ -218,96 +156,62 @@ In their paper, \citet{oller_analyzing_2020} mentioned that using bias negativel
 \end{figure}
 Comparing these plots with the ones without using bias in Figure~\ref{fig:results_NN}, we can see the negative impact the bias has on the effectiveness of the model. For the environment \verb|CartPole|, the scores are overall lower and get slighly worse with the increased complexity of the model. Interestingly, for the environment \verb|Acrobot|, the network without hidden layers is resistent to the negative impact of the bias. However, the network with one hidden layer results in lower scores with bias. The network with two hidden layers with has slightly better results than the one with one hidden layer but still performs worse than the one without bias. The same observation can be made for the environment \verb|MountainCar|. For the environment \verb|MountainCarContinuous|, we can see a negative effect on the score distribution for all three network architectures. The environment \verb|Pendulum| does not seem to suffer much when introducing bias. For all three architectures, there is not much difference visible. The scores are generally lower and produce less top performers when using bias. Therefore, we can confirm the interesting observation of the authors, namely, that using bias is counterproductive in this experimental setting.
 
-\paragraph*{Altering the number of weights:} To further investigate this counterintuitive behavior, Figure~\ref{fig:results_NN_weights} shows the results of tripling the number of weights for each network architecture for all classic control environments.
+\paragraph*{Altering the number of weights:} To further investigate this counterintuitive behavior, Figuer~\ref{fig:results_NN_weights} shows the results of the number of weights for the polynomial model, and Figure~\ref{fig:results_NN_weights} shows the results of tripling the number of weights for each network architecture.
 \begin{figure}[!ht]
-\begin{figrow}
-\item \label{row:NN_CartPole_wfactor_3}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/CartPole-v0_NN_HL_0_HU_0_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/CartPole-v0_NN_HL_1_HU_4_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/CartPole-v0_NN_HL_2_HU_4_scatter_score}}
-\item \label{row:NN_Acrobot_wfactor_3}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/Acrobot-v1_NN_HL_0_HU_0_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/Acrobot-v1_NN_HL_1_HU_4_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/Acrobot-v1_NN_HL_2_HU_4_scatter_score}}
-\item \label{row:NN_MountainCar_wfactor_3}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/MountainCar-v0_NN_HL_0_HU_0_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/MountainCar-v0_NN_HL_1_HU_4_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/MountainCar-v0_NN_HL_2_HU_4_scatter_score}}
-\item \label{row:NN_MountainCar_wfactor_3}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/MountainCarContinuous-v0_NN_HL_0_HU_0_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/MountainCarContinuous-v0_NN_HL_1_HU_4_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/MountainCarContinuous-v0_NN_HL_2_HU_4_scatter_score}}
-\item \label{row:NN_Pendulum_wfactor_3}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/Pendulum-v1_NN_HL_0_HU_0_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/Pendulum-v1_NN_HL_1_HU_4_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/weights/weight_factor_3/without_bias/Pendulum-v1_NN_HL_2_HU_4_scatter_score}}
-\end{figrow}
-\vspace*{-5mm}
+  \centering
+\includegraphics[width=.85\linewidth]{experiment_2/weights/weight_factor_3/P_CartPole_w}
+\includegraphics[width=.85\linewidth]{experiment_2/weights/weight_factor_3/P_Acrobot_w}
+\includegraphics[width=.85\linewidth]{experiment_2/weights/weight_factor_3/P_MountainCar_w}
+\includegraphics[width=.85\linewidth]{experiment_2/weights/weight_factor_3/P_MountainCarContinuous_w}
+\includegraphics[width=.85\linewidth]{experiment_2/weights/weight_factor_3/P_Pendulum_w}
+\caption[Results of tripling the number of weights for the poylnomial model]{
+  \textbf{Results of tripling the number of weights for the polynomial model.}
+   The figure shows the results of tripling the number of weights for the polynomial model for the three discrete classic control environments. Despite the increased number of weights, there are only slight differences visible in the plots of the environment \texttt{MountainCar} compared to the ones shown in Figure~\ref{fig:results_Polynomial}. \texttt{Acrobot} and \texttt{CartPole} look indistinguishable from the other results.
+}
+\label{fig:results_NN_weights}
+\end{figure}
+Comparing the results of the polynomial models, we cannot see a difference for the environments \verb|CartPole| and \verb|Acrobot| comparing these results with those shown in Figure~\ref{fig:results_Polynomial}. The environment \verb|MountainCar| shows only slight differences.
+
+Comparing the plots in Figure~\ref{fig:results_NN_weights} to those in Figure~\ref{fig:results_NN}, we cannot see a huge difference. The score distribution of the environments \verb|CartPole| and \verb|Acrobot| look indistinguishable from those presented in Figure~\ref{fig:results_NN}.
+\begin{figure}[!ht]
+  \centering
+\includegraphics[width=.85\linewidth]{experiment_2/weights/weight_factor_3/NN_CartPole_w}
+\includegraphics[width=.85\linewidth]{experiment_2/weights/weight_factor_3/NN_Acrobot_w}
+\includegraphics[width=.85\linewidth]{experiment_2/weights/weight_factor_3/NN_MountainCar_w}
+\includegraphics[width=.85\linewidth]{experiment_2/weights/weight_factor_3/NN_MountainCarContinuous_w}
+\includegraphics[width=.85\linewidth]{experiment_2/weights/weight_factor_3/NN_Pendulum_w}
 \caption[Results of tripling the number of weights for neural networks]{
   \textbf{Results of tripling the number of weights for neural networks.}
    The figure shows the results of tripling the number of weights for the three neural network architectures for the classic control environments. Despite the increased number of weights, there are only slight differences visible in the plots compared to the ones shown in Figure~\ref{fig:results_NN} for all environments with the exception of \texttt{MountainCarContinuous}.
 }
 \label{fig:results_NN_weights}
 \end{figure}
-Comparing these plots to those in Figure~\ref{fig:results_NN}, we cannot see a huge difference. The score distribution of the environments \verb|CartPole| and \verb|Acrobot| look indistinguishable from those presented in Figure~\ref{fig:results_NN}. We can see slight differences in the plots for the environment \verb|MountainCar|. Increasing the number of weights for the network without hidden layers results in a few better individual scores without much difference in the mean score distribution. We see slightly better mean scores for the network with one hidden layer, whereas the network with two exhibits slightly worse mean scores. For the environment \verb|MountainCarContinuous|, the mean scores are lower compared to the networks with more weights. However, there are more top performers.  This is especially visible for the network without hidden layers. In addition, the scores are more spread out. There are a few more samples that reach a higher score for the environment \verb|Pendulum| with the network without hidden layers. However, the networks with one and two hidden layers deliver similar results to those shown in Figure~\ref{fig:results_NN} for the environment \verb|Pendulum|. To summarize, altering the number of weights for a network can produce a slight difference in the results for some environments. But these differences are not as dramatic as we have seen for the networks without using bias.
-%In addition, the same experiment with the polynomial models $P_1$ and $P_2$ draws the same conclusion.
+We can see slight differences in the plots for the environment \verb|MountainCar|. Increasing the number of weights for the network without hidden layers results in a few better individual scores without much difference in the mean score distribution. We see slightly better mean scores for the network with one hidden layer, whereas the network with two exhibits slightly worse mean scores. For the environment \verb|MountainCarContinuous|, the mean scores are lower compared to the networks with more weights. However, there are more top performers.  This is especially visible for the network without hidden layers. In addition, the scores are more spread out. There are a few more samples that reach a higher score for the environment \verb|Pendulum| with the network without hidden layers. However, the networks with one and two hidden layers deliver similar results to those shown in Figure~\ref{fig:results_NN} for the environment \verb|Pendulum|. To summarize, altering the number of weights for a network can produce a slight difference in the results for some environments. But these differences are not as dramatic as we have seen for the networks without using bias.
 
-\paragraph*{Altering the number of layers:} Figure~\ref{fig:experiment_2_layers} shows the results of altering the number of layers in a network. Each layer still has the same amount of neurons, namely four neurons.
 \begin{figure}[!ht]
-\begin{figrow}
-\item \label{row:NN_CartPole_layers}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{experiment_2/layers/without_bias/CartPole-v0_NN_HL_4_HU_4_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/layers/without_bias/CartPole-v0_NN_HL_6_HU_4_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/layers/without_bias/CartPole-v0_NN_HL_8_HU_4_scatter_score}}
-\item \label{row:NN_Acrobot_layers}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{experiment_2/layers/without_bias/Acrobot-v1_NN_HL_4_HU_4_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/layers/without_bias/Acrobot-v1_NN_HL_6_HU_4_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/layers/without_bias/Acrobot-v1_NN_HL_8_HU_4_scatter_score}}
-\item \label{row:NN_MountainCar_layers}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{experiment_2/layers/without_bias/MountainCar-v0_NN_HL_4_HU_4_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/layers/without_bias/MountainCar-v0_NN_HL_6_HU_4_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/layers/without_bias/MountainCar-v0_NN_HL_8_HU_4_scatter_score}}
-\item \label{row:NN_MountainCarContinuous_layers}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{experiment_2/layers/without_bias/MountainCarContinuous-v0_NN_HL_4_HU_4_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/layers/without_bias/MountainCarContinuous-v0_NN_HL_6_HU_4_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/layers/without_bias/MountainCarContinuous-v0_NN_HL_8_HU_4_scatter_score}}
-\item \label{row:NN_Pendulum_layers}  \raisebox{-0.5\height}{
-\includegraphics[width=.3\linewidth]{experiment_2/layers/without_bias/Pendulum-v1_NN_HL_4_HU_4_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/layers/without_bias/Pendulum-v1_NN_HL_6_HU_4_scatter_score}
-\includegraphics[width=.3\linewidth]{experiment_2/layers/without_bias/Pendulum-v1_NN_HL_8_HU_4_scatter_score}}
-\end{figrow}
+  \centering
+\includegraphics[width=.85\linewidth]{experiment_2/layers/NN_CartPole_l}
+\includegraphics[width=.85\linewidth]{experiment_2/layers/NN_Acrobot_l}
+\includegraphics[width=.85\linewidth]{experiment_2/layers/NN_MountainCar_l}
+\includegraphics[width=.85\linewidth]{experiment_2/layers/NN_MountainCarContinuous_l}
+\includegraphics[width=.85\linewidth]{experiment_2/layers/NN_Pendulum_l}
 \caption[Results of altering the number of layers for neural networks]{
   \textbf{Results of altering the number of layers for neural networks.}
    The plots show the results of increasing the number of hidden layers in a neural network gradually. The score distribution changes with an increased number of layers for some environments. However, the changes are less extreme compared to the results of the networks that used bias.
 }
 \label{fig:experiment_2_layers}
 \end{figure}
-For the environment \verb|CartPole|, the lineplot of the mean scores seems to start earlier to rise above the minimum score, but the slope is also slightly less steep with an increasing number of hidden layers. The environment \verb|Acrobot| does not seem to be affected anyhow by the change in the number of layers. The plots look indistinguishable. The mean scores for the environment \verb|MountainCar| seem to be best for the network with four hidden layers. The scores tend to get lower with an increased number of layers. For the environment \verb|MountainCarContinuous|, the slope of the mean scores changes. The scores get generally slightly lower with more layers. Finally, we cannot see a big difference in the plots for the environment \verb|Pendulum| by adding more layers. There may be a few more top performers with more hidden layers, but the difference is not significant and is not reflected in the mean score distribution.
+
+\paragraph*{Altering the number of layers:} Figure~\ref{fig:experiment_2_layers} shows the results of altering the number of layers in a network. Each layer still has the same amount of neurons, namely four neurons. For the environment \verb|CartPole|, the lineplot of the mean scores seems to start earlier to rise above the minimum score, but the slope is also slightly less steep with an increasing number of hidden layers. The environment \verb|Acrobot| does not seem to be affected anyhow by the change in the number of layers. The plots look indistinguishable. The mean scores for the environment \verb|MountainCar| seem to be best for the network with four hidden layers. The scores tend to get lower with an increased number of layers. For the environment \verb|MountainCarContinuous|, the slope of the mean scores changes. The scores get generally slightly lower with more layers. Finally, we cannot see a big difference in the plots for the environment \verb|Pendulum| by adding more layers. There may be a few more top performers with more hidden layers, but the difference is not significant and is not reflected in the mean score distribution.
 
 \paragraph{Altering the number of neurons:} Figure~\ref{fig:experiment_2_neurons} shows the results of increasing the number of neurons in each hidden layer for a network with two hidden layers.
 \begin{figure}[!ht]
-\begin{figrow}
-  \item \label{row:NN_CartPole_neurons}  \raisebox{-0.5\height}{
-  \includegraphics[width=.3\linewidth]{experiment_2/neurons/without_bias/CartPole-v0_NN_HL_2_HU_5_scatter_score}
-  \includegraphics[width=.3\linewidth]{experiment_2/neurons/without_bias/CartPole-v0_NN_HL_2_HU_8_scatter_score}
-  \includegraphics[width=.3\linewidth]{experiment_2/neurons/without_bias/CartPole-v0_NN_HL_2_HU_10_scatter_score}}
-  \item \label{row:NN_Acrobot_neurons}  \raisebox{-0.5\height}{
-  \includegraphics[width=.3\linewidth]{experiment_2/neurons/without_bias/Acrobot-v1_NN_HL_2_HU_5_scatter_score}
-  \includegraphics[width=.3\linewidth]{experiment_2/neurons/without_bias/Acrobot-v1_NN_HL_2_HU_8_scatter_score}
-  \includegraphics[width=.3\linewidth]{experiment_2/neurons/without_bias/Acrobot-v1_NN_HL_2_HU_10_scatter_score}}
-  \item \label{row:NN_MountainCar_neurons}  \raisebox{-0.5\height}{
-  \includegraphics[width=.3\linewidth]{experiment_2/neurons/without_bias/MountainCar-v0_NN_HL_2_HU_5_scatter_score}
-  \includegraphics[width=.3\linewidth]{experiment_2/neurons/without_bias/MountainCar-v0_NN_HL_2_HU_8_scatter_score}
-  \includegraphics[width=.3\linewidth]{experiment_2/neurons/without_bias/MountainCar-v0_NN_HL_2_HU_10_scatter_score}}
-  \item \label{row:NN_MountainCarContinuous_neurons}  \raisebox{-0.5\height}{
-  \includegraphics[width=.3\linewidth]{experiment_2/neurons/without_bias/MountainCarContinuous-v0_NN_HL_2_HU_5_scatter_score}
-  \includegraphics[width=.3\linewidth]{experiment_2/neurons/without_bias/MountainCarContinuous-v0_NN_HL_2_HU_8_scatter_score}
-  \includegraphics[width=.3\linewidth]{experiment_2/neurons/without_bias/MountainCarContinuous-v0_NN_HL_2_HU_10_scatter_score}}
-  \item \label{row:NN_Pendulum_neurons}  \raisebox{-0.5\height}{
-  \includegraphics[width=.3\linewidth]{experiment_2/neurons/without_bias/Pendulum-v1_NN_HL_2_HU_5_scatter_score}
-  \includegraphics[width=.3\linewidth]{experiment_2/neurons/without_bias/Pendulum-v1_NN_HL_2_HU_8_scatter_score}
-  \includegraphics[width=.3\linewidth]{experiment_2/neurons/without_bias/Pendulum-v1_NN_HL_2_HU_10_scatter_score}}
-\end{figrow}
+  \centering
+  \includegraphics[width=.85\linewidth]{experiment_2/neurons/NN_CartPole_n}
+  \includegraphics[width=.85\linewidth]{experiment_2/neurons/NN_Acrobot_n}
+  \includegraphics[width=.85\linewidth]{experiment_2/neurons/NN_MountainCar_n}
+  \includegraphics[width=.85\linewidth]{experiment_2/neurons/NN_MountainCarContinous_n}
+  \includegraphics[width=.85\linewidth]{experiment_2/neurons/NN_Pendulum_n}
 \caption[Results of altering the number of neurons for neural networks]{
   \textbf{Results of altering the number of neurons for neural networks.}
   The plots show the result of increasing the number of neurons for each layer in a network with two hidden layers. For some environments, there is a change in the mean scores. However, the changes are not extreme.
@@ -316,8 +220,7 @@ For the environment \verb|CartPole|, the lineplot of the mean scores seems to st
 \end{figure}
 We cannot see much difference in the plots for the environments \verb|CartPole| and \verb|Acrobot|. For both, the score distribution seems to be unaffected by the increased number of neurons. The mean scores for the environment \verb|MountainCar| first decrease with five and eight neurons. Then with ten neurons, we achieve higher scores again. For the environment \verb|MountainCarContinuous|, the plots look similar to the ones in Figure~\ref{fig:experiment_2_layers} with an increased number of layers. We can see a slight decrease in the scores with increased neurons which is less extreme than when we increased the number of layers. With the environment \verb|Pendulum|, we can reach higher mean scores with an increased number of neurons. Otherwise, the slope of the mean scores and the overall score distribution looks very similar.
 
-\todo[inline]{Mention $P_1$ for weight experiment.}
-
+\clearpage
 \section{Discussion}
 This chapter delivered a direct comparison between neural networks and alternative models like polynomials and binary trees. In addition, I investigated the impact of bias in these settings. The subsequent paragraphs aim to discuss the results to prepare for the conclusions and proposed future work in the next chapter.
 
@@ -325,12 +228,12 @@ This chapter delivered a direct comparison between neural networks and alternati
 
 To summarize, the results of the polynomial model are comparable to those of neural networks. However, this applies only for the three discrete environments since the polynomial model is not constructed to deal with a continuous action space.
 
-\paragraph*{Comparison of binary tree model with neural networks:} Despite the simple structure of the binary tree model, it delivers comparable results to neural networks or even outperformed them. The binary tree model significantly outperforms neural networks for the environment \verb|CartPole| for all three architectures. The binary tree with only one node shows a similar slope for the mean scores as the network without hidden layers, but it visibly reduces the plateau of minimum scores. The binary trees with higher complexity even manages to remarkably shrink the plateau, which none of the three architectures of the neural network did on that scale. The environment \verb|MountainCar| yields similar mean scores for the binary trees and the neural networks. Thus, there is a large plateau of minmum scores for both models. However, when comparing the three configurations of the two models with each other, we can see that the binary tree model reaches more and higher individual scores than the neural network models. In addition, the results of the two models are similar for the two models for the environment \verb|Acrobot|. The binary tree with one node outperforms the neural network without hidden layers whereas the complexer neural networks outperform the binary trees with four and eight nodes. Even though the binary tree model at its current implementation outputs only discrete action values, the results for the continuous environment \verb|Pendulum| are comparable to those of neural networks. The binary tree with eight nodes even managed to outperform neural networks. For the environment \verb|MountainCarContinuous|, neural networks delivered better results. Although the binary tree model with one node reached significantly higher mean scores than neural networks, it exhibits a large plateau of minimum scores that we do not see for the neural networks. The networks with higher complexity then managed to reach the same high mean scores. The considerable difference in the score distribution between the two models could be caused by the binary tree producing discrete actions instead of continuous ones, as neural networks did. For the binary tree model, the action is either -1 or 1, limiting the output space significantly. It seems that the environment \verb|MountainCarContiuous| reacts more sensible to these discrete action outputs than the environment \verb|Pendulum|.
+\paragraph*{Comparison of binary tree model with neural networks:} Despite the simple structure of the binary tree model, it delivers comparable results to neural networks or even outperformed them. The binary tree model significantly outperforms neural networks for the environment \verb|CartPole| for all three architectures. The binary tree with only one node shows a similar slope for the mean scores as the network without hidden layers, but it visibly reduces the plateau of minimum scores. The binary trees with higher complexity even manages to remarkably shrink the plateau, which none of the three architectures of the neural network did on that scale. The environment \verb|MountainCar| yields similar mean scores for the binary trees and the neural networks. Thus, there is a large plateau of minmum scores for both models. However, when comparing the three configurations of the two models with each other, we can see that the binary tree model reaches more and higher individual scores than the neural network models. In addition, the results of the two models are similar for the two models for the environment \verb|Acrobot|. The binary tree with one node outperforms the neural network without hidden layers whereas the complexer neural networks outperform the binary trees with four and eight nodes.
+
+Even though the binary tree model at its current implementation outputs only discrete action values, the results for the continuous environment \verb|Pendulum| are comparable to those of neural networks. The binary tree with eight nodes even managed to outperform neural networks. For the environment \verb|MountainCarContinuous|, neural networks delivered better results. Although the binary tree model with one node reached significantly higher mean scores than neural networks, it exhibits a large plateau of minimum scores that we do not see for the neural networks. The networks with higher complexity reached identical high mean scores. The considerable difference in the score distribution between the two models could be caused by the binary tree producing discrete actions instead of continuous ones, as neural networks did. For the binary tree model, the action is either -1 or 1, limiting the output space significantly. The environment \verb|MountainCarContiuous| seems more sensitive to these discrete action outputs than the environment \verb|Pendulum|. The experiments with the choice of actions resulted in a much better score distribution for the action pair 0 and 1.
 
 All in all, the binary tree model produced a similar score distribution as neural networks did. For some environments, the binary trees even outperform neural networks. However, the environment \verb|MountainCarContinuous| seems more difficult for the binary trees to learn than for neural networks.
 
 \paragraph*{Impact of bias:} Including bias has a significant negative impact on almost all of the five classic control environments. For the environment \verb|Acrobot| and \verb|Pendulum|, the difference between using bias and not using bias seems less extreme than for the other environments depending on the number of layers used. To further investigate this behavior, I subsequently changed three aspects of the model's architecture. First, I increased the number of weights of the networks. Despite the remarkably increased number of weights, the results show only slight differences in the score distribution. The exception is the environment \verb|MountainCarContinuous|, where the mean scores are remarkably lower. Except for the environment \verb|MountainCarContinuous|, we can conclude that the increased number of weights does not impact the score distribution significantly. Second, I increased the number of hidden layers. Some environments show slightly different results like \verb|CartPole| and \verb|MontainCar|. However, the changes are less significant than in the experiments with bias connections. The exception is again \verb|MountainCarContinuous|, where the difference is noticeably more extreme with an increased number of layers. Finally, I increased the number of neurons in each hidden layer. In the results of this experiment, some changes in the score distribution are visible. The mean scores of the environments \verb|Pendulum| and \verb|MountainCar| show slight differences. The environment \verb|MountainCarContinuous| shows a similar picture as before.
 
 In summary, no other aspect impacts the performance of the model as negative as using bias. The exceptions are the environment \verb|MountainCarContinuous|, where we see even more extreme differences when changing the network architecture, and \verb|Pendulum|, which already shows smaller differences than the other environments when using bias versus not using bias. It seems that this behavior is specific to the bias in the setting of RWG for the environments \verb|CartPole|, \verb|Acrobot|, and \verb|MountainCar|. In addition, we have seen that the environment \verb|MountainCarContinuous| generally reacts sensitive to a change in the model's architecture, showing a similar image as when using bias. In contrast, \verb|Pendulum| does not seem to be significantly affected by a change in the architecture. But as we have seen, the bias also affects it less.
-
-\todo[inline]{Explain more. Present or past? Talk about search space for why some complexer models perform better or worse and scores were more distributet in Conculsion chapter. Did Acrobot significantly change? Incldue the better images of MountainCarContinuous}
