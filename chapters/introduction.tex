@@ -21,7 +21,9 @@ In reinforcement learning, there are no labels available beforehand. In addition
 
 One additional challenge often overlooked in other branches of machine learning is a focus on the trade-off between \textit{exploration} and \textit{exploitation}. For a high reward, the reinforcement learning agent should take an action that it has tried in the past and was effective. It should therefore exploit the knowledge gained previously. However, to discover this beneficial action, it has to explore actions it has not taken before (\cite{sutton2018reinforcement}).
 
-We can represent many problems in machine learning, including reinforcement learning problems, as a function mapping an input space into an output space. The output space or \textit{search space} denotes the space of all feasible solutions. In reinforcement learning, the output space contains any action that could be taken given a specific situation. The underlying function is the output of the learning process of an algorithm and is often called the \textit{target function}. Optimally, we would derive the formula of the function explicitly. However, even though we hypothesize such a function exists, we usually do not have enough information to derive a closed form directly. Especially in reinforcement learning, the available information is very sparse. Thus, we aim to approximate the target function with \textit{function approximators} by using the available data. Hereafter, I will often talk about models to solve a reinforcement learning task. The models generally represent function approximators to solve a given problem.
+The agent's goal in a reinforcement learning problem is to drive the system into the desired state by taking the correct sequence of actions. For example, the goal might be to solve non-trivial skill games like Ball-in-a-Cup or Kendama (\cite{kober2010imitation}). The agent's behavior at a particular time is defined by the policy $\pi$. A policy is a mapping from each state $s \in \mathcal{S}$ of the environment to each action $a \in \mathcal{A}(s)$ the agent can perform in that specific state (\cite{sutton2018reinforcement}). The underlying goal in reinforcement learning is for the agent to learn or approximate the optimal policy which determines the best action to take in a particular state.
+
+% We can represent many problems in machine learning, including reinforcement learning problems, as a function mapping an input space into an output space. The output space or \textit{search space} denotes the space of all feasible solutions. In reinforcement learning, the output space contains any action that could be taken given a specific situation. The underlying function is the output of the learning process of an algorithm and is often called the \textit{target function}. Optimally, we would derive the formula of the function explicitly. However, even though we hypothesize such a function exists, we usually do not have enough information to derive a closed form directly. Especially in reinforcement learning, the available information is very sparse. Thus, we aim to approximate the target function with \textit{function approximators} by using the available data. Hereafter, I will often talk about models to solve a reinforcement learning task. The models generally represent function approximators to solve a given problem.
 
 To overcome the mentioned difficulties unique to reinforcement learning, we need to experiment with alternative models and strategies than those used for supervised or unsupervised learning.
 
@@ -29,7 +31,7 @@ To overcome the mentioned difficulties unique to reinforcement learning, we need
 
 
 \section{Classic Reinforcement Learning}
-In reinforcement learning, we have an agent (also called a controller) and an environment. The agent can take on actions to interact with the environment. On the other hand, the environment always holds a specific state that is impacted by the agent's actions. The agent's goal in classic reinforcement learning is to learn a policy $\pi$ that drives the system into the desired state by taking the right sequence of actions. For example, the goal might be to solve skill games like Ball-in-a-Cup or Kendama (\cite{kober2010imitation}). As mentioned before, we do not have labeled data beforehand as we do in supervised learning problems. We only get a scalar reward signal that indicates how well the agent performs. The agent's goal is to maximize the cumulative rewards received by the environment. Therefore, the agent needs to learn optimal behavior only through trial-and-error interaction with the environment. This aspect makes the problem structure much more challenging.
+In reinforcement learning, we have an agent (also called a controller) and an environment. The agent can take on actions to interact with the environment. On the other hand, the environment always holds a specific state that is impacted by the agent's actions. As mentioned, the goal is to find the optimal policy while only receiving a scalar reward signal that indicates how well the agent performs. The agent's goal is to maximize the cumulative rewards received by the environment. Therefore, the agent needs to learn optimal behavior only through trial-and-error interaction with the environment. This aspect makes the problem structure much more challenging.
 
 Figure~\ref{fig:RL_agent_env} illustrates the loop between the agent and the environment. The agent receives the observation $o_t$ from the environment based on the environment's current state.
 \begin{figure}[!ht]
@@ -38,7 +40,7 @@ Figure~\ref{fig:RL_agent_env} illustrates the loop between the agent and the env
 \caption[Interaction loop between a reinforcement learning agent and the environment]{
   \textbf{Interaction loop between an reinforcement learning agent and the environment.}
   At timestep $t$, the agent receives the observation $o_t$ from the environment. The agent decides to select action $a_t$ and interacts with the environment. The enviornment changes and returns the next observation $o_{t+1}$ and the reward $r_{t+1}$ to the agent.
-}
+ }
 \label{fig:RL_agent_env}
 \end{figure}
 The agent then performs some action $a_t$ in the environment. The environment's state changes according to the received action and returns an observation $o_{t+1}$ based on the updated state of the environment and a reward $r_{t+1}$. One interaction between the agent and the environment represents one \emph{timestep}.
@@ -48,6 +50,11 @@ The rewards are computed by an underlying reward function specific to the enviro
 Learning a policy that maximizes cumulative rewards is generally non-trivial. If the learning algorithm is not explorative enough, it might get stuck in a local optimum and never reach the goal. However, if there is too much exploration, we receive less overall reward. Thus, there needs to be a balance between exploration and exploitation. In addition, there is often a time delay for the reward. The consequence of an action might not be immediately visible to the agent. This problem is known as the credit-assignment problem in the literature (\cite{sutton2018reinforcement}).
 
 We can solve reinforcement learning problems with methods based on value functions or policy search. The value function predicts the future reward of landing in a specific state. It indicates how good or bad being in a particular state is. The agent chooses the best action in the state with methods based on value functions. Methods based on policy search directly search for the optimal policy $\pi^*$ and do not need to maintain a value function model (\cite{8103164}).
+
+To compute the value function, we can use the \textit{Bellman equation} which divides the value function into the immediate reward and the discounted future reward.
+% \begin{equation}
+%   \mathcal{V}_\pi(s) = \mathbf{R}(s, \pi(s)) +\gamma \Sigma_\substack{s' \in S} \mathcal{P}_{s,s'}^{\pi (s)} \mathcal{V}_\pi (s')
+% \end{equation}
 
 As interest in neural networks and deep learning increased, deep reinforcement learning, which uses a neural network to estimate policies or value functions, attracted more attention.
 
