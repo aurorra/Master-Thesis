@@ -45,15 +45,19 @@ Figure~\ref{fig:RL_agent_env} illustrates the loop between the agent and the env
 \end{figure}
 The agent then performs some action $a_t$ in the environment. The environment's state changes according to the received action and returns an observation $o_{t+1}$ based on the updated state of the environment and a reward $r_{t+1}$. One interaction between the agent and the environment represents one \emph{timestep}.
 
-The rewards are computed by an underlying reward function specific to the environment.
-
-The reward function is a function that maps the current state of the environment, the current action, and the subsequent state into a scalar value. It can be deterministic or can contain a random component making it stochastic. Depending on the problem, the reward can be sparse or dense. Sparse reward means that the reward function returns zero in most of its domain and only returns a meaningful reward in a few rare settings or at the end of the experiment. That introduces a major challenge since we cannot know which actions lead to success or failure. Optimization problems with this setting are generally challenging to solve. Dense reward environments return a meaningful reward at every step, making the optimization process more manageable.
+The rewards are computed by an underlying reward function specific to the environment. The reward function is a function that maps the current state of the environment, the current action, and the subsequent state into a scalar value. It can be deterministic or can contain a random component making it stochastic. Depending on the problem, the reward can be sparse or dense. Sparse reward means that the reward function returns zero in most of its domain and only returns a meaningful reward in a few rare settings or at the end of the experiment. That introduces a major challenge since we cannot know which actions lead to success or failure. Optimization problems with this setting are generally challenging to solve. Dense reward environments return a meaningful reward at every step, making the optimization process more manageable.
 
 Learning a policy that maximizes cumulative rewards is generally non-trivial. If the learning algorithm is not explorative enough, it might get stuck in a local optimum and never reach the goal. However, if there is too much exploration, we receive less overall reward. Thus, there needs to be a balance between exploration and exploitation. In addition, there is often a time delay for the reward. The consequence of an action might not be immediately visible to the agent. This problem is known as the credit-assignment problem in the literature (\cite{sutton2018reinforcement}).
 
-We can solve reinforcement learning problems with methods based on value functions or policy search. The value function predicts the future reward of landing in a specific state. It indicates how good or bad being in a particular state is. The agent chooses the best action in the state with methods based on value functions. Methods based on policy search directly search for the optimal policy $\pi^*$ and do not need to maintain a value function model (\cite{8103164}).
+We can solve reinforcement learning problems with methods based on value functions or policy search. The value function $V(s)$ indicates the potential future rewards we can get from being in state $s$. The value indicates how good or bad being in a particular state is. A high value indicates high future rewards. The agent chooses the best action based on the value function. Formally, the value function can be formulated as the following:
+\begin{equation}\label{eq:value_function}
+  V(s) = \mathbb{E} [r_t | S_0 = s]
+\end{equation}
+To compute the expectation of the value function, we can use the \textit{Bellman equation} which divides the value function into the immediate reward and the discounted future reward.
 
-To compute the value function, we can use the \textit{Bellman equation} which divides the value function into the immediate reward and the discounted future reward.
+Methods based on policy search directly search for the optimal policy $\pi^*$ and do not need to maintain a value function model (\cite{8103164}).
+
+
 % \begin{equation}
 %   \mathcal{V}_\pi(s) = \mathbf{R}(s, \pi(s)) +\gamma \Sigma_\substack{s' \in S} \mathcal{P}_{s,s'}^{\pi (s)} \mathcal{V}_\pi (s')
 % \end{equation}
