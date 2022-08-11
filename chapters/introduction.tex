@@ -49,13 +49,21 @@ The rewards are computed by an underlying reward function specific to the enviro
 
 Learning a policy that maximizes cumulative rewards is generally non-trivial. If the learning algorithm is not explorative enough, it might get stuck in a local optimum and never reach the goal. However, if there is too much exploration, we receive less overall reward. Thus, there needs to be a balance between exploration and exploitation. In addition, there is often a time delay for the reward. The consequence of an action might not be immediately visible to the agent. This problem is known as the credit-assignment problem in the literature (\cite{sutton2018reinforcement}).
 
-We can solve reinforcement learning problems with methods based on value functions or policy search. The value function $V(s)$ indicates the potential future rewards we can get from being in state $s$. The value indicates how good or bad being in a particular state is. A high value indicates high future rewards. The agent chooses the best action based on the value function. Formally, the value function can be formulated as the following:
-\begin{equation}\label{eq:value_function}
-  V(s) = \mathbb{E} [r_t | S_0 = s]
-\end{equation}
-To compute the expectation of the value function, we can use the \textit{Bellman equation} which divides the value function into the immediate reward and the discounted future reward.
+We can solve reinforcement learning problems with methods based on value functions or policy search. Methods based on policy search directly search for the optimal policy $\pi^*$ and do not need to maintain a value function model (\cite{8103164}). The state-value function $V$ defines the expected return of each possible state. It indicates how good or bad being in a particular state is. The agent chooses the best action based on the value of the states. The value of state $s$ under policy $\pi$ is defined by $V_\pi(s)$ and indicates the expected return from beginning in state $s$ and following $\pi$ afterward. More formally, we can define $V_\pi(s)$ as
+\begin{equation*}
+  V_\pi(s) = E_\pi [R_t | s_t = s],
+\end{equation*}
+where $t$ denotes the timestep, $R_t$ is the cummulative discounted rewards following timestep $t$, and $E_\pi[]$ symbolizes the expected value while following policy $\pi$ (\cite{sutton2018reinforcement}).
 
-Methods based on policy search directly search for the optimal policy $\pi^*$ and do not need to maintain a value function model (\cite{8103164}).
+Value functions induce a partial order on policies. Policy $\pi$ is better than policy $\pi'$, formally $\pi \geq \pi'$, if and only if $V_\pi(s) \geq V_{\pi'}(s)$ applies to all states $s \in S$. The optimal policy $\pi^*$ leads to the optimal state-value function:
+\begin{equation*}
+  V_{\pi^*}(s) = \underset{\pi}{\text{max}} V_\pi(s)
+\end{equation*}
+To find optimal policies and value functions, we can use the \textit{Bellman equation} which divides the value function into the immediate reward and the discounted future reward. The value function then results in:
+\begin{equation*}
+  V_\pi(s) = E_\pi [r_{t+1} + \gamma V(s_{t+1}) | s_t = s]
+\end{equation*}
+The discount factor $\gamma$ determines the importance given to the immediate reward and the future rewards.
 
 
 % \begin{equation}
