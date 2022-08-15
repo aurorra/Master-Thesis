@@ -5,7 +5,7 @@
 
 \section{OpenAI Gym Environments}
 \label{sec:environments}
-OpenAI Gym offers five environments ready to use in their \textit{classic control} suite: \verb|CartPole|, \texttt{Acrobot}, \verb|MountainCar|, \verb|MountainCarContiuous|, and \verb|Pendulum|. The initial state of each environment is stochastic. Out of all environments OpenAI Gym provides, the classic control environments are considered the easier ones to solve while still being used as baselines in multiple applications. Each environment defines an observation space and an action space. An agent performs some action from the action space and receives an observation describing how the environment's state changed.
+OpenAI Gym offers five environments ready to use in their \textit{classic control} suite: \verb|CartPole|, \texttt{Acrobot}, \verb|MountainCar|, \verb|MountainCarContiuous|, and \verb|Pendulum|. The initial state of each environment is stochastic. Out of all environments OpenAI Gym provides, the classic control environments are considered the easier ones to solve while still being used as baselines in multiple applications. Each environment defines an observation space and an action space. An agent performs some action from the action space and receives an observation describing how the environment's state changed. The information about the environments for this section was taken from the online documentation\footnote{https://www.gymlibrary.ml/}.
 
 \subsection{CartPole}
 The \verb|CartPole| environment corresponds to the pole-balancing problem formulated in \emph{Neuronlike Adaptive Elements That Can Solve Difficult Learning Control Problems} (\cite{6313077}). A pole is attached to a cart that the agent can move along a one-dimensional rail. Fig.~\ref{fig:cartpole} shows two possible states of this problem. In the image on the left, the pole is perfectly balanced and upright. The right image shows the pole tilted to the left. Thus, the cart should in principle move to the left to correct the angle of the pole.
@@ -46,7 +46,7 @@ The \verb|CartPole| environment corresponds to the pole-balancing problem formul
     \hline
     Cart Position & -4.8 & 4.8 \\
     Cart Velocity & -Inf & Inf \\
-    Pole Angle & ~ -0.418 rad (-24°) & ~ 0.418 rad (24°) \\
+    Pole Angle & $\smallsim$ -0.418 rad (-24°) & $\smallsim$ 0.418 rad (24°) \\
     Pole Angular Velocity & -Inf & Inf \\
     \hline
   \end{tabular}
@@ -57,7 +57,7 @@ The \verb|CartPole| environment corresponds to the pole-balancing problem formul
   \label{table:cartpole_obs}
 \end{table}
 
-\paragraph*{Reward:} The goal of this task is to maintain the pole upright. Thus, we get a positive reward of +1 for each step that does not meet the termination criteria. An episode terminates when the pole angle is $\pm$12°, the cart position is $\pm$2.4 (hits the end of the rail), or the episode length is higher than 200 (500 for v1).
+\paragraph*{Reward:} The goal of this task is to maintain the pole upright. Thus, we get a positive reward of +1 for each step that does not meet the termination criteria. An episode terminates when the pole angle is $\pm$12°, the cart position is $\pm$2.4 (hits the end of the rail), or the episode length is higher than 200 (500 for \verb|v1|).
 
 \subsection{Acrobot}
 The environment \verb|Acrobot| is based on the paper \emph{Generalization in Reinforcement Learning: Successful Examples Using Sparse Coarse Coding} (\cite{NIPS1995_8f1d4362}) and the book \emph{Reinforcement Learning: An Introduction} (\cite{montague1999reinforcement}). The system contains a chain with two links, with one end of the chain fixed. The goal is to swing the free end of the chain upwards until reaching a certain height. Fig~\ref{fig:acrobot} shows in the left image one possible state for this problem with the fixed height indicated by a horizontal line. The right image of the figure illustrates one possible state that reached the target height.
@@ -90,19 +90,19 @@ The environment \verb|Acrobot| is based on the paper \emph{Generalization in Rei
   \label{table:acrobot_act}
 \end{table}
 
-\paragraph*{Observation Space:} \verb|Acrobot| returns six observations that inform us about the two rotational joint angles and their angular velocities. Table~\ref{table:acrobot_obs} contains a description for each observation. Here, $theta_1$ is the angle of the first joint, where an angle of 0 indicates that the first link is pointing directly downwards; $theta_2$ is relative to the angle of the first link. An angle of 0 corresponds to having the same angle between the two links.
+\paragraph*{Observation Space:} \verb|Acrobot| returns six observations that inform us about the two rotational joint angles and their angular velocities. Table~\ref{table:acrobot_obs} contains a description for each observation. Here, \verb|theta1| is the angle of the first joint, where an angle of 0 indicates that the first link is pointing directly downwards; \verb|theta2| is relative to the angle of the first link. An angle of 0 corresponds to having the same angle between the two links.
 \begin{table}[!ht]
   \centering
   \begin{tabular}{ |c|c|c| }
     \hline
     Observation & Min & Max \\
     \hline
-    Cosine of $theta_1$ & -1 & 1 \\
-    Sine of $theta_1$ & -1 & 1 \\
-    Cosine of $theta_2$ & -1 & 1 \\
-    Sine of $theta_2$ & -1 & 1 \\
-    Angular velocity of $theta_1$ & ~ -12.567 (-4 * $\pi$) & ~ 12.567 (4 * $\pi$) \\
-    Angular velocity of $theta_2$ & ~ -28.274 (-9 * $\pi$) & ~ 28.274 (9 * $\pi$) \\
+    Cosine of \verb|theta1| & -1 & 1 \\
+    Sine of \verb|theta1| & -1 & 1 \\
+    Cosine of \verb|theta2| & -1 & 1 \\
+    Sine of \verb|theta2| & -1 & 1 \\
+    Angular velocity of \verb|theta1| & $\smallsim$ -12.567 (-4 * $\pi$) & $\smallsim$ 12.567 (4 * $\pi$) \\
+    Angular velocity of \verb|theta2| & $\smallsim$ -28.274 (-9 * $\pi$) & $\smallsim$ 28.274 (9 * $\pi$) \\
     \hline
   \end{tabular}
   \caption[Observation space of the environment Acrobot]{
@@ -115,7 +115,7 @@ The environment \verb|Acrobot| is based on the paper \emph{Generalization in Rei
 \paragraph*{Reward:} The goal of this task is to reach the target height with as few steps as possible. Thus, each step that does not attain the goal receives a negative reward of -1. Reaching the target height results in a reward of 0. An episode ends after 500 time steps. \verb|Acrobot| is considered an unsolved environment, meaning there is no reward threshold at which we would consider it solved.
 
 \subsection{MountainCar and MountainCarContiuous}
-The environments \verb|MountainCar| and \verb|MountainCarContiuous| are two different versions of the same problem. The difference between the two is that \verb|MountainCar| has a discrete action space, and \verb|MountainCarContinuous| has a continuous action space. The goal of the task is to maneuver a car up a mountain to its target. However, the car's engine is not strong enough to drive up the slope in one push. To achieve the goal, we need to accelerate the car strategically. An agent should learn to swing from left to right to gain momentum and eventually reach the target. This task is rather difficult to learn since we counterintuitively need to move in the opposite direction of the target to swing up. The problem first appeared in Andrew Moore's PhD thesis \emph{Efficient memory-based learning for robot control} (\cite{moore1990efficient}). Fig~\ref{fig:mountain_car} shows one possible state in the left image and the target state of the two environments in the right image.
+The environments \verb|MountainCar| and \verb|MountainCarContiuous| are two different versions of the same problem. Both environments share the same observation space. The difference between the two is that \verb|MountainCar| has a discrete action space, and \verb|MountainCarContinuous| has a continuous action space. The goal of the task is to maneuver a car up a mountain to its target. However, the car's engine is not strong enough to drive up the slope in one push. To achieve the goal, we need to accelerate the car strategically. An agent should learn to swing from left to right to gain momentum and eventually reach the target. This task is rather difficult to learn since we counterintuitively need to move in the opposite direction of the target to swing up. The problem first appeared in Andrew Moore's PhD thesis \emph{Efficient memory-based learning for robot control} (\cite{moore1990efficient}). Fig~\ref{fig:mountain_car} shows one possible state in the left image and the target state of the two environments in the right image.
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=0.4\textwidth]{mountain_car} \hspace*{10mm} \includegraphics[width=0.4\textwidth]{mountain_car_solved}
@@ -131,11 +131,11 @@ The environments \verb|MountainCar| and \verb|MountainCarContiuous| are two diff
   \centering
   \begin{tabular}{ |c|c|c|c| }
     \hline
-    Action & Description & Value & Unit \\
+    Action & Description \\
     \hline
-    0 & Accelerate to the left & Inf & position(m) \\
-    1 & Don't accelerate  & Inf & position(m) \\
-    2 & Accelerate to the right  & Inf & position(m) \\
+    0 & Accelerate to the left \\
+    1 & Don't accelerate  \\
+    2 & Accelerate to the right \\
     \hline
   \end{tabular}
   \caption[Action space of the environment MountainCar]{
@@ -151,10 +151,10 @@ On the other hand, the environment \verb|MountainCarContiuous| accepts one conti
   \centering
   \begin{tabular}{ |c|c|c|c| }
     \hline
-    Observation & Min & Max & Unit \\
+    Observation & Min & Max \\
     \hline
-    Position of the car along the x-axis & -Inf & Inf & position(m) \\
-    Velocity of the car & -Inf & Inf & position(m) \\
+    Position of the car along the x-axis & -1.2 & 0.6 \\
+    Velocity of the car & -0.07 & 0.07 \\
     \hline
   \end{tabular}
   \caption[Observation space of the environment MountainCar]{
@@ -164,7 +164,11 @@ On the other hand, the environment \verb|MountainCarContiuous| accepts one conti
   \label{table:mountaincar_obs}
 \end{table}
 
-\paragraph*{Reward:} To solve the task, the car has to reach the flag on the right hill as fast as possible. Each time step in which the agent cannot get to the target, it receives a negative reward of -1 for the environment \verb|MountainCar|. The task is considered solved when getting an average reward of at least -110.0 over 100 consecutive trials. For the environment \verb|MountainCarContiuous|, we receive a negative reward of $-0.1 * action^2$ for each step in which the car does not reach the target to penalize actions of large magnitude. When reaching the goal, we receive a positive reward of +100. \verb|MountainCarContiuous| is considered solved when getting an average reward of 90.0 over 100 consecutive trials.
+\paragraph*{Reward:} To solve the task, the car has to reach the flag on the right hill as fast as possible. Each time step in which the agent cannot get to the target, it receives a negative reward of -1 for the environment \verb|MountainCar|. The task is considered solved when getting an average reward of at least -110.0 over 100 consecutive trials. For the environment \verb|MountainCarContiuous|, for each step in which the car does not reach the target, we receive a negative reward of
+\[
+  r = -0.1 * a^2,
+\]
+where $r$ is the reward and $a$ is the action. Like that, actions of large magnitude are penalized. When reaching the goal, we receive a positive reward of +100. The environment \texttt{MountainCarContiuous} is considered solved when getting an average reward of 90.0 over 100 consecutive trials.
 
 \subsection{Pendulum}
 For the environment \verb|Pendulum|, the system consists of a pendulum attached at one end to a fixed point and the other end being free. The goal is to apply torque on the fulcrum to swing it to an upright position. This task is known as the inverted pendulum swing-up problem and is based on the classic problem in control theory. Figure~\ref{fig:pendulum} shows one possible state of the environment in the left image and the target state in the right one.
@@ -196,7 +200,7 @@ For the environment \verb|Pendulum|, the system consists of a pendulum attached 
   \label{table:pendulum_act}
 \end{table}
 
-\paragraph*{Observation Space:} The environment returns three observations. The first two observations represent the x- and y-coordinate of the pendulum's free end in a cartesian coordinate system. The variable theta defines the angle in radians. The third observation is the angular velocity of the free end of the pendulum.
+\paragraph*{Observation Space:} The environment returns three observations. The first two observations represent the x- and y-coordinate of the pendulum's free end in a cartesian coordinate system. The variable \verb|theta| defines the angle in radians. The third observation is the angular velocity of the free end of the pendulum.
 
 \begin{table}[!ht]
   \centering
@@ -204,8 +208,8 @@ For the environment \verb|Pendulum|, the system consists of a pendulum attached 
     \hline
     Observation & Min & Max \\
     \hline
-    $x = cos(theta)$ & -1.0 & 1.0 \\
-    $y = sin(angle)$ & -1.0 & 1.0 \\
+    x = cos(\verb|theta|) & -1.0 & 1.0 \\
+    y = sin(\verb|theta|) & -1.0 & 1.0 \\
     Angular Velocity & -8.0 & 8.0 \\
     \hline
   \end{tabular}
@@ -242,7 +246,7 @@ The evaluation of the benchmark problems should be as objective as possible and 
     \For{$e=1,2,...,N_{episodes}$}
       \State Reset the environment
       \State Run episode with NN
-      \State Store accured episode reward in $S_{a,n,e}$
+      \State Store episode reward in $S_{a,n,e}$
     \EndFor
 \EndFor
 \end{algorithmic}
@@ -336,18 +340,18 @@ This section describes the models I used in the experiments. Since we are using 
 \subsection{Polynomials}
 Polynomials are equations in the form of a sum of powers in one or more variables multiplied by constant coefficients. Given a field $F$, a polynomial in variable $x$ with coefficients in $F$ is a formal expression denoted by
 \begin{align*}
-  &f(x) = \Sigma_{i=0}^{n} a_i x^i \in F[x], &a_0, ..., a_n \in F, \ \ i \in \mathbb{N},
+  &f(x) = \sum_{i=0}^{n} a_i x^i \in F[x], &a_0, ..., a_n \in F, \ \ i \in \mathbb{N},
 \end{align*}
 where $F[x]$ represents the set of all such polynomials (\cite{fischer2014}, p. 61). The above formula shows the one dimensional case. For the multi-dimensional case, $x$ and the coefficients are vectors instead of scalars. Thus, a polynomial $p(\mathbf{x})$ with $\mathbf{x} = [x_0, ..., x_m]^T$ being a vector and of degree $n$ can be represented by
 \begin{align*}
-  &p(\mathbf{x}) = \Sigma_{i=0}^{n} \mathbf{w_i}^T (x_k^i)_{k \in I} \in F^n[\mathbf{x}], &\mathbf{w_0}, ... \mathbf{w_n} \in F^n, \ \ I = \{0, ..., m\}.
+  &p(\mathbf{x}) = \sum_{i=0}^{n} \mathbf{w_i}^T (x_k^i)_{k \in I} \in F^n[\mathbf{x}], &\mathbf{w_0}, ... \mathbf{w_n} \in F^n, \ \ I = \{0, ..., m\}.
 \end{align*}
-Polynomials are relatively simple mathematical expressions and their derivative and indefinite integral are easy to determine and are also polynomials. Due to their simple structure, polynomials can be valuable to analyze more complex functions using polynomial approximations. \textit{Taylor's theorem} tells us that we can locally approximate any $k$-times differentiable function by a polynomial of degree $k$. We call this approximation \textit{Taylor's polynomial}. Furthermore, the \textit{Weierstrass approximation theorem} says that we can uniformly approximate every continuous function defined on a closed interval by a polynomial. Other applications of polynomials are \textit{polynomial interpolation} and \textit{polynomial splines}. Polynomial interpolation describes the problem of constructing a polynomial that passes through all given data points. Polynomial splines are piecewise polynomial functions that can be used for spline interpolation.
+Polynomials are relatively simple mathematical expressions and their derivative and indefinite integral are easy to determine and are also polynomials. Due to their simple structure, polynomials can be valuable to analyze more complex functions using polynomial approximations. \textit{Taylor's theorem} tells us that we can locally approximate any $k$-times differentiable function by a polynomial of degree $k$. We call this approximation \textit{Taylor's polynomial}. Furthermore, the \textit{Weierstrass approximation theorem} says that we can uniformly approximate every continuous function defined on a closed interval by a polynomial. Other applications of polynomials are \textit{polynomial interpolation} and \textit{polynomial splines}. Polynomial interpolation describes the problem of constructing a polynomial that passes through all given data points. Polynomial splines are piecewise polynomial functions that can be used for spline interpolation. Spline interpolation is a form of interpolation where splines are used as interpolants.
 
 \paragraph*{Construction of the model:} For the experiments with the polynomial model in Chapter~\ref{ch:experiments}, I constructed the model $P_1$. It consists of one polynomial mapping from the observaction space to the action space of the reinforcement learning environment for each possible action in a discrete action space. The dimension of the weight vectors is according to the dimension of the input vector. For example, for the environment \verb|CartPole| with the discrete action space $\{0, 1\}$ and observation $\mathbf{x} = [x_0, x_1, x_2, x_3]^T$, this means that $P_1$ consists of two polynomials:
 \begin{align*}
-  &p_0(\mathbf{x}) = \Sigma_{i=0}^{n} \mathbf{w_i}^T (x_k^i)_{k \in I} \in \mathbb{R}, &\mathbf{w_0}, ..., \mathbf{w_3}, \mathbf{x} \in \mathbb{R}^4, \ \ I = \{0, 1, 2, 3\} \\
-  &p_1(\mathbf{x}) = \Sigma_{i=0}^{n} \mathbf{\hat{w}_i}^T (x_k^i)_{k \in I} \in \mathbb{R}, &\mathbf{\hat{w}_0}, ..., \mathbf{\hat{w}_3}, \mathbf{x} \in \mathbb{R}^4, \ \ I = \{0, 1, 2, 3\}
+  &p_0(\mathbf{x}) = \sum_{i=0}^{n} \mathbf{w_i}^T (x_k^i)_{k \in I} \in \mathbb{R}, &\mathbf{w_0}, ..., \mathbf{w_3}, \mathbf{x} \in \mathbb{R}^4, \ \ I = \{0, 1, 2, 3\} \\
+  &p_1(\mathbf{x}) = \sum_{i=0}^{n} \mathbf{\hat{w}_i}^T (x_k^i)_{k \in I} \in \mathbb{R}, &\mathbf{\hat{w}_0}, ..., \mathbf{\hat{w}_3}, \mathbf{x} \in \mathbb{R}^4, \ \ I = \{0, 1, 2, 3\}
 \end{align*}
 In the formulas, $n$ denotes the degree of the polynomial. For the experiments, I used polynomials of degrees one, two, and three. However, the output of the polynomials is unbound, as illustrated in Figure~\ref{fig:bounds}. That makes it harder to interpret the results as probabilities.
 \begin{figure}[ht]
