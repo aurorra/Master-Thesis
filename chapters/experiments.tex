@@ -9,13 +9,25 @@ For a starting point, I reproduced the results of the paper \emph{Analyzing Rein
 
 \subsection{Results}
 Figure~\ref{fig:results_NN} shows the results for all five classic control environments using neural networks without bias.
-\begin{figure}[!ht]
+\begin{figure}
   \centering
-  \includegraphics[width=\linewidth]{NN/NN_CartPole}
-  \includegraphics[width=\linewidth]{NN/NN_Acrobot}
-  \includegraphics[width=\linewidth]{NN/NN_MountainCar}
-  \includegraphics[width=\linewidth]{NN/NN_MountainCarContinuous}
-  \includegraphics[width=\linewidth]{NN/NN_Pendulum}
+  \includegraphics[width=\linewidth]{NN/NN_CartPole_new}
+
+      \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{NN/NN_Acrobot_new}
+
+      \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{NN/NN_MountainCar_new}
+
+      \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{NN/NN_MountainCarContinuous_new}
+
+      \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{NN/NN_Pendulum_new}
 \caption[Results for all classic control environments using neural networks without bias]{
   \textbf{Results for all classic control environments using neural networks without bias.}
    Each row shows the results of one environment, whereas the columns represent the different network architectures. These plots are a reproduction of the results of the RWG-paper. My results are consistent with those shown in the paper.
@@ -68,9 +80,15 @@ The authors of the paper \emph{Analyzing Reinforcement Learning Benchmarks with 
 Figure~\ref{fig:results_Polynomial} shows the results for the discrete classic control environments using the polynomial model $P_1$ without bias. The visualization is identical to the one I used for the neural networks in Figure~\ref{fig:results_NN}. The rows show the results for the different environments, and the columns show the polynomial with degrees 1, 2, and 3.
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=\linewidth]{PolynomialNN/without_bias/P_CartPole.png}
-  \includegraphics[width=\linewidth]{PolynomialNN/without_bias/P_Acrobot.png}
-  \includegraphics[width=\linewidth]{PolynomialNN/without_bias/P_Acrobot.png}
+  \includegraphics[width=\linewidth]{PolynomialNN/without_bias/P_CartPole_new.png}
+
+      \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{PolynomialNN/without_bias/P_Acrobot_new.png}
+
+      \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{PolynomialNN/without_bias/P_MountainCar_new.png}
 \caption[Results for the discrete classic control environments using the polynomial model without bias]{
   \textbf{Results for the discrete classic control environments using the polynomial model without bias.}
    Each row shows the results of one environment. The columns represent the different degrees of the polynomials. In these plots, the model $P_1$ was used. The results aligned in the first column are almost indistinguishable from the ones of the neural networks without hidden layers. Nonetheless, the environments \texttt{CartPole} and \texttt{Acrobot} deliver different results for a higher degree of the polynomial.
@@ -88,9 +106,15 @@ Looking at the first column, we can see a striking resemblance to the performanc
 \paragraph*{Bias:} Figure~\ref{fig:results_Polynomial_bias} shows the results of using the polynomial model $P_1$ to solve the discrete classic control environments using bias.
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=\linewidth]{PolynomialNN/with_bias/P_CartPole}
-  \includegraphics[width=\linewidth]{PolynomialNN/with_bias/P_Acrobot}
-  \includegraphics[width=\linewidth]{PolynomialNN/with_bias/P_MountainCar}
+  \includegraphics[width=\linewidth]{PolynomialNN/with_bias/P_CartPole_new}
+
+      \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{PolynomialNN/with_bias/P_Acrobot_new}
+
+      \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{PolynomialNN/with_bias/P_MountainCar_new}
 \caption[Results for the discrete classic control environments using the polynomial model with bias]{
   \textbf{Results for the discrete classic control environments using the polynomial model with bias.}
    Each row shows the results of one environment. The columns represent the different degrees of the polynomials. For these plots, the polynomial model $P_1$ was used. Overall, the model performs noticeably worse with bias as opposed to without bias.
@@ -103,10 +127,22 @@ Comparing these results with those without using bias in Figure~\ref{fig:results
 For the binary trees, I tested three models with 1, 4, and 8 nodes. Since the previous experiments suggest that using bias has a negative effect, the following experiments do not include bias. Figure~\ref{fig:results_BinaryTree} shows the results for all five classic control environments with the binary tree model.
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=\linewidth]{BT/BT_CartPole}
-  \includegraphics[width=\linewidth]{BT/BT_Acrobot}
-  \includegraphics[width=\linewidth]{BT/BT_MountainCar}
-  \includegraphics[width=\linewidth]{BT/BT_MountainCarContinuous}
+  \includegraphics[width=\linewidth]{BT/BT_CartPole_new}
+
+      \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{BT/BT_Acrobot_new}
+
+      \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{BT/BT_MountainCar_new}
+
+      \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{BT/BT_MountainCarContinuous_new}
+
+      \vspace{0.2cm}
+
   \includegraphics[width=\linewidth]{BT/BT_Pendulum}
 \caption[Results for the classic control environments using binary trees without bias]{
   \textbf{Results for the classic control environments using binary trees without bias.}
@@ -128,7 +164,7 @@ The binary tree with four nodes can already raise the mean value under 1'000 sam
 This behavior is likely caused by the binary tree outputting discrete values instead of continuous ones, as it is the case for neural networks. The actions are fixed with the current implementation of the binary tree model. The two possible actions are the minimum and maximum of the action defined by the environment. In the case of \verb|MountainCarContiuous|, this results in either -1 or 1. However, experimenting with this action pair shows us some interesting results for the environment \verb|MountainCarContiuous|. Fiugure~\ref{fig:binary_tree_mountain_car_continuous} shows the results of using the action pair 0 and 1 instead of -1 and 1.
 \begin{figure}[ht]
 \centering
-\includegraphics[width=\linewidth]{BT/BT_MountainCarContinuous_0-1}
+\includegraphics[width=\linewidth]{BT/BT_MountainCarContinuous_0-1_new}
 \caption[MountainCarContiuous using the binary tree model with actions 0 and 1]{
   \textbf{MountainCarContiuous using the binary tree model with actions 0 and 1.}
   The figures show the results of the environment \texttt{MountainCarContiuous} using binary trees with fixed actions 0 and 1 as opposed to -1 and 1. The model's performance increased significantly compared to the results in Figure~\ref{fig:results_BinaryTree}.
@@ -141,13 +177,25 @@ There is a significant improvement in the model's performance. There are still s
 
 \section{Bias Investigation}
 In their paper, \citet{oller_analyzing_2020} mentioned that using bias negatively affects the score distribution leading to fewer top performers and generally lower scores. Figure~\ref{fig:results_NN_bias} shows my results for all classic control environments with neural networks without using bias.
-\begin{figure}[!ht]
+\begin{figure}
   \centering
-\includegraphics[width=\linewidth]{NN/with_bias/NN_CartPole}
-\includegraphics[width=\linewidth]{NN/with_bias/NN_Acrobot}
-\includegraphics[width=\linewidth]{NN/with_bias/NN_MountainCar}
-\includegraphics[width=\linewidth]{NN/with_bias/NN_MountainCarContinuous}
-\includegraphics[width=\linewidth]{NN/with_bias/NN_Pendulum}
+  \includegraphics[width=\linewidth]{NN/with_bias/NN_CartPole_new}
+
+  \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{NN/with_bias/NN_Acrobot_new}
+
+  \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{NN/with_bias/NN_MountainCar_new}
+
+  \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{NN/with_bias/NN_MountainCarContinuous_new}
+
+  \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{NN/with_bias/NN_Pendulum_new}
 \caption[Results for all classic control environments using neural networks with bias]{
   \textbf{Results for all classic control environments using neural networks with bias.}
    Each row shows the results of one environment, whereas the columns represent the different network architectures. For most environments, we can see that introducing a bias has a negative effect on the score distribution.
@@ -159,11 +207,15 @@ Comparing these plots with the ones without using bias in Figure~\ref{fig:result
 \paragraph*{Altering the number of weights:} To further investigate this counterintuitive behavior, Figuer~\ref{fig:results_NN_weights} shows the results of the number of weights for the polynomial model, and Figure~\ref{fig:results_NN_weights} shows the results of tripling the number of weights for each network architecture.
 \begin{figure}[!ht]
   \centering
-\includegraphics[width=\linewidth]{experiment_2/weights/weight_factor_3/P_CartPole_w}
-\includegraphics[width=\linewidth]{experiment_2/weights/weight_factor_3/P_Acrobot_w}
-\includegraphics[width=\linewidth]{experiment_2/weights/weight_factor_3/P_MountainCar_w}
-\includegraphics[width=\linewidth]{experiment_2/weights/weight_factor_3/P_MountainCarContinuous_w}
-\includegraphics[width=\linewidth]{experiment_2/weights/weight_factor_3/P_Pendulum_w}
+  \includegraphics[width=\linewidth]{experiment_2/weights/weight_factor_3/P_CartPole_w_new}
+
+  \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{experiment_2/weights/weight_factor_3/P_Acrobot_w_new}
+
+  \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{experiment_2/weights/weight_factor_3/P_MountainCar_w_new}
 \caption[Results of tripling the number of weights for the poylnomial model]{
   \textbf{Results of tripling the number of weights for the polynomial model.}
    The figure shows the results of tripling the number of weights for the polynomial model for the three discrete classic control environments. Despite the increased number of weights, there are only slight differences visible in the plots of the environment \texttt{MountainCar} compared to the ones shown in Figure~\ref{fig:results_Polynomial}. \texttt{Acrobot} and \texttt{CartPole} look indistinguishable from the other results.
@@ -173,13 +225,25 @@ Comparing these plots with the ones without using bias in Figure~\ref{fig:result
 Comparing the results of the polynomial models, we cannot see a difference for the environments \verb|CartPole| and \verb|Acrobot| comparing these results with those shown in Figure~\ref{fig:results_Polynomial}. The environment \verb|MountainCar| shows only slight differences.
 
 Comparing the plots in Figure~\ref{fig:results_NN_weights} to those in Figure~\ref{fig:results_NN}, we cannot see a huge difference. The score distribution of the environments \verb|CartPole| and \verb|Acrobot| look indistinguishable from those presented in Figure~\ref{fig:results_NN}.
-\begin{figure}[!ht]
+\begin{figure}
   \centering
-\includegraphics[width=\linewidth]{experiment_2/weights/weight_factor_3/NN_CartPole_w}
-\includegraphics[width=\linewidth]{experiment_2/weights/weight_factor_3/NN_Acrobot_w}
-\includegraphics[width=\linewidth]{experiment_2/weights/weight_factor_3/NN_MountainCar_w}
-\includegraphics[width=\linewidth]{experiment_2/weights/weight_factor_3/NN_MountainCarContinuous_w}
-\includegraphics[width=\linewidth]{experiment_2/weights/weight_factor_3/NN_Pendulum_w}
+  \includegraphics[width=\linewidth]{experiment_2/weights/weight_factor_3/NN_CartPole_w_new}
+
+  \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{experiment_2/weights/weight_factor_3/NN_Acrobot_w_new}
+
+  \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{experiment_2/weights/weight_factor_3/NN_MountainCar_w_new}
+
+  \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{experiment_2/weights/weight_factor_3/NN_MountainCarContinuous_w_new}
+
+  \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{experiment_2/weights/weight_factor_3/NN_Pendulum_w_new}
 \caption[Results of tripling the number of weights for neural networks]{
   \textbf{Results of tripling the number of weights for neural networks.}
    The figure shows the results of tripling the number of weights for the three neural network architectures for the classic control environments. Despite the increased number of weights, there are only slight differences visible in the plots compared to the ones shown in Figure~\ref{fig:results_NN} for all environments with the exception of \texttt{MountainCarContinuous}.
@@ -190,30 +254,54 @@ We can see slight differences in the plots for the environment \verb|MountainCar
 
 In addition, the scores are more spread out. There are a few more samples that reach a higher score for the environment \verb|Pendulum| with the network without hidden layers. However, the networks with one and two hidden layers deliver similar results to those shown in Figure~\ref{fig:results_NN} for the environment \verb|Pendulum|. To summarize, altering the number of weights for a network can produce a slight difference in the results for some environments. But these differences are not as dramatic as we have seen for the networks without using bias.
 
-\begin{figure}[!ht]
+\paragraph*{Altering the number of layers:} Figure~\ref{fig:experiment_2_layers} shows the results of altering the number of layers in a network.
+\begin{figure}
   \centering
-\includegraphics[width=\linewidth]{experiment_2/layers/NN_CartPole_l}
-\includegraphics[width=\linewidth]{experiment_2/layers/NN_Acrobot_l}
-\includegraphics[width=\linewidth]{experiment_2/layers/NN_MountainCar_l}
-\includegraphics[width=\linewidth]{experiment_2/layers/NN_MountainCarContinuous_l}
-\includegraphics[width=\linewidth]{experiment_2/layers/NN_Pendulum_l}
+\includegraphics[width=\linewidth]{experiment_2/layers/NN_CartPole_l_new}
+
+  \vspace{0.2cm}
+
+\includegraphics[width=\linewidth]{experiment_2/layers/NN_Acrobot_l_new}
+
+  \vspace{0.2cm}
+
+\includegraphics[width=\linewidth]{experiment_2/layers/NN_MountainCar_l_new}
+
+  \vspace{0.2cm}
+
+\includegraphics[width=\linewidth]{experiment_2/layers/NN_MountainCarContinuous_l_new}
+
+  \vspace{0.2cm}
+
+\includegraphics[width=\linewidth]{experiment_2/layers/NN_Pendulum_l_new}
 \caption[Results of altering the number of layers for neural networks]{
   \textbf{Results of altering the number of layers for neural networks.}
    The plots show the results of increasing the number of hidden layers in a neural network gradually. The score distribution changes with an increased number of layers for some environments. However, the changes are less extreme compared to the results of the networks that used bias.
 }
 \label{fig:experiment_2_layers}
 \end{figure}
-
-\paragraph*{Altering the number of layers:} Figure~\ref{fig:experiment_2_layers} shows the results of altering the number of layers in a network. Each layer still has the same amount of neurons, namely four neurons. For the environment \verb|CartPole|, the lineplot of the mean scores seems to start earlier to rise above the minimum score, but the slope is also slightly less steep with an increasing number of hidden layers. The environment \verb|Acrobot| does not seem to be affected anyhow by the change in the number of layers. The plots look indistinguishable. The mean scores for the environment \verb|MountainCar| seem to be best for the network with four hidden layers. The scores tend to get lower with an increased number of layers. For the environment \verb|MountainCarContinuous|, the slope of the mean scores changes. The scores get generally slightly lower with more layers. Finally, we cannot see a big difference in the plots for the environment \verb|Pendulum| by adding more layers. There may be a few more top performers with more hidden layers, but the difference is not significant and is not reflected in the mean score distribution.
+Each layer still has the same amount of neurons, namely four neurons. For the environment \verb|CartPole|, the lineplot of the mean scores seems to start earlier to rise above the minimum score, but the slope is also slightly less steep with an increasing number of hidden layers. The environment \verb|Acrobot| does not seem to be affected anyhow by the change in the number of layers. The plots look indistinguishable. The mean scores for the environment \verb|MountainCar| seem to be best for the network with four hidden layers. The scores tend to get lower with an increased number of layers. For the environment \verb|MountainCarContinuous|, the slope of the mean scores changes. The scores get generally slightly lower with more layers. Finally, we cannot see a big difference in the plots for the environment \verb|Pendulum| by adding more layers. There may be a few more top performers with more hidden layers, but the difference is not significant and is not reflected in the mean score distribution.
 
 \paragraph{Altering the number of neurons:} Figure~\ref{fig:experiment_2_neurons} shows the results of increasing the number of neurons in each hidden layer for a network with two hidden layers.
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=\linewidth]{experiment_2/neurons/NN_CartPole_n}
-  \includegraphics[width=\linewidth]{experiment_2/neurons/NN_Acrobot_n}
-  \includegraphics[width=\linewidth]{experiment_2/neurons/NN_MountainCar_n}
-  \includegraphics[width=\linewidth]{experiment_2/neurons/NN_MountainCarContinous_n}
-  \includegraphics[width=\linewidth]{experiment_2/neurons/NN_Pendulum_n}
+  \includegraphics[width=\linewidth]{experiment_2/neurons/NN_CartPole_n_new}
+
+    \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{experiment_2/neurons/NN_Acrobot_n_new}
+
+    \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{experiment_2/neurons/NN_MountainCar_n_new}
+
+    \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{experiment_2/neurons/NN_MountainCarContinous_n_new}
+
+    \vspace{0.2cm}
+
+  \includegraphics[width=\linewidth]{experiment_2/neurons/NN_Pendulum_n_new}
 \caption[Results of altering the number of neurons for neural networks]{
   \textbf{Results of altering the number of neurons for neural networks.}
   The plots show the result of increasing the number of neurons for each layer in a network with two hidden layers. For some environments, there is a change in the mean scores. However, the changes are not extreme.
@@ -226,27 +314,29 @@ We cannot see much difference in the plots for the environments \verb|CartPole| 
 \section{Discussion}
 This chapter delivered a direct comparison between neural networks and alternative models: polynomials and binary trees. In addition, I investigated the impact of bias in these settings. The subsequent paragraphs aim to discuss the results to prepare for the conclusions and proposed future work in the next chapter.
 
-\paragraph*{Comparison of polynomial model with neural networks:} As we have seen in the last section, the polynomial model can deliver comparable results to neural networks for discrete environments. The results of the environment \texttt{MountainCar} with the polynomial model look almost indistinguishable from those of the neural network model. For the environment \texttt{Acrobot} the polynomial model with degree delivers very similar results as the neural network without hidden layers. However, with the higher complexity of the model, neural networks outperform the polynomial model. Similarly, the polynomial of degree one results in the same score distribution as the neural network without hidden layers. Nonetheless, the score distribution differs noticeably from neural networks with higher complexity of the model. The mean scores show the same trend for all neural network architectures, which cannot be applied to the polynomial model.
+\paragraph*{Comparison of polynomial model with neural networks:} As we have seen in the last section, the polynomial model can deliver comparable results to neural networks for discrete environments. The results of the environment \texttt{MountainCar} with the polynomial model look almost indistinguishable from those of the neural network model. For the environment \texttt{Acrobot} the polynomial model with degree delivers very similar results as the neural network without hidden layers. With the higher complexity of the model, neural networks outperform the polynomial model.
 
-With the linear polynomial model, we have a $50 \%$ chance of failing, but the probability of actually solving the task for all episodes is higher than for the polynomials with a higher degree. That means with the linear model or neural networks, we have a larger fraction of samples that can solve the environment independently of the initialization conditions. At first glance, we could assume that this is an important aspect for such a model and choose the polynomial with degree 1 over one with a higher degree. However, we should remind ourselves that these experiments are rather unusual for an application since there is no learning involved and the number of samples is huge.
+The polynomial of degree one results in the same score distribution as the neural network without hidden layers. The score distribution differs noticeably from neural networks with higher model complexity. The mean scores show the same trend for all neural network architectures, which cannot be applied to the polynomial model.
 
-In a standard application, we would use some kind of training and want the model to sequentially improve its performance. Considering this aspect, when using a learning algorithm, we would not prefer the polynomials with degree one or the neural networks as we might get stuck in a fitness plateau when the algorithm has no method of dealing with this behavior.
+With the linear polynomial model, we have a $50 \%$ chance of failing, but the probability of actually solving the task for all episodes is higher than for the polynomials with a higher degree. That means with the linear model or neural networks, we have a larger fraction of samples that can solve the environment independently of the initialization conditions. We could assume that this is an important aspect for such a model and choose the polynomial with degree 1 over one with a higher degree. We should remind ourselves that these experiments are rather unusual for an application since there is no learning involved and the number of samples is huge.
 
-To summarize, the results of the polynomial model are comparable to those of neural networks. However, this applies only for the three discrete environments since the polynomial model is not constructed to deal with a continuous action space.
+In a standard application, we would use some kind of training and want the model to sequentially improve its performance. When using a learning algorithm, we would not prefer the polynomials with degree one or the neural networks as we might get stuck in a fitness plateau when the algorithm has no method of dealing with this behavior.
+
+The results of the polynomial model are comparable to those of neural networks. This applies only for the three discrete environments since the polynomial model is not constructed to deal with a continuous action space.
 
 \paragraph*{Comparison of binary tree model with neural networks:} Despite the simple structure of the binary tree model, it delivers comparable results to neural networks and even outperformed them. The binary tree model significantly outperforms neural networks for the environment \verb|CartPole| for all three architectures. The binary tree with only one node shows a similar slope for the mean scores as the network without hidden layers, but it visibly reduces the plateau of minimum scores. The binary trees with higher complexity even manages to remarkably shrink the plateau, which none of the three architectures of the neural network did on that scale.
 
-The environment \verb|MountainCar| yields similar mean scores for the binary trees and the neural networks. Thus, there is a large plateau of minmum scores for both models. However, when comparing the three configurations of the two models with each other, we can see that the binary tree model reaches more and higher individual scores than the neural network models. In addition, the results of the two models are similar for the two models for the environment \verb|Acrobot|. The binary tree with one node outperforms the neural network without hidden layers whereas the complexer neural networks outperform the binary trees with four and eight nodes.
+The environment \verb|MountainCar| yields similar mean scores for the binary trees and the neural networks. There is a large plateau of minmum scores for both models. When comparing the three configurations of the two models with each other, we can see that the binary tree model reaches more and higher individual scores than the neural network models. The results of the two models are similar for the two models for the environment \verb|Acrobot|. The binary tree with one node outperforms the neural network without hidden layers whereas the complexer neural networks outperform the binary trees with four and eight nodes.
 
 Even though the binary tree model at its current implementation outputs only discrete action values, the results for the continuous environment \verb|Pendulum| are comparable to those of neural networks. The binary tree with eight nodes even managed to outperform neural networks. For the environment \verb|MountainCarContinuous|, neural networks delivered better results. Although the binary tree model with one node reached significantly higher mean scores than neural networks, it exhibits a large plateau of minimum scores that we do not see for the neural networks. The networks with higher complexity reached identical high mean scores.
 
 The considerable difference in the score distribution between the two models could be caused by the binary tree producing discrete actions instead of continuous ones, as neural networks did. For the binary tree model, the action is either -1 or 1, limiting the output space significantly. The environment \verb|MountainCarContiuous| seems more sensitive to these discrete action outputs than the environment \verb|Pendulum|. The experiments with the choice of actions resulted in a much better score distribution for the action pair 0 and 1.
 
-All in all, the binary tree model produced a similar score distribution as neural networks did. For some environments, the binary trees even outperform neural networks. However, the environment \verb|MountainCarContinuous| seems more difficult for the binary trees to learn than for neural networks.
+The binary tree model produced a similar score distribution as neural networks did. For some environments, the binary trees even outperform neural networks. The environment \verb|MountainCarContinuous| seems more difficult for the binary trees to learn than for neural networks.
 
 \paragraph*{Impact of bias:} Including bias has a significant negative impact on almost all of the five classic control environments. For the environment \verb|Acrobot| and \verb|Pendulum|, the difference between using bias and not using bias seems less extreme than for the other environments depending on the number of layers used.
 
-To further investigate this behavior, I subsequently changed three aspects of the model's architecture. First, I increased the number of weights of the networks. Despite the remarkably increased number of weights, the results show only slight differences in the score distribution. The exception is the environment \verb|MountainCarContinuous|, where the mean scores are remarkably lower. Except for the environment \verb|MountainCarContinuous|, we can conclude that the increased number of weights does not impact the score distribution significantly.
+To further investigate this behavior, I subsequently changed three aspects of the model's architecture. First, I increased the number of weights of the networks. Despite the remarkably increased number of weights, the results show only slight differences in the score distribution. The exception is the environment \texttt{MountainCarCon-} \texttt{tinuous}, where the mean scores are remarkably lower. Except for the environment \texttt{MountainCarContinuous}, we can conclude that the increased number of weights does not impact the score distribution significantly.
 
 Second, I increased the number of hidden layers. Some environments show slightly different results like \verb|CartPole| and \verb|MontainCar|. However, the changes are less significant than in the experiments with bias connections. The exception is again \verb|MountainCarContinuous|, where the difference is noticeably more extreme with an increased number of layers.
 
