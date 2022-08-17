@@ -3,7 +3,7 @@
 \chapter{Conclusion}
 \label{ch:conclusions}
 
-This work's driving question was whether we could find alternative models for reinforcement problems whose performance is comparable to the commonly used neural network model. To investigate how these models compare to neural networks and what advantages they have, two research questions were introduced in Section~\ref{sec:research_questions}. In addition, one research question was formulated concerning the architecture of a model for additional analysis.
+This work's driving question was whether we could find alternative models for direct policy search whose performance is comparable to neural networks, which were already successfully applied as policy approximators in neuroevolution. To investigate how these models compare to neural networks and what advantages they have, two research questions were introduced in Section~\ref{sec:research_questions}. In addition, one research question was formulated concerning the architecture of a model for additional analysis.
 
 \paragraph*{RQ1: How do function approximators other than neural networks compare with the latter?} I directly compared the alternative models, the polynomial and binary tree models, to neural networks. The polynomial model produced results comparable to those of neural networks. For the environment \verb|CartPole|, it delivered a more desirable score distribution for polynomials of degrees two and three. We would still prefer neural networks to tackle the problem of the \verb|Acrobot| environment. The environment \verb|MountainCar| seems to produce the same score distribution regardless of the model used. We cannot conclude that using the polynomial model robustly produces better results or results comparable to neural networks.
 

@@ -57,17 +57,23 @@ The reward function can be deterministic or can contain a random component makin
 
 Learning a policy that maximizes cumulative rewards is generally non-trivial. If the learning algorithm is not explorative enough, it might get stuck in a local optimum and never reach the goal. However, if there is too much exploration, we receive less overall reward. Thus, there needs to be a balance between exploration and exploitation. In addition, there is often a time delay for the reward. The consequence of an action might not be immediately visible to the agent. This problem is known as the credit-assignment problem in the literature (\cite{sutton2018reinforcement}).
 
-We can solve reinforcement learning problems with methods based on value functions or policy search. Methods based on policy search directly search for the optimal policy $\pi^*$ and do not need to maintain a value function model (\cite{8103164}). For methods based on value functions, the state-value function $V$ defines the expected return of each possible state. It indicates how good or bad being in a particular state is. The agent chooses the best action based on the value of the states. The value of state $s$ under policy $\pi$ is defined by $V_\pi(s)$ and indicates the agent's expected total reward following policy $\pi$ starting from state $s$ (\cite{sutton2018reinforcement}).
+We can solve reinforcement learning problems with methods based on value functions or policy search. Methods based on policy search directly search for the optimal policy $\pi^*$ and do not need to maintain a value function model (\cite{8103164}). For methods based on value functions, the state-value function $\mathcal{V}$ defines the expected return of each possible state. It indicates how good or bad being in a particular state is. The agent chooses the best action based on the value of the states. The value of state $s$ under policy $\pi$ is defined by $\mathcal{V}_\pi(s)$ and indicates the agent's expected total reward following policy $\pi$ starting from state $s$ (\cite{sutton2018reinforcement}).
 
-Value functions induce a partial order on policies. Policy $\pi$ is better than policy $\pi'$ if and only if $V_\pi(s) \geq V_{\pi'}(s)$ applies to all states $s \in S$. The optimal policy $\pi^*$ leads to the optimal state-value function:
+Value functions induce a partial order on policies. Policy $\pi$ is better than policy $\pi'$ if and only if $\mathcal{V}_\pi(s) \geq \mathcal{V}_{\pi'}(s)$ applies to all states $s \in S$. The optimal policy $\pi^*$ leads to the optimal state-value function:
 \begin{equation*}
-  V_{\pi^*}(s) = \underset{\pi}{\text{max}} V_\pi(s)
+  \mathcal{V}_{\pi^*}(s) = \underset{\pi}{\text{max}} V_\pi(s)
 \end{equation*}
 To find $\pi^*$, we can use the \textit{Bellman optimality equation} which divides the value function into the immediate reward and the discounted future reward. The optimal value function then results in:
 \begin{equation*}
-  V_{\pi^*}(s) = \underset{a \in \mathcal{A}}{\text{max}} \, \mathbf{R}(s, a) + \gamma \underset{s' \in S}{\sum} \mathcal{P}_{s, s'}^{a} V_{\pi^*}(s')
+  \mathcal{V}_{\pi^*}(s) = \underset{a \in \mathcal{A}}{\text{max}} \, \mathbf{R}(s, a) + \gamma \underset{s' \in S}{\sum} \mathcal{P}_{s, s'}^{a} \mathcal{V}_{\pi^*}(s')
 \end{equation*}
-The discount factor $\gamma$ determines the importance given to the immediate reward and the future rewards. $\mathcal{P}$ is the transition function where $\mathcal{P}_{s, s'}^{a}$ defines the probability of moving from state $s$ to state $s'$ while using action $a$. There are many methods, for example value iteration, to solve this equation and find or approximate the optimal policy.
+The discount factor $\gamma$ determines the importance given to the immediate reward and the future rewards. $\mathcal{P}$ is the transition function where $\mathcal{P}_{s, s'}^{a}$ defines the probability of moving from state $s$ to state $s'$ while using action $a$. There are many methods, for example value iteration or policy iteration, to solve this equation and find or approximate the optimal policy.
+
+Another function that can be used to evaluate the quality of a policy is the Q function. It is closely related to $\mathcal{V}$, but instead of mapping a state to a value, it maps state-action pairs to a value. More formally, we can write the relationship between the two functions as
+\begin{equation*}
+  \mathcal{V}_{\pi}(s) = \mathcal{Q}_\pi (s, \pi(s)).
+\end{equation*}
+The process of finding the optimal mapping $\mathcal{Q}^*$ and the optimal policy with the help of $\mathcal{Q}$ is called Q-learning.
 
 
 % \begin{equation}
@@ -80,9 +86,9 @@ As interest in neural networks and deep learning increased, deep reinforcement l
 
 \subsection{Neural Networks as Models}
 \label{subsec:NN}
-Artificial neural networks are machine learning algorithms inspired by the functionalities of the human brain. They are applied successfully in many areas including in reinforcement learning problems. In 1958, Frank Rosenblatt implemented the perceptron (\cite{rosenblatt1958perceptron}). The perceptron represents a simplified version of a biological neuron. It was an early type of what later should be called artificial neural networks. On this idea, the concept of neural networks was born and further developed throughout the years.
+Artificial neural networks are machine learning algorithms inspired by the functionalities of the human brain. They are applied successfully in many areas including in reinforcement learning problems. In 1958, Frank Rosenblatt implemented the perceptron, which represents a simplified version of a biological neuron (\cite{rosenblatt1958perceptron}). It was an early type of what later should be called artificial neural networks. On this idea, the concept was born and further developed throughout the years.
 
-Neural networks in the modern sense consist of connected neurons or nodes that imitate the biological neurons of the brain, sending signals to each other. A neuron receives one or multiple input values and calculates its output value. The information is then passed onto the next neuron. Figure~\ref{fig:neuron} illustrates the structure of one artificial neuron.
+Neural networks in the modern sense consist of connected nodes that imitate the biological neurons of the brain, sending signals to each other. A node receives one or multiple input values and calculates its output value. The information is then passed onto the next node. Figure~\ref{fig:neuron} illustrates the structure of one node.
 \begin{figure}[ht]
 \centering
 \includegraphics[width=.7\textwidth]{neuron}
@@ -92,13 +98,13 @@ Neural networks in the modern sense consist of connected neurons or nodes that i
 }
 \label{fig:neuron}
 \end{figure}
-To calculate the output value, the neuron receives two input values $x_1, x_2$ and one bias term $b$. We often use a bias with neural networks, allowing us to make affine transformations to the data. The neuron uses the assigned weights $\mathbf{w}$ to calculate the weighted sum of input values. In  more detail, the calculation is the following:
+To calculate the output value, it receives two input values $x_1, x_2$ and one bias term $b$. We often use a bias, allowing us to make affine transformations to the data. The node uses the assigned weights $\mathbf{w}$ to calculate the weighted sum of input values. In  more detail, the calculation is the following:
 \[
   \mathbf{w}^T \mathbf{x} = w_1 x_1 + w_2 x_2 + b
 \]
-For convenience, the following images of neural networks will not show the bias term explicitly.
+For convenience, the following images will not show the bias term explicitly.
 
-The activation function $f$ then defines the output value that should be passed into the next neuron. This example uses a step function with a threshold of 0. Many other functions can be used as activation functions. Another commonly used function is the logistic function. Figure~\ref{fig:sigmoid} shows the formula and a plot of the logistic sigmoid function in 2D.
+The activation function $f$ then defines the output value that should be passed into the next neuron. The example shown in Figure~\ref{fig:neuron} uses a step function with a threshold of 0. Many other functions can be used as activation functions. Another commonly used function is the logistic function. Figure~\ref{fig:sigmoid} shows the formula and a plot of it in 2D.
 \begin{figure}[ht]
 \centering
 \begin{tikzpicture}
@@ -134,9 +140,9 @@ The activation function $f$ then defines the output value that should be passed 
 }
 \label{fig:sigmoid}
 \end{figure}
-The sigmoid function is a mathematical function that maps an arbitrary input space into an output space with a small range, for example, 0 and 1. The function has a characteristic S-shaped curve.
+The logistic function is a mathematical function that maps an arbitrary input space into an output space with a small range, for example, 0 and 1. The function has a characteristic S-shaped curve.
 
-In a neural network, the neurons are arranged in connected layers. A network has at least an input and an output layer. We can further expand it with one or more hidden layers. Depending on the model, the connectivity between the layers differs. Figure~\ref{fig:neural_network_sketch} shows a sketch of a network with three hidden layers that are fully connected.
+In a neural network, the nodes are arranged in connected layers. A network has at least an input and an output layer. We can further expand it with one or more hidden layers. Depending on the model, the connectivity between the layers differs. Figure~\ref{fig:neural_network_sketch} shows a sketch of a network with three hidden layers that are fully connected.
 \begin{figure}[ht]
 \centering
 \includegraphics[width=.7\textwidth]{neural_network_sketch}
@@ -146,12 +152,18 @@ In a neural network, the neurons are arranged in connected layers. A network has
 }
 \label{fig:neural_network_sketch}
 \end{figure}
+A neural network with one or more hidden layers is theoretically able to represent any function. Thus, neural networks are generic function approximators.
 
-A neural network with one or more hidden layers is theoretically able to represent any function. Thus, neural networks are generic function approximators. In addition, neural networks are highly expressive and flexible. In the context of reinforcement learning, they can be used to approximate a value function or a policy function. A large part of the success of neural networks can be traced back to the use of \textit{backpropagation}. Backpropagation uses information from the previous epoch (i.e., iteration) to adjust the network weights using the error gradient. Deep reinforcement learning combines reinforcement learning with the methods of deep learning. Deep neural networks have multiple hidden layers, allowing them to represent data with multiple levels of abstractions (\cite{lecun2015deep}). Deep reinforcement learning has been used successfully in many applications, including robotics, video games, and computer vision (\cite{franccois2018introduction}).
+Deep reinforcement learning combines reinforcement learning with the methods of deep learning. Deep neural networks have multiple hidden layers, allowing them to represent data with multiple levels of abstractions (\cite{lecun2015deep}). Deep reinforcement learning has been used successfully in many applications, including robotics, video games, and computer vision (\cite{franccois2018introduction}). The main advantage is the scalability of deep neural networks in a high dimensional space (\cite{dong2020deep}).
 
-Deep reinforcement learning combines deep learning and reinforcement learning. The main advantage is the scalability of deep neural networks in a high dimensional space. (\cite{dong2020deep})
+A large part of the success of neural networks and deep learning can be traced back to the use of \textit{backpropagation}. Backpropagation uses information from the previous epoch (i.e., iteration) to adjust the network weights using the error gradient. For the backpropagation algorithm to be efficient, it relies on calculating accurate gradients. In fields like reinforcement learning, where we only have a reward signal that might be time delayed, this is a non-trivial task. In addition, there is a risk of getting stuck in a local optimum (\cite{ha2017visual}).
+%These limits raise the question of which alternative models or techniques could be used that overcome these difficulties.
+% The backpropagation algorithm's efficiency in calculating the gradient of an objective function is a crucial component of deep learning's success.
 
-The backpropagation algorithm's efficiency in calculating the gradient of an objective function is a crucial component of deep learning's success. However, there are certain limitations. For the backpropagation algorithm to be efficient, it relies on calculating accurate gradients. In fields like reinforcement learning, where we only have a reward signal that might be time delayed, this is a non-trivial task. In addition, there is a risk of getting stuck in a local optimum (\cite{ha2017visual}). These limits raise the question of which alternative models or techniques could be used that overcome these difficulties.
+In the context of reinforcement learning, neural networks as function approximators can be used to approximate the optimal policy $\pi^*$, the optimal state value function $\mathcal{V}^*$, and the optimal action-value function $\mathcal{Q}^*$ (\cite{golovin2017google}). An important advantage over other methods like dictionary-based approaches is the generalization: the network can return the expected reward for all actions, even those yet unexplored.
+
+In deep learning approaches in supervised learning, a training set with labeled data is available. In contrast, reinforcement learning requires dynamical learning based on the continuous feedback of the environment. For value-based methods like Q-learning, we can iteratively adapt the value function based on the received reward. However, in policy-based approaches, we need to evaluate the policy somehow. In supervised learning, we would use backpropagation. However, we do not have a training set in reinforcement learning and cannot guarantee differentiability. There are several methods to still use neural networks as policy approximators, one of them is \textit{Neuroevolution}, which will be discussed in Section~\ref{s:neuroevolution}
+
 
 %However, neural networks also come with a few limitations or disadvantages. The backpropagation algorithm requires the calculation of an accurate gradient. Depending on the problem, this can be a challenging task. For example, calculating an accurate gradient in RL problems is usually non-trivial. Furthermore, there is a lack of understanding. The output of a neural network is often incomprehensible because of its complex structure.
 
@@ -179,8 +191,10 @@ Studies suggest that directly approximating a policy can be easier and delivers 
 %\todo[inline]{Explain more, go more into advantages, find more papers with comparison}
 
 \section{Neuroevolution}
+\label{s:neuroevolution}
 %special case of DPS: NN as policy approximator, train with evo \\ \\
-Neuroevolution is a method that we can use for direct policy search. Like deep reinforcement learning, we employ a neural network as our model. In deep reinforcement learning, we typically use gradient-based learning strategies, whereas, in neuroevolution, we employ evolutionary algorithms to optimize the network parameters. That reduces the risk of being unable to estimate accurate gradients or being stuck in a local optimum. Evolutionary algorithms only require a measure of the network's performance, making them directly applicable for reinforcement learning problems. Thus, we can use it more widely in various problem classes. \cite{such2017deep} showed that genetic algorithms, a subgroup of evolutionary algorithms, work well for the parameter search of neural networks. Even in complex reinforcement learning settings, including Atari and humanoid locomotion, they could achieve results at the scale of traditional deep reinforcement learning frameworks.
+Neuroevolution is a method that we can use for direct policy search. As discussed in Section~\ref{subsec:NN}, optimizing neural networks as policy approximators results in some problems. One solution is using evolutionary algorithms to optimize the network parameters instead of backpropagation. With these algorithms, estimating accurate gradients becomes obsolete, and the risk of being stuck in a local optimum is reduced. Evolutionary algorithms only require a measure of the network's performance, making them directly applicable for reinforcement learning problems. Thus, we can use it more widely in various problem classes. \cite{such2017deep} showed that genetic algorithms, a subgroup of evolutionary algorithms, work well for the parameter search of neural networks. Even in complex reinforcement learning settings, including Atari and humanoid locomotion, they could achieve results at the scale of traditional deep reinforcement learning frameworks.
+%In supervised learning, we typically use gradient-based learning strategies like backpropagation, whereas, in neuroevolution, we employ evolutionary algorithms to optimize the network parameters.
 
 %\todo[inline]{Explain more. more with direct policy search}
 
