@@ -228,19 +228,19 @@ For the environment \verb|Pendulum|, the system consists of a pendulum attached 
 This thesis aims to deliver a proper analysis of different kinds of models in reinforcement learning. For this, we need appropriate methods and visualizations guaranteeing objectivity in evaluation.
  % When developing a novel algorithm, it is important to compare our results with existing models. For this evaluation, we need standard benchmark problems. These are a set of standard optimization problems. OpenAI Gym is a toolkit created for exactly this scenario. As mentioned in Section~\ref{sec:gym}, it contains a collection of benchmark problems with various levels of difficulty. However, not all benchmark problems are meaningful for the evaluation of an algorithm. If a problem is too trivial to solve, the results do not reflect the quality of the model adequately. We do not need to put a large amount of effort into the creation of a complex model for an easy-to-solve task.
 \subsection{Reproducing Literature Results}
-\cite{oller_analyzing_2020} deliver an excellent foundation for analysis in their paper \emph{Analyzing Reinforcement Learning Benchmarks with Random Weight Guessing}. The authors analyzed and visualized the complexity of standard reinforcement learning benchmarks based on score distribution.
+\cite{oller_analyzing_2020} delivered an excellent foundation for analyzing the complexity of reinforcement learning benchmarks such as available in the OpenAI Gym library.
 
-They tested their approach on the five classic control benchmark problems from the OpenAI Gym interface discussed in Section~\ref{sec:environments}. The authors conducted a fixed series of experiments with each environment. They used three neural network architectures ($N_{architectures}=3$):
+The paper analyzed and visualized the complexity of standard reinforcement learning benchmarks based on the distribution of scores of solutions generated uniquely by randomly generated networks (RWG; \cite{schmidhuber2001evaluating}).
+
+The paper tested five classic control benchmark problems from the OpenAI Gym interface discussed in Section~\ref{sec:environments} and included a fixed series of experiments with each environment. It showcased three neural network architectures ($N_{architectures}=3$):
 \begin{itemize}
   \item a network without any hidden layers (0 HL, 0 HU),
   \item a network with a single hidden layer of 4 units (1 HL, 4 HU),
   \item a network with two hidden layers of 4 units each (2 HL, 4 HU).
 \end{itemize}
-With these, they cover a variety of network models that are suited to solve the given tasks.
+These architectures cover a variety of network models suited to solve the given tasks.
 
-For the analysis, the authors did not train the network models. Instead, they chose the network weights from the standard normal distribution $\mathcal{N}(0,1)$ with RWG. This approach assures randomness and no directed learning. They initialized $10^4$ samples ($N_{samples}=10^4$) with different random weights. The authors chose such a large number of samples to draw meaningful statistical conclusions from their experiments. Each sample represents a neural network controller that maps observations to actions in the environment.
-%Chapter~\ref{ch:experiments} aims to explore function approximators other than neural networks representing the controller.
-The authors tested the controllers for each environment during 20 independent episodes ($N_{episodes}=20$). They saved the score in the score tensor $S$ for each episode. Algorithm~\ref{alg:environment-evaluation} illustrates the procedure with pseudocode.
+The analysis of the paper did not involve training the network models. Instead, the network weights were chosen from the standard normal distribution $\mathcal{N}(0,1)$ with RWG. This approach assures randomness and no directed learning. $10^4$ samples ($N_{samples}=10^4$) with different random weights were initialized. The analysis included such a large number of samples to draw meaningful statistical conclusions from the experiments. Each sample represents a neural network controller that maps observations to actions in the environment. The paper tested the controllers for each environment during 20 independent episodes ($N_{episodes}=20$). The score tensor $S$ stored the score for each episode. Algorithm~\ref{alg:environment-evaluation} illustrates the procedure with pseudocode.
 
 \begin{algorithm}
 \caption{Evaluation process taken from \cite{oller_analyzing_2020}}
@@ -259,11 +259,11 @@ The authors tested the controllers for each environment during 20 independent ep
 \label{alg:environment-evaluation}
 \end{algorithm}
 
-The authors calculated the mean performance over all episodes from a sample and its variance for the analysis. These statistics can reveal how successful and stable the network models are in completing a task. A low mean value suggests that the controller struggles to complete the task. The variance gives us further insight into the score distribution. It illustrates how spread out the scores are from their respective mean score. A high value means that we have high variability. A controller is valuable if it can solve a specific task reliably and stable: a high value for the mean and a low value for the variance.
+The mean performance over all episodes from a sample and its variance were calculated for the analysis. These statistics can reveal how successful and stable the network models are in completing a task. A low mean value suggests that the controller struggles to complete the task. The variance gives us further insight into the score distribution. It illustrates how spread out the scores are from their respective mean score. A controller is valuable if it can solve a specific task reliably and stable: a high value for the mean and a low value for the variance.
 
-However, initializing a network with random weights should not create a stable controller. If this is the case, we can assume that the task to solve was too trivial and is not valuable for evaluation measurements. In the illustrations of the paper, the authors visualized their results with three plots: a log-scale histogram of the mean scores, a scatter plot of the sample scores, and a scatter plot of score variance over the mean score.
+The more complex a task is, the less likely a randomly generated network can solve it reliably and stable. Complex tasks require large controllers with many weights. Guessing such a controller is much more challenging than a smaller one with fewer weights. The paper's illustrations visualized the results with three plots: a log-scale histogram of the mean scores, a scatter plot of the sample scores, and a scatter plot of score variance over the mean score.
 
-\paragraph*{Reproduction of the results:} I reproduced the results of the authors following the mentioned methodology. My findings for the environment \verb|CartPole| are displayed in Figure~\ref{fig:plots_reproduced}.
+\paragraph*{Reproduction of the results:} I reproduced the results of the paper following the mentioned methodology. My findings for the environment \verb|CartPole| are displayed in Figure~\ref{fig:plots_reproduced}.
 \begin{figure}[h]
 \centering
 \begin{subfigure}{\textwidth}
@@ -286,7 +286,7 @@ However, initializing a network with random weights should not create a stable c
 \end{subfigure}
 \caption[Results of the benchmark evaluation]{
   \textbf{Results of the benchmark evaluation.}
-   The plots show a log-scale histogram of the mean scores (left images), a scatter plot of the sample scores over their rank (middle images), and a scatter plot of score variance over the mean score (right image). As expected with RWG, most networks could not solve the given task. However, a significant number of samples still achieve a mean score of 200. That suggests that the environment is trivial to solve.
+  The plots show a log-scale histogram of the mean scores (first column), a scatter plot of the sample scores over their rank (second column), and a scatter plot of score variance over the mean score (third column). Most networks could not solve the given task. However, a significant number of samples still achieve a mean score of 200. That suggests that the environment is relatively easy to solve.
 }
 \label{fig:plots_reproduced}
 \end{figure}
@@ -294,7 +294,7 @@ The plots illustrate the results for each of the three network architectures. Ea
 
 The histogram plots show that more than $10^3$ networks on the logarithmic scale receive a low score. A significant number of networks could still achieve a high mean value or the maximum value of 200. With a score of 200, the network solved the task in each episode. Therefore, the network could reliably solve the environment. Furthermore, in the scatter plots in the second column of Figure~\ref{fig:plots_reproduced}, we can see that the line plot of the mean scores is a continuous increasing line. A suited learning algorithm should generally be able to learn the task incrementally.
 
-At the top of the scatter plots in the second column of Figure~\ref{fig:plots_reproduced}, we can see quite a few data points with a score of 200 that have a relatively low mean score. This behavior indicates that a network that generally performs poorly can still solve the task with the right initialization conditions. Lastly, in the scatter plots in the last column in Figure~\ref{fig:plots_reproduced}, we can see the distribution of the variance according to the mean value. On the left inside the scatter plots, we have low scores of variance corresponding with a low mean value. These networks were consistently unable to achieve a high score. We can expect most networks to be in this area without any training. However, the data points are spread out in the middle of the plot. For a high variance, the scores of a network differ highly from the mean value. Receiving a high score depends highly on the initialization conditions, meaning networks with this architecture are inconsistent and unstable. On the right inside the scatter plot, we can see that the data points with a high mean value are primarily of low variance. Thus, to achieve a high mean value, the network needs consistency.
+At the top of the scatter plots in the second column of Figure~\ref{fig:plots_reproduced}, we can see quite a few data points with a score of 200 that have a relatively low mean score. This behavior indicates that a network that generally performs poorly can still solve the task with the right initialization conditions. Lastly, in the scatter plots in the last column in Figure~\ref{fig:plots_reproduced}, we can see the distribution of the variance according to the mean value. On the left inside the scatter plots, we have low scores of variance corresponding with a low mean value. These networks were consistently unable to achieve a high score. In the middle of the plot, the data points are spread out. For a high variance, the scores of a network differ highly from the mean value. Receiving a high score depends highly on the initialization conditions, meaning networks with this architecture are inconsistent and unstable. On the right inside the scatter plot, we can see that the data points with a high mean value are primarily of low variance. Thus, to achieve a high mean value, the network needs consistency.
 
 \paragraph*{Impact of Bias:} Unexpectedly, but following the findings in \cite{oller_analyzing_2020}, the usage of the bias had a relatively significant impact on the performance of the network in my experiments. Without bias, the networks seem to achieve better scores overall. All plots in Figure~\ref{fig:plots_reproduced} illustrate the results without bias. For comparison, Figure~\ref{fig:comparison_bias} shows the results of a network with the same configurations as before, but this time including bias having a much lower score.
 \begin{figure}[ht]
@@ -306,7 +306,7 @@ At the top of the scatter plots in the second column of Figure~\ref{fig:plots_re
 }
 \label{fig:comparison_bias}
 \end{figure}
-The number of networks that can consistently solve the task also decreases significantly. In the paper, the authors noted that the probability mass of top-performers generally increases when dropping the bias connections for all tested environments. Thus, this is not an isolated observation. However, they did not investigate this behavior further as it was not the focus of their paper.
+The number of networks that can consistently solve the task also decreases significantly. The paper documented that the probability mass of top-performers generally increases when dropping the bias connections for all tested environments. Thus, this is not an isolated observation. However, the paper did not investigate this behavior further as it was not its focus.
 
 One possible explanation could be that guessing additional weights might be fatal for achieving a good score. In other words: the more possibilities we have to guess a weight incorrectly, the higher the probability of failing. To test this hypothesis, we can alter the number of weights and compare the results. With an increased number of weights, we would expect the networks to perform worse than before. However, it could also be that the number of weights is not as impactful as the complexity of the model. Randomly guessing the parameters of a simple model has a higher chance of resulting in a good (simple) model than guessing the parameters of a more complex model.
 
@@ -314,7 +314,7 @@ The complexity of the network architecture gives an upper bound for the function
 
 It is unlikely to randomly guess a complex model that performs well without any training involved. To test this hypothesis, we can increase the complexity of a network by varying the number of hidden layers or the number of neurons in a hidden layer. With increased complexity, we would expect the networks to perform worse than before.
 
-Another interesting aspect would be to inspect the role of the bias in connection with the environments. A simple model is sufficient to solve a simple task. Nevertheless, what if the environment is more difficult to solve? In that case, the undersized complexity would limit us from finding an appropriate solution as the search space is not large enough for this scenario. Therefore, including bias should improve the results. That shows the importance of neural architecture search, a research field aiming to automate neural networks' architectural design process (\cite{DBLP:journals/corr/abs-2005-11074}).
+Another interesting aspect would be to inspect the role of the bias in connection with the environments. A simple model is sufficient to solve a simple task. Nevertheless, what if the environment is more difficult to solve? In that case, the undersized complexity would limit us from finding an appropriate solution as the search space is not large enough for this scenario. Therefore, including bias should improve the results. That highlights the importance of neural architecture search, a research field aiming to automate neural networks' architectural design process (\cite{DBLP:journals/corr/abs-2005-11074}).
 
 Next to the analysis of the models, Chapter~\ref{ch:experiments} also contains the experiments following this thought process.
 
@@ -407,8 +407,8 @@ The approach to decision trees is simple and intuitive when comparing them with 
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=0.5\textwidth]{binary_tree_model}
-\caption[Illustration of binary tree model]{
-  \textbf{Illustration of binary tree model.}
+\caption[Illustration of the binary tree model]{
+  \textbf{Illustration of the binary tree model.}
   The figure illustrates the binary tree model with the environment \texttt{CartPole}.
 }
 \label{fig:binary_tree_model_illustration}
