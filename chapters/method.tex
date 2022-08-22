@@ -5,10 +5,10 @@
 
 \section{OpenAI Gym Environments}
 \label{sec:environments}
-OpenAI Gym offers five environments ready to use in their \textit{classic control} suite: \verb|CartPole|, \texttt{Acrobot}, \verb|MountainCar|, \verb|MountainCarContiuous|, and \verb|Pendulum|. The initial state of each environment is stochastic. Out of all environments OpenAI Gym provides, the classic control environments are considered the easier ones to solve while still being used as baselines in multiple applications. Each environment defines an observation space and an action space. An agent performs some action from the action space and receives an observation describing how the environment's state changed. The information about the environments for this section was taken from the online documentation\footnote{https://www.gymlibrary.ml/}.
+OpenAI Gym\footnote{https://www.gymlibrary.ml/} offers five environments ready to use in their \textit{classic control} suite: \verb|CartPole|, \texttt{Acrobot}, \verb|MountainCar|, \verb|MountainCarContiuous|, and \verb|Pendulum|. The initial state of each environment is stochastic. Out of all environments OpenAI Gym provides, the classic control environments are considered the easier ones to solve while still being used as baselines in multiple applications. Each environment defines an observation space and an action space. An agent performs some action from the action space and receives an observation describing how the environment's state changed.
 
 \subsection{CartPole}
-The \verb|CartPole| environment corresponds to the pole-balancing problem formulated in \emph{Neuronlike Adaptive Elements That Can Solve Difficult Learning Control Problems} (\cite{6313077}). A pole is attached to a cart that the agent can move along a one-dimensional rail. Fig.~\ref{fig:cartpole} shows two possible states of this problem. In the image on the left, the pole is perfectly balanced and upright. The right image shows the pole tilted to the left. Thus, the cart should in principle move to the left to correct the angle of the pole.
+The \verb|CartPole| environment corresponds to the pole-balancing problem formulated in \emph{Neuronlike Adaptive Elements That Can Solve Difficult Learning Control Problems} (\cite{6313077}). A pole is attached to a cart that the agent can move along a one-dimensional rail. Fig.~\ref{fig:cartpole} shows two possible states of this problem. In the image on the left, the pole is perfectly balanced and upright. The right image shows the pole tilted to the left. Thus, the cart should, in principle, move to the left to correct the angle of the pole.
 \begin{figure}[!ht]
   \centering
 \includegraphics[width=0.4\textwidth]{cartpole} \hspace*{10mm} \includegraphics[width=0.4\textwidth]{cartpole_tilted}
@@ -230,7 +230,7 @@ This thesis aims to deliver a proper analysis of different kinds of models in re
 \subsection{Reproducing Literature Results}
 \cite{oller_analyzing_2020} delivered an excellent foundation for analyzing the complexity of reinforcement learning benchmarks such as available in the OpenAI Gym library.
 
-The paper analyzed and visualized the complexity of standard reinforcement learning benchmarks based on the distribution of scores of solutions generated uniquely by randomly generated networks (RWG; \cite{schmidhuber2001evaluating}).
+The paper analyzed and visualized the complexity of standard reinforcement learning benchmarks based on the distribution of scores of solutions generated uni- quely by randomly generated networks (RWG; \cite{schmidhuber2001evaluating}).
 
 The paper tested five classic control benchmark problems from the OpenAI Gym interface discussed in Section~\ref{sec:environments} and included a fixed series of experiments with each environment. It showcased three neural network architectures ($N_{architectures}=3$):
 \begin{itemize}
@@ -252,7 +252,7 @@ The analysis of the paper did not involve training the network models. Instead, 
     \For{$e=1,2,...,N_{episodes}$}
       \State Reset the environment
       \State Run episode with NN
-      \State Store episode reward in $S_{a,n,e}$
+      \State Store reward of $e$ in $S_{a,n,e}$
     \EndFor
 \EndFor
 \end{algorithmic}
@@ -319,7 +319,7 @@ Another interesting aspect would be to inspect the role of the bias in connectio
 Next to the analysis of the models, Chapter~\ref{ch:experiments} also contains the experiments following this thought process.
 
 \subsection{Visualization}
-For the visualization of the results, I am also following \cite{oller_analyzing_2020}. Figure~\ref{fig:plots_reproduced} already presented the type of plots used for the visualization in Chapter~\ref{ch:experiments}. However, I only use the scatter plots in the middle image because it transparently illustrates a high amount of information. Figure~\ref{fig:visualization} shows an example of such a plot.
+For the visualization of the results, I am also following \cite{oller_analyzing_2020}. Figure~\ref{fig:plots_reproduced} already presented the type of plots used for the visualization in Chapter~\ref{ch:experiments}. However, I only use the scatter plots shown in the second column because it transparently illustrates a high amount of information. Figure~\ref{fig:visualization} shows an example of such plots.
 \begin{figure}[!ht]
   \centering
 \includegraphics[width=\linewidth]{NN/NN_CartPole_new}
@@ -346,9 +346,9 @@ where $F[x]$ represents the set of all such polynomials (\cite{fischer2014}, p. 
 \begin{align*}
   &p(\mathbf{x}) = \sum_{i=0}^{n} \mathbf{w_i}^T (x_k^i)_{k \in I} \in F^n[\mathbf{x}], &\mathbf{w_0}, ... \mathbf{w_n} \in F^n, \ \ I = \{0, ..., m\}.
 \end{align*}
-Polynomials are relatively simple mathematical expressions and their derivative and indefinite integral are easy to determine and are also polynomials. Due to their simple structure, polynomials can be valuable to analyze more complex functions using polynomial approximations. \textit{Taylor's theorem} tells us that we can locally approximate any $k$-times differentiable function by a polynomial of degree $k$. We call this approximation \textit{Taylor's polynomial}. Furthermore, the \textit{Weierstrass approximation theorem} says that we can uniformly approximate every continuous function defined on a closed interval by a polynomial. Other applications of polynomials are \textit{polynomial interpolation} and \textit{polynomial splines}. Polynomial interpolation describes the problem of constructing a polynomial that passes through all given data points. Polynomial splines are piecewise polynomial functions that can be used for spline interpolation. Spline interpolation is a form of interpolation where splines are used as interpolants.
+Polynomials are relatively simple mathematical expressions, and their derivative and indefinite integral are easy to determine and are also polynomials. Due to their simple structure, polynomials can be valuable for analyzing more complex functions using polynomial approximations. \textit{Taylor's theorem} tells us that we can locally approximate any $k$-times differentiable function by a polynomial of degree $k$. We call this approximation \textit{Taylor's polynomial}. Furthermore, the \textit{Weierstrass approximation theorem} says that we can uniformly approximate every continuous function defined on a closed interval by a polynomial. Other applications of polynomials are \textit{polynomial interpolation} and \textit{polynomial splines}. Polynomial interpolation describes the problem of constructing a polynomial that passes through all given data points. Polynomial splines are piecewise polynomial functions that can be used for spline interpolation. Spline interpolation is a form of interpolation where splines are used as interpolants.
 
-\paragraph*{Construction of the model:} For the experiments with the polynomial model in Chapter~\ref{ch:experiments}, I constructed the model $P_1$. It consists of one polynomial mapping from the observaction space to the action space of the reinforcement learning environment for each possible action in a discrete action space. The dimension of the weight vectors is according to the dimension of the input vector. For example, for the environment \verb|CartPole| with the discrete action space $\{0, 1\}$ and observation $\mathbf{x} = [x_0, x_1, x_2, x_3]^T$, this means that $P_1$ consists of two polynomials:
+\paragraph*{Construction of the model:} For the experiments with the polynomial model in Chapter~\ref{ch:experiments}, I constructed the model $P_1$. It consists of one polynomial mapping from the observation space to the action space of the reinforcement learning environment for each possible action in a discrete action space. The dimension of the weight vectors is according to the dimension of the input vector. For example, for the environment \verb|CartPole| with the discrete action space $\{0, 1\}$ and observation $\mathbf{x} = [x_0, x_1, x_2, x_3]^T$, this means that $P_1$ consists of two polynomials:
 \begin{align*}
   &p_0(\mathbf{x}) = \sum_{i=0}^{n} \mathbf{w_i}^T (x_k^i)_{k \in I} \in \mathbb{R}, &\mathbf{w_0}, ..., \mathbf{w_3}, \mathbf{x} \in \mathbb{R}^4, \ \ I = \{0, 1, 2, 3\} \\
   &p_1(\mathbf{x}) = \sum_{i=0}^{n} \mathbf{\hat{w}_i}^T (x_k^i)_{k \in I} \in \mathbb{R}, &\mathbf{\hat{w}_0}, ..., \mathbf{\hat{w}_3}, \mathbf{x} \in \mathbb{R}^4, \ \ I = \{0, 1, 2, 3\}
@@ -387,7 +387,7 @@ So, I scaled the outputs with the logistic sigmoid function. We can interpret th
 
 
 \subsection{Binary Trees}
-A binary tree is a common data type in computer science with a relatively simple design: a hierarchical tree structure consisting of a set of connected nodes. A node is a structure that can hold data and connections to other nodes, also called links or edges. Nodes in a binary tree have exactely two child nodes. A node's child nodes are those connected to it and situated beneath it in the tree. The node is then called the parent node in the perspective of its child nodes. Figure~\ref{fig:binary_tree_illustration} illustrates an example of a binary tree with seven nodes.
+A binary tree is a common data type in computer science with a relatively simple design: a hierarchical tree structure consisting of a set of connected nodes. A node is a structure that can hold data and connections to other nodes, also called links or edges. Nodes in a binary tree have exactly two child nodes. A node's child nodes are those connected to it and situated beneath it in the tree. The node is then called the parent node in the perspective of its child nodes. Figure~\ref{fig:binary_tree_illustration} illustrates an example of a binary tree with seven nodes.
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=0.4\textwidth]{binary_tree}

@@ -54,7 +54,7 @@ The rewards are computed by an underlying reward function specific to the enviro
 \begin{equation*}
   \mathbf{R} : \mathcal{S} \times \mathcal{A} \rightarrow \mathbb{R}
 \end{equation*}
-The reward function can be deterministic or it can contain a random component making it stochastic. Depending on the problem, the reward can be sparse or dense. Sparse reward means that the reward function returns zero in most of its domain and only returns a meaningful reward in a few rare settings or at the end of the experiment. That introduces a major challenge since we cannot know which actions lead to success or failure. Optimization problems with this setting are generally challenging to solve. Dense reward environments return a meaningful reward at every step, making the optimization process more manageable.
+The reward function can be deterministic or can contain a random component making it stochastic. Depending on the problem, the reward can be sparse or dense. Sparse reward means that the reward function returns zero in most of its domain and only returns a meaningful reward in a few rare settings or at the end of the experiment. That introduces a major challenge since we cannot know which actions lead to success or failure. Optimization problems with this setting are generally challenging to solve. Dense reward environments return a meaningful reward at every step, making the optimization process more manageable.
 
 Learning a policy that maximizes cumulative rewards is generally non-trivial. If the learning algorithm is not explorative enough, it might get stuck in a local optimum and never reach the goal. However, we receive less overall reward if there is too much exploration. Thus, there needs to be a balance between exploration and exploitation. In addition, there is often a time delay for the reward. The consequence of an action might not be immediately visible to the agent. This problem is known as the credit-assignment problem in the literature (\cite{sutton2018reinforcement}).
 
@@ -89,7 +89,7 @@ As interest in neural networks and deep learning increased, deep reinforcement l
 \label{subsec:NN}
 Artificial neural networks are machine learning algorithms inspired by the functionalities of the human brain. They are applied successfully in many areas including in reinforcement learning problems. In 1958, Frank Rosenblatt implemented the perceptron, which represents a simplified version of a biological neuron (\cite{rosenblatt1958perceptron}). It was an early type of what later should be called artificial neural networks. On this idea, the concept was born and further developed throughout the years.
 
-Neural networks in the modern sense consist of connected neurons or nodes that imitate the biological neurons of the brain, sending signals to each other. A node receives one or multiple input values and calculates its output value. The information is then passed onto the next instance. Figure~\ref{fig:neuron} illustrates the structure of one node.
+Neural networks in the modern sense consist of connected neurons or nodes that imitate the biological neurons of the brain, sending signals to each other. A node receives one or multiple input values and calculates its output value. The information is then passed to the next instance. Figure~\ref{fig:neuron} illustrates the structure of one node.
 \begin{figure}[ht]
 \centering
 \includegraphics[width=.7\textwidth]{neuron}
@@ -105,7 +105,7 @@ In this example, the calculation of the output value uses two input values $x_1,
 \]
 For convenience, the following images will not show the bias term explicitly.
 
-The activation function $f$ then defines the output value passed into the next instance. The example shown in Figure~\ref{fig:neuron} uses a step function with a threshold of 0. Many other functions can be used as activation functions. Another commonly used function is the logistic function shown in Figure~\ref{fig:sigmoid}.
+The activation function $f$ then defines the output value passed to the next instance. The example shown in Figure~\ref{fig:neuron} uses a step function with a threshold of 0. Many other functions can be used as activation functions. Another commonly used function is the logistic function shown in Figure~\ref{fig:sigmoid}.
 \begin{figure}[ht]
 \centering
 \begin{tikzpicture}
@@ -213,7 +213,7 @@ Random Weight Guessing (RWG) is the simplest black-box optimization method. Algo
 \begin{algorithmic}[1]
 \Repeat
     \State Randomly sample model weights
-\Until{model corretly classifies all training sequences}
+\Until{model correctly classifies all training sequences}
 \State \textbf{return} model weights
 \end{algorithmic}
 \label{alg:RWG}
